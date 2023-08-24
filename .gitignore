@@ -2,7 +2,7 @@
 .idea
 
 # Binaries
-./bin
+.bin
 
 # Environment variables
 .env

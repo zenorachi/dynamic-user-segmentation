@@ -1,7 +1,7 @@
 include .env
 
 .SILENT:
-.PHONY:  up-postgres stop migrate-create migrate-down migrate-up
+.DEFAULT_GOAL = run
 
 CMD_UP = docker-compose up --remove-orphans
 CMD_DOWN = docker-compose down
@@ -9,6 +9,15 @@ CMD_DOWN = docker-compose down
 MIGRATION_DIR = ./scripts/migrations/
 
 POSTGRES_URL = postgres://$(DB_USER):$(DB_PASSWORD)@localhost:$(LOCAL_DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSLMODE)
+
+build:
+	go mod download && CGO_ENABLED=0 GOOS=linux go build -o ./.bin/app ./cmd/app/main.go
+
+run: build
+	$(CMD_UP)
+
+rebuild: build
+	$(CMD_UP) --build
 
 up-postgres:
 	$(CMD_UP) postgres
@@ -24,3 +33,8 @@ migrate-up:
 
 migrate-down:
 	migrate -path $(MIGRATION_DIR) -database $(POSTGRES_URL) down
+
+clean:
+	rm -rf ./.bin
+
+.PHONY: build run rebuild up-postgres stop migrate-create migrate-down migrate-up clean
