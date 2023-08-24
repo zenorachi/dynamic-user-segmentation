@@ -21,6 +21,7 @@ func NewHandler(services *service.Services, tokenManager auth.TokenManager) *Han
 func (h *Handler) Init(api *gin.RouterGroup) {
 	v1 := api.Group("/v1")
 	{
-		h.initUserRoutes(v1)
+		h.initUsersRoutes(v1)
+		h.initSegmentsRoutes(v1)
 	}
 }

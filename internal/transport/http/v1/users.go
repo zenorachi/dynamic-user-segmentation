@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func (h *Handler) initUserRoutes(api *gin.RouterGroup) {
+func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
 	users := api.Group("/users")
 	{
 		users.POST("/sign-up", h.signUp)
@@ -78,7 +78,11 @@ func (h *Handler) refresh(c *gin.Context) {
 
 	tokens, err := h.services.RefreshTokens(c, refreshToken)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		if errors.Is(err, entity.ErrSessionDoesNotExist) {
+			newErrorResponse(c, http.StatusBadRequest, err.Error())
+		} else {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		}
 		return
 	}
 

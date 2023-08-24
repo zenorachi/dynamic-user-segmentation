@@ -12,14 +12,14 @@ import (
 )
 
 type UserService struct {
-	repo            repository.User
+	repo            repository.Users
 	hasher          hash.PasswordHasher
 	tokenManager    auth.TokenManager
 	accessTokenTTL  time.Duration
 	refreshTokenTTL time.Duration
 }
 
-func NewUsers(repo repository.User, hasher hash.PasswordHasher, tokenManager auth.TokenManager, accessTokenTTL, refreshTokenTTL time.Duration) *UserService {
+func NewUsers(repo repository.Users, hasher hash.PasswordHasher, tokenManager auth.TokenManager, accessTokenTTL, refreshTokenTTL time.Duration) *UserService {
 	return &UserService{
 		repo:            repo,
 		hasher:          hasher,
@@ -66,6 +66,9 @@ func (u *UserService) SignIn(ctx context.Context, login, password string) (Token
 func (u *UserService) RefreshTokens(ctx context.Context, refreshToken string) (Tokens, error) {
 	user, err := u.repo.GetByRefreshToken(ctx, refreshToken)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return Tokens{}, entity.ErrSessionDoesNotExist
+		}
 		return Tokens{}, err
 	}
 	return u.createSession(ctx, user.ID)
