@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: user-segmentation
+    build: ./
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - bm-backend
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - "${LOCAL_DB_PORT}:${DB_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    restart: on-failure
+    networks:
+      - bm-backend
+
+networks:
+  bm-backend:
+    driver: bridge
+
+volumes:
+  pg-data:
