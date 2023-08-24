@@ -10,11 +10,15 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
+const (
+	sourceMigrationsURL = "file://scripts/migrations"
+)
+
 func DoMigrations(cfg *postgres.DBConfig) error {
 	database := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
 		cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.Name, cfg.SSLMode)
 
-	m, err := migrate.New("file://scripts/migrations", database)
+	m, err := migrate.New(sourceMigrationsURL, database)
 	if err != nil {
 		return err
 	}

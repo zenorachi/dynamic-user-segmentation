@@ -12,14 +12,14 @@ import (
 )
 
 type UserService struct {
-	repo            repository.User
+	repo            repository.Users
 	hasher          hash.PasswordHasher
 	tokenManager    auth.TokenManager
 	accessTokenTTL  time.Duration
 	refreshTokenTTL time.Duration
 }
 
-func NewUsers(repo repository.User, hasher hash.PasswordHasher, tokenManager auth.TokenManager, accessTokenTTL, refreshTokenTTL time.Duration) *UserService {
+func NewUsers(repo repository.Users, hasher hash.PasswordHasher, tokenManager auth.TokenManager, accessTokenTTL, refreshTokenTTL time.Duration) *UserService {
 	return &UserService{
 		repo:            repo,
 		hasher:          hasher,

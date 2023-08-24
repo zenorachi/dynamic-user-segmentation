@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/repository"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/auth"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/hash"
@@ -19,10 +20,15 @@ type (
 		SignIn(ctx context.Context, login, password string) (Tokens, error)
 		RefreshTokens(ctx context.Context, refreshToken string) (Tokens, error)
 	}
+
+	Segments interface {
+		Create(ctx context.Context, segment entity.Segment) (int, error)
+	}
 )
 
 type Services struct {
 	Users
+	Segments
 }
 
 type Deps struct {
@@ -34,9 +40,8 @@ type Deps struct {
 }
 
 func New(deps Deps) *Services {
-	userService := NewUsers(deps.Repos.User, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL)
-
 	return &Services{
-		Users: userService,
+		Users:    NewUsers(deps.Repos.Users, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL),
+		Segments: NewSegments(deps.Repos.Segments),
 	}
 }
