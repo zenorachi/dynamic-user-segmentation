@@ -17,8 +17,13 @@ CREATE TABLE segments (
     name           VARCHAR(255) UNIQUE NOT NULL
 );
 
+CREATE TYPE status_type AS ENUM ('active', 'expired');
+
 CREATE TABLE user_segments (
    user_id      INT REFERENCES users(id),
    segment_id   INT REFERENCES segments(id),
+   date_added   TIMESTAMP NOT NULL DEFAULT NOW(),
+   expires_at   TIMESTAMP DEFAULT NULL,
+   status       status_type NOT NULL DEFAULT 'active',
    PRIMARY KEY (user_id, segment_id)
 );

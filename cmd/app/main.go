@@ -14,13 +14,18 @@ const (
 	ymlFile   = "main"
 )
 
-func main() {
+func init() {
 	if err := godotenv.Load(envFile); err != nil {
 		logger.Fatal("config", ".env initialization failed")
 	}
 
 	viper.AddConfigPath(directory)
 	viper.SetConfigName(ymlFile)
+	if err := viper.ReadInConfig(); err != nil {
+		logger.Fatal("config", "viper initialization failed")
+	}
+}
 
+func main() {
 	app.Run(config.New())
 }
