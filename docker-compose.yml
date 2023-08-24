@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - "${LOCAL_DB_PORT}:${DB_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    restart: on-failure
+    networks:
+      - bm-backend
+
+networks:
+  bm-backend:
+    driver: bridge
+
+volumes:
+  pg-data:
