@@ -66,6 +66,9 @@ func (u *UserService) SignIn(ctx context.Context, login, password string) (Token
 func (u *UserService) RefreshTokens(ctx context.Context, refreshToken string) (Tokens, error) {
 	user, err := u.repo.GetByRefreshToken(ctx, refreshToken)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return Tokens{}, entity.ErrSessionDoesNotExist
+		}
 		return Tokens{}, err
 	}
 	return u.createSession(ctx, user.ID)

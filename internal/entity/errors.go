@@ -9,5 +9,7 @@ var (
 	ErrUserAlreadyExists    = errors.New("user with such login already exist")
 	ErrUserDoesNotExist     = errors.New("user does not exist")
 	ErrIncorrectPassword    = errors.New("incorrect password")
+	ErrSessionDoesNotExist  = errors.New("session does not exist")
 	ErrSegmentAlreadyExists = errors.New("segment already exists")
+	ErrSegmentDoesNotExist  = errors.New("segment/segments does not exist")
 )

@@ -23,6 +23,10 @@ type (
 
 	Segments interface {
 		Create(ctx context.Context, segment entity.Segment) (int, error)
+		GetByID(ctx context.Context, id int) (entity.Segment, error)
+		GetAll(ctx context.Context) ([]entity.Segment, error)
+		DeleteByName(ctx context.Context, name string) error
+		DeleteByID(ctx context.Context, id int) error
 	}
 )
 
