@@ -2,7 +2,6 @@ package v1
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"net/http"
@@ -13,22 +12,14 @@ func (h *Handler) initOperationsRoutes(api *gin.RouterGroup) {
 	{
 		operations.POST("/add_segments", h.addSegmentsById)
 		operations.DELETE("/delete_segments", h.deleteSegmentsById)
+		operations.POST("/add_segments_by_name", h.addSegmentsByName)
+		operations.DELETE("/delete_segments_by_name", h.deleteSegmentsByName)
 	}
 }
 
 type operationSegmentsByIdInput struct {
-	UserID     int   `json:"user_id" binding:"required"`
-	SegmentIDs []int `json:"segment_ids" binding:"required"`
-}
-
-type operationSegmentsByIdError struct {
-	ID    int    `json:"id"`
-	Error string `json:"error"`
-}
-
-type operationSegmentsResponse struct {
-	OperationIDs []int                        `json:"operation_ids,omitempty"`
-	Errors       []operationSegmentsByIdError `json:"errors,omitempty"`
+	UserID      int   `json:"user_id" binding:"required"`
+	SegmentsIDs []int `json:"segments_ids" binding:"required"`
 }
 
 func (h *Handler) addSegmentsById(c *gin.Context) {
@@ -38,9 +29,8 @@ func (h *Handler) addSegmentsById(c *gin.Context) {
 		return
 	}
 
-	var response operationSegmentsResponse
-	fmt.Println(input.SegmentIDs)
-	for _, segmentId := range input.SegmentIDs {
+	var operations []int
+	for _, segmentId := range input.SegmentsIDs {
 		relation := entity.Relation{
 			UserID:    input.UserID,
 			SegmentID: segmentId,
@@ -48,26 +38,20 @@ func (h *Handler) addSegmentsById(c *gin.Context) {
 
 		operationId, err := h.services.Operations.CreateBySegmentID(c, relation)
 		if err != nil {
-			if errors.Is(err, entity.ErrUserDoesNotExist) {
-				newErrorResponse(c, http.StatusBadRequest, err.Error())
-				return
-			} else if errors.Is(err, entity.ErrSegmentDoesNotExist) ||
+			if errors.Is(err, entity.ErrUserDoesNotExist) ||
+				errors.Is(err, entity.ErrSegmentDoesNotExist) ||
 				errors.Is(err, entity.ErrRelationAlreadyExists) {
-				response.Errors = append(response.Errors, operationSegmentsByIdError{
-					ID:    segmentId,
-					Error: err.Error(),
-				})
-				continue
+				newErrorResponse(c, http.StatusBadRequest, err.Error())
 			} else {
 				newErrorResponse(c, http.StatusInternalServerError, err.Error())
-				return
 			}
+			return
 		}
 
-		response.OperationIDs = append(response.OperationIDs, operationId)
+		operations = append(operations, operationId)
 	}
 
-	newResponse(c, http.StatusCreated, "message", response)
+	newResponse(c, http.StatusCreated, "operations_ids", operations)
 }
 
 func (h *Handler) deleteSegmentsById(c *gin.Context) {
@@ -77,8 +61,8 @@ func (h *Handler) deleteSegmentsById(c *gin.Context) {
 		return
 	}
 
-	var response operationSegmentsResponse
-	for _, segmentId := range input.SegmentIDs {
+	var operations []int
+	for _, segmentId := range input.SegmentsIDs {
 		relation := entity.Relation{
 			UserID:    input.UserID,
 			SegmentID: segmentId,
@@ -87,19 +71,72 @@ func (h *Handler) deleteSegmentsById(c *gin.Context) {
 		operationId, err := h.services.Operations.DeleteBySegmentID(c, relation)
 		if err != nil {
 			if errors.Is(err, entity.ErrRelationDoesNotExist) {
-				response.Errors = append(response.Errors, operationSegmentsByIdError{
-					ID:    segmentId,
-					Error: err.Error(),
-				})
-				continue
+				newErrorResponse(c, http.StatusBadRequest, err.Error())
 			} else {
 				newErrorResponse(c, http.StatusInternalServerError, err.Error())
-				return
 			}
+			return
 		}
 
-		response.OperationIDs = append(response.OperationIDs, operationId)
+		operations = append(operations, operationId)
 	}
 
-	newResponse(c, http.StatusCreated, "message", response)
+	newResponse(c, http.StatusCreated, "operations_ids", operations)
+}
+
+type operationSegmentsByNameInput struct {
+	UserID        int      `json:"user_id" binding:"required"`
+	SegmentsNames []string `json:"segments_names" binding:"required"`
+}
+
+func (h *Handler) addSegmentsByName(c *gin.Context) {
+	var input operationSegmentsByNameInput
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidInput.Error())
+		return
+	}
+
+	var operations []int
+	for _, segmentName := range input.SegmentsNames {
+		operationId, err := h.services.Operations.CreateBySegmentName(c, input.UserID, segmentName)
+		if err != nil {
+			if errors.Is(err, entity.ErrUserDoesNotExist) ||
+				errors.Is(err, entity.ErrSegmentDoesNotExist) ||
+				errors.Is(err, entity.ErrRelationAlreadyExists) {
+				newErrorResponse(c, http.StatusBadRequest, err.Error())
+			} else {
+				newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			}
+			return
+		}
+
+		operations = append(operations, operationId)
+	}
+
+	newResponse(c, http.StatusCreated, "operations_ids", operations)
+}
+
+func (h *Handler) deleteSegmentsByName(c *gin.Context) {
+	var input operationSegmentsByNameInput
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidInput.Error())
+		return
+	}
+
+	var operations []int
+	for _, segmentName := range input.SegmentsNames {
+		operationId, err := h.services.Operations.DeleteBySegmentName(c, input.UserID, segmentName)
+		if err != nil {
+			if errors.Is(err, entity.ErrRelationDoesNotExist) {
+				newErrorResponse(c, http.StatusBadRequest, err.Error())
+			} else {
+				newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			}
+			return
+		}
+
+		operations = append(operations, operationId)
+	}
+
+	newResponse(c, http.StatusCreated, "operations_ids", operations)
 }
