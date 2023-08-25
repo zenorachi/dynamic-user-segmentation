@@ -5,5 +5,5 @@ http:
   writeTimeout: 10s
 
 auth:
-  accessTokenTTL: 1h
+  accessTokenTTL: 720h
   refreshTokenTTL: 720h

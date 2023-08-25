@@ -39,6 +39,31 @@ func (u *UsersRepository) Create(ctx context.Context, user entity.User) (int, er
 	return id, tx.Commit()
 }
 
+func (u *UsersRepository) GetByID(ctx context.Context, id int) (entity.User, error) {
+	tx, err := u.db.BeginTx(ctx, &sql.TxOptions{
+		Isolation: sql.LevelSerializable,
+		ReadOnly:  true,
+	})
+	if err != nil {
+		return entity.User{}, err
+	}
+
+	var (
+		user  entity.User
+		query = fmt.Sprintf("SELECT id, login, email, password, registered_at FROM %s WHERE id = $1",
+			collectionUsers)
+	)
+
+	err = tx.QueryRowContext(ctx, query, id).
+		Scan(&user.ID, &user.Login, &user.Email, &user.Password, &user.RegisteredAt)
+	if err != nil {
+		_ = tx.Rollback()
+		return entity.User{}, err
+	}
+
+	return user, tx.Commit()
+}
+
 func (u *UsersRepository) GetByLogin(ctx context.Context, login string) (entity.User, error) {
 	tx, err := u.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
