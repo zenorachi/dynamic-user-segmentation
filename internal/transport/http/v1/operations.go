@@ -70,7 +70,7 @@ func (h *Handler) deleteSegmentsById(c *gin.Context) {
 
 		operationId, err := h.services.Operations.DeleteBySegmentID(c, relation)
 		if err != nil {
-			if errors.Is(err, entity.ErrRelationDoesNotExist) {
+			if errors.Is(err, entity.ErrRelationDoesNotExist) || errors.Is(err, entity.ErrSegmentDoesNotExist) {
 				newErrorResponse(c, http.StatusBadRequest, err.Error())
 			} else {
 				newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -81,7 +81,7 @@ func (h *Handler) deleteSegmentsById(c *gin.Context) {
 		operations = append(operations, operationId)
 	}
 
-	newResponse(c, http.StatusCreated, "operations_ids", operations)
+	newResponse(c, http.StatusOK, "operations_ids", operations)
 }
 
 type operationSegmentsByNameInput struct {
@@ -127,7 +127,7 @@ func (h *Handler) deleteSegmentsByName(c *gin.Context) {
 	for _, segmentName := range input.SegmentsNames {
 		operationId, err := h.services.Operations.DeleteBySegmentName(c, input.UserID, segmentName)
 		if err != nil {
-			if errors.Is(err, entity.ErrRelationDoesNotExist) {
+			if errors.Is(err, entity.ErrRelationDoesNotExist) || errors.Is(err, entity.ErrSegmentDoesNotExist) {
 				newErrorResponse(c, http.StatusBadRequest, err.Error())
 			} else {
 				newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -138,5 +138,5 @@ func (h *Handler) deleteSegmentsByName(c *gin.Context) {
 		operations = append(operations, operationId)
 	}
 
-	newResponse(c, http.StatusCreated, "operations_ids", operations)
+	newResponse(c, http.StatusOK, "operations_ids", operations)
 }

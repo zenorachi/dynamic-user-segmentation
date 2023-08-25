@@ -50,27 +50,27 @@ func (o *OperationsService) CreateBySegmentID(ctx context.Context, relation enti
 }
 
 func (o *OperationsService) CreateBySegmentName(ctx context.Context, userId int, segmentName string) (int, error) {
-	//_, err := o.usersRepo.GetByID(ctx, userId)
-	//if err != nil {
-	//	if errors.Is(err, sql.ErrNoRows) {
-	//		return 0, entity.ErrUserDoesNotExist
-	//	}
-	//}
-	//
-	//_, err = o.segmentsRepo.GetByName(ctx, segmentName)
-	//if err != nil {
-	//	if errors.Is(err, sql.ErrNoRows) {
-	//		return 0, entity.ErrSegmentDoesNotExist
-	//	}
-	//}
-	//
-	//isExists, err := o.isRelationExists(ctx, userId)
-	//if err != nil {
-	//	return 0, err
-	//}
-	//if isExists {
-	//	return 0, entity.ErrRelationAlreadyExists
-	//}
+	_, err := o.usersRepo.GetByID(ctx, userId)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return 0, entity.ErrUserDoesNotExist
+		}
+	}
+
+	segment, err := o.segmentsRepo.GetByName(ctx, segmentName)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return 0, entity.ErrSegmentDoesNotExist
+		}
+	}
+
+	isExists, err := o.isRelationExists(ctx, userId, segment.ID)
+	if err != nil {
+		return 0, err
+	}
+	if isExists {
+		return 0, entity.ErrRelationAlreadyExists
+	}
 
 	return o.operationsRepo.CreateBySegmentName(ctx, userId, segmentName)
 }
@@ -88,16 +88,34 @@ func (o *OperationsService) DeleteBySegmentID(ctx context.Context, relation enti
 }
 
 func (o *OperationsService) DeleteBySegmentName(ctx context.Context, userId int, segmentName string) (int, error) {
-	//isExists, err := o.isRelationExists(ctx, userId)
-	//if err != nil {
-	//	return 0, err
-	//}
-	//if !isExists {
-	//	return 0, entity.ErrRelationDoesNotExist
-	//}
+	segment, err := o.segmentsRepo.GetByName(ctx, segmentName)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return 0, entity.ErrSegmentDoesNotExist
+		}
+	}
+
+	isExists, err := o.isRelationExists(ctx, userId, segment.ID)
+	if err != nil {
+		return 0, err
+	}
+	if !isExists {
+		return 0, entity.ErrRelationDoesNotExist
+	}
 
 	return o.operationsRepo.DeleteBySegmentName(ctx, userId, segmentName)
 }
+
+//func (o *OperationsService) GetActiveUserSegments(ctx context.Context, userId int) ([]entity.Segment, error) {
+//	_, err := o.usersRepo.GetByID(ctx, userId)
+//	if err != nil {
+//		if errors.Is(err, sql.ErrNoRows) {
+//			return nil, entity.ErrUserDoesNotExist
+//		}
+//	}
+//
+//	return o.operationsRepo.GetSegmentsByUserID(ctx, userId)
+//}
 
 func (o *OperationsService) isRelationExists(ctx context.Context, userId, segmentId int) (bool, error) {
 	_, err := o.operationsRepo.GetByBothIDs(ctx, userId, segmentId)

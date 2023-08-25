@@ -93,28 +93,42 @@ func (o *OperationsRepository) CreateBySegmentName(ctx context.Context, userId i
 	return operationId, tx.Commit()
 }
 
-func (o *OperationsRepository) GetByUserID(ctx context.Context, userId int) (entity.Relation, error) {
-	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
-		Isolation: sql.LevelSerializable,
-		ReadOnly:  true,
-	})
-	if err != nil {
-		return entity.Relation{}, err
-	}
-
-	var (
-		relation entity.Relation
-		query    = fmt.Sprintf("SELECT * FROM %s WHERE user_id = $1", collectionRelations)
-	)
-
-	err = tx.QueryRowContext(ctx, query, userId).Scan(&relation.UserID, &relation.SegmentID)
-	if err != nil {
-		_ = tx.Rollback()
-		return entity.Relation{}, err
-	}
-
-	return relation, tx.Commit()
-}
+//func (o *OperationsRepository) GetSegmentsByUserID(ctx context.Context, userId int) ([]entity.Segment, error) {
+//	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
+//		Isolation: sql.LevelSerializable,
+//		ReadOnly:  true,
+//	})
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	var (
+//		segments []entity.Segment
+//		query    = fmt.Sprintf(
+//			"SELECT id, name FROM %s "+
+//				"JOIN %s r ON r.segment_id = id"+
+//				"WHERE r.user_id = $1", collectionSegments, collectionRelations)
+//	)
+//
+//	rows, err := tx.QueryContext(ctx, query, userId)
+//	if err != nil {
+//		_ = tx.Rollback()
+//		return nil, err
+//	}
+//
+//	for rows.Next() {
+//		var segment entity.Segment
+//		err = rows.Scan(&segment.ID, &segment.Name)
+//		if err != nil {
+//			_ = tx.Rollback()
+//			return nil, err
+//		}
+//
+//		segments = append(segments, segment)
+//	}
+//
+//	return segments, tx.Commit()
+//}
 
 func (o *OperationsRepository) GetBySegmentID(ctx context.Context, segmentId int) (entity.Relation, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{

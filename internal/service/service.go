@@ -24,6 +24,7 @@ type (
 	Segments interface {
 		Create(ctx context.Context, segment entity.Segment) (int, error)
 		GetByID(ctx context.Context, id int) (entity.Segment, error)
+		GetActiveByUserID(ctx context.Context, userId int) ([]entity.Segment, error)
 		GetAll(ctx context.Context) ([]entity.Segment, error)
 		DeleteByName(ctx context.Context, name string) error
 		DeleteByID(ctx context.Context, id int) error
@@ -54,7 +55,7 @@ type Deps struct {
 func New(deps Deps) *Services {
 	return &Services{
 		Users:      NewUsers(deps.Repos.Users, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL),
-		Segments:   NewSegments(deps.Repos.Segments),
+		Segments:   NewSegments(deps.Repos.Segments, deps.Repos.Users),
 		Operations: NewOperations(deps.Repos.Users, deps.Repos.Segments, deps.Repos.Operations),
 	}
 }

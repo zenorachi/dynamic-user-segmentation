@@ -15,6 +15,7 @@ func (h *Handler) initSegmentsRoutes(api *gin.RouterGroup) {
 		segments.POST("/create", h.createSegment)
 		segments.GET("/", h.getAllSegments)
 		segments.GET("/:segment_id", h.getSegmentById)
+		segments.GET("/active/:user_id", h.getActiveUserSegments)
 		segments.DELETE("/delete", h.deleteSegmentByName)
 		segments.DELETE("/delete_by_id", h.deleteSegmentById)
 	}
@@ -77,6 +78,27 @@ func (h *Handler) getSegmentById(c *gin.Context) {
 	}
 
 	newResponse(c, http.StatusOK, "segment", segment)
+}
+
+func (h *Handler) getActiveUserSegments(c *gin.Context) {
+	paramId := strings.Trim(c.Param("user_id"), "/")
+	id, err := strconv.Atoi(paramId)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid parameter (id)")
+		return
+	}
+
+	segments, err := h.services.Segments.GetActiveByUserID(c, id)
+	if err != nil {
+		if errors.Is(err, entity.ErrUserDoesNotExist) {
+			newErrorResponse(c, http.StatusBadRequest, err.Error())
+		} else {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		}
+		return
+	}
+
+	newResponse(c, http.StatusOK, "active_segments", segments)
 }
 
 type deleteByNameInput struct {

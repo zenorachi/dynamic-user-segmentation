@@ -9,11 +9,15 @@ import (
 )
 
 type SegmentsService struct {
-	repo repository.Segments
+	segmentsRepo repository.Segments
+	usersRepo    repository.Users
 }
 
-func NewSegments(repo repository.Segments) *SegmentsService {
-	return &SegmentsService{repo: repo}
+func NewSegments(segmentsRepo repository.Segments, usersRepo repository.Users) *SegmentsService {
+	return &SegmentsService{
+		segmentsRepo: segmentsRepo,
+		usersRepo:    usersRepo,
+	}
 }
 
 func (s *SegmentsService) Create(ctx context.Context, segment entity.Segment) (int, error) {
@@ -26,11 +30,11 @@ func (s *SegmentsService) Create(ctx context.Context, segment entity.Segment) (i
 		return 0, entity.ErrSegmentAlreadyExists
 	}
 
-	return s.repo.Create(ctx, segment)
+	return s.segmentsRepo.Create(ctx, segment)
 }
 
 func (s *SegmentsService) GetByID(ctx context.Context, id int) (entity.Segment, error) {
-	segment, err := s.repo.GetByID(ctx, id)
+	segment, err := s.segmentsRepo.GetByID(ctx, id)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return entity.Segment{}, entity.ErrSegmentDoesNotExist
@@ -41,8 +45,20 @@ func (s *SegmentsService) GetByID(ctx context.Context, id int) (entity.Segment, 
 	return segment, nil
 }
 
+func (s *SegmentsService) GetActiveByUserID(ctx context.Context, userId int) ([]entity.Segment, error) {
+	isExists, err := s.isUserExists(ctx, userId)
+	if err != nil {
+		return nil, err
+	}
+	if !isExists {
+		return nil, entity.ErrUserDoesNotExist
+	}
+
+	return s.segmentsRepo.GetByUserID(ctx, userId)
+}
+
 func (s *SegmentsService) GetAll(ctx context.Context) ([]entity.Segment, error) {
-	segments, err := s.repo.GetAll(ctx)
+	segments, err := s.segmentsRepo.GetAll(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +80,7 @@ func (s *SegmentsService) DeleteByName(ctx context.Context, name string) error {
 		return entity.ErrSegmentDoesNotExist
 	}
 
-	return s.repo.DeleteByName(ctx, name)
+	return s.segmentsRepo.DeleteByName(ctx, name)
 }
 
 func (s *SegmentsService) DeleteByID(ctx context.Context, id int) error {
@@ -73,11 +89,23 @@ func (s *SegmentsService) DeleteByID(ctx context.Context, id int) error {
 		return err
 	}
 
-	return s.repo.DeleteByID(ctx, id)
+	return s.segmentsRepo.DeleteByID(ctx, id)
 }
 
 func (s *SegmentsService) isSegmentExists(ctx context.Context, name string) (bool, error) {
-	_, err := s.repo.GetByName(ctx, name)
+	_, err := s.segmentsRepo.GetByName(ctx, name)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return false, nil
+		}
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (s *SegmentsService) isUserExists(ctx context.Context, userId int) (bool, error) {
+	_, err := s.usersRepo.GetByID(ctx, userId)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return false, nil
