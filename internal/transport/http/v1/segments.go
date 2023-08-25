@@ -88,7 +88,7 @@ func (h *Handler) getActiveUserSegments(c *gin.Context) {
 		return
 	}
 
-	segments, err := h.services.Segments.GetActiveByUserID(c, id)
+	segments, err := h.services.Segments.GetActiveSegmentsByUserID(c, id)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserDoesNotExist) {
 			newErrorResponse(c, http.StatusBadRequest, err.Error())

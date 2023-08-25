@@ -15,7 +15,7 @@ func NewOperations(db *sql.DB) *OperationsRepository {
 	return &OperationsRepository{db: db}
 }
 
-func (o *OperationsRepository) CreateBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error) {
+func (o *OperationsRepository) CreateBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
 		ReadOnly:  false,
@@ -34,20 +34,20 @@ func (o *OperationsRepository) CreateBySegmentID(ctx context.Context, relations 
 			collectionOperations)
 	)
 
-	for _, relation := range relations {
-		err = tx.QueryRowContext(ctx, queryGetSegmentName, relation.SegmentID).Scan(&segmentName)
+	for _, segmentId := range segmentIDs {
+		err = tx.QueryRowContext(ctx, queryGetSegmentName, segmentId).Scan(&segmentName)
 		if err != nil {
 			_ = tx.Rollback()
 			return nil, err
 		}
 
-		_, err = tx.ExecContext(ctx, queryCreateRelation, relation.UserID, relation.SegmentID)
+		_, err = tx.ExecContext(ctx, queryCreateRelation, userId, segmentId)
 		if err != nil {
 			_ = tx.Rollback()
 			return nil, err
 		}
 
-		err = tx.QueryRowContext(ctx, queryInsertOperation, relation.UserID, segmentName, entity.TypeAdd).Scan(&operationId)
+		err = tx.QueryRowContext(ctx, queryInsertOperation, userId, segmentName, entity.TypeAdd).Scan(&operationId)
 		if err != nil {
 			_ = tx.Rollback()
 			return nil, err
@@ -59,7 +59,7 @@ func (o *OperationsRepository) CreateBySegmentID(ctx context.Context, relations 
 	return operationsIDs, tx.Commit()
 }
 
-func (o *OperationsRepository) CreateBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+func (o *OperationsRepository) CreateBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
 		ReadOnly:  false,
@@ -150,7 +150,7 @@ func (o *OperationsRepository) CreateBySegmentName(ctx context.Context, userId i
 //	return relation, tx.Commit()
 //}
 
-func (o *OperationsRepository) DeleteBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error) {
+func (o *OperationsRepository) DeleteBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int) ([]int, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
 		ReadOnly:  false,
@@ -169,14 +169,14 @@ func (o *OperationsRepository) DeleteBySegmentID(ctx context.Context, relations 
 			collectionOperations)
 	)
 
-	for _, relation := range relations {
-		err = tx.QueryRowContext(ctx, queryGetSegmentName, relation.SegmentID).Scan(&segmentName)
+	for _, segmentId := range segmentsIDs {
+		err = tx.QueryRowContext(ctx, queryGetSegmentName, segmentId).Scan(&segmentName)
 		if err != nil {
 			_ = tx.Rollback()
 			return nil, err
 		}
 
-		result, err := tx.ExecContext(ctx, queryDeleteRelation, relation.SegmentID)
+		result, err := tx.ExecContext(ctx, queryDeleteRelation, segmentId)
 		if err != nil {
 			_ = tx.Rollback()
 			return nil, err
@@ -186,7 +186,7 @@ func (o *OperationsRepository) DeleteBySegmentID(ctx context.Context, relations 
 			return nil, entity.ErrRelationDoesNotExist
 		}
 
-		err = tx.QueryRowContext(ctx, queryInsertOperation, relation.UserID, segmentName, entity.TypeDelete).Scan(&operationId)
+		err = tx.QueryRowContext(ctx, queryInsertOperation, userId, segmentName, entity.TypeDelete).Scan(&operationId)
 		if err != nil {
 			_ = tx.Rollback()
 			return nil, err
@@ -198,7 +198,7 @@ func (o *OperationsRepository) DeleteBySegmentID(ctx context.Context, relations 
 	return operationsIDs, tx.Commit()
 }
 
-func (o *OperationsRepository) DeleteBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+func (o *OperationsRepository) DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
 		ReadOnly:  false,

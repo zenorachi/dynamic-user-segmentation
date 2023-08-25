@@ -45,7 +45,7 @@ func (s *SegmentsService) GetByID(ctx context.Context, id int) (entity.Segment, 
 	return segment, nil
 }
 
-func (s *SegmentsService) GetActiveByUserID(ctx context.Context, userId int) ([]entity.Segment, error) {
+func (s *SegmentsService) GetActiveSegmentsByUserID(ctx context.Context, userId int) ([]entity.Segment, error) {
 	isExists, err := s.isUserExists(ctx, userId)
 	if err != nil {
 		return nil, err

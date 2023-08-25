@@ -26,12 +26,12 @@ func NewOperations(usersRepo repository.Users, segmentsRepo repository.Segments,
 	}
 }
 
-func (o *OperationsService) CreateBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error) {
-	if !o.isUserExists(ctx, relations[0].UserID) {
+func (o *OperationsService) CreateBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error) {
+	if !o.isUserExists(ctx, userId) {
 		return nil, entity.ErrUserDoesNotExist
 	}
 
-	operations, err := o.operationsRepo.CreateBySegmentID(ctx, relations)
+	operations, err := o.operationsRepo.CreateBySegmentIDs(ctx, userId, segmentIDs)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, entity.ErrSegmentDoesNotExist
@@ -45,12 +45,12 @@ func (o *OperationsService) CreateBySegmentID(ctx context.Context, relations []e
 	return operations, nil
 }
 
-func (o *OperationsService) CreateBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+func (o *OperationsService) CreateBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
 	if !o.isUserExists(ctx, userId) {
 		return nil, entity.ErrUserDoesNotExist
 	}
 
-	operations, err := o.operationsRepo.CreateBySegmentName(ctx, userId, segmentsNames)
+	operations, err := o.operationsRepo.CreateBySegmentNames(ctx, userId, segmentsNames)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, entity.ErrSegmentDoesNotExist
@@ -64,28 +64,12 @@ func (o *OperationsService) CreateBySegmentName(ctx context.Context, userId int,
 	return operations, nil
 }
 
-func (o *OperationsService) DeleteBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error) {
-	if !o.isUserExists(ctx, relations[0].UserID) {
-		return nil, entity.ErrUserDoesNotExist
-	}
-
-	operations, err := o.operationsRepo.DeleteBySegmentID(ctx, relations)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, entity.ErrSegmentDoesNotExist
-		}
-		return nil, err
-	}
-
-	return operations, nil
-}
-
-func (o *OperationsService) DeleteBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+func (o *OperationsService) DeleteBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error) {
 	if !o.isUserExists(ctx, userId) {
 		return nil, entity.ErrUserDoesNotExist
 	}
 
-	operations, err := o.operationsRepo.DeleteBySegmentName(ctx, userId, segmentsNames)
+	operations, err := o.operationsRepo.DeleteBySegmentIDs(ctx, userId, segmentIDs)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, entity.ErrSegmentDoesNotExist
@@ -96,10 +80,26 @@ func (o *OperationsService) DeleteBySegmentName(ctx context.Context, userId int,
 	return operations, nil
 }
 
-func (o *OperationsService) DeleteAfterTTLBySegmentID(ctx context.Context, relations []entity.Relation, ttl time.Duration) {
+func (o *OperationsService) DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+	if !o.isUserExists(ctx, userId) {
+		return nil, entity.ErrUserDoesNotExist
+	}
+
+	operations, err := o.operationsRepo.DeleteBySegmentNames(ctx, userId, segmentsNames)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, entity.ErrSegmentDoesNotExist
+		}
+		return nil, err
+	}
+
+	return operations, nil
+}
+
+func (o *OperationsService) DeleteAfterTTLBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int, ttl time.Duration) {
 	select {
 	case <-time.After(ttl):
-		_, err := o.DeleteBySegmentID(ctx, relations)
+		_, err := o.DeleteBySegmentIDs(ctx, userId, segmentsIDs)
 		if err != nil {
 			logger.Error("scheduler", err)
 		} else {
@@ -110,10 +110,10 @@ func (o *OperationsService) DeleteAfterTTLBySegmentID(ctx context.Context, relat
 	}
 }
 
-func (o *OperationsService) DeleteAfterTTLBySegmentName(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration) {
+func (o *OperationsService) DeleteAfterTTLBySegmentNames(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration) {
 	select {
 	case <-time.After(ttl):
-		_, err := o.DeleteBySegmentName(ctx, userId, segmentsNames)
+		_, err := o.DeleteBySegmentNames(ctx, userId, segmentsNames)
 		if err != nil {
 			logger.Error("scheduler", err)
 		} else {

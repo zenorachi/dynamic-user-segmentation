@@ -20,7 +20,7 @@ func (h *Handler) initOperationsRoutes(api *gin.RouterGroup) {
 
 type operationSegmentsByIdInput struct {
 	UserID      int    `json:"user_id" binding:"required"`
-	SegmentsIDs []int  `json:"segments_ids" binding:"required"`
+	SegmentsIDs []int  `json:"segment_ids" binding:"required"`
 	TTL         string `json:"ttl,omitempty"`
 }
 
@@ -37,12 +37,7 @@ func (h *Handler) addSegmentsById(c *gin.Context) {
 		return
 	}
 
-	var relations []entity.Relation
-	for _, segmentId := range input.SegmentsIDs {
-		relations = append(relations, entity.Relation{UserID: input.UserID, SegmentID: segmentId})
-	}
-
-	operations, err := h.services.Operations.CreateBySegmentID(c, relations)
+	operations, err := h.services.Operations.CreateBySegmentIDs(c, input.UserID, input.SegmentsIDs)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserDoesNotExist) || errors.Is(err, entity.ErrSegmentDoesNotExist) ||
 			errors.Is(err, entity.ErrRelationAlreadyExists) {
@@ -54,7 +49,7 @@ func (h *Handler) addSegmentsById(c *gin.Context) {
 	}
 
 	if input.TTL != "" {
-		go func() { h.services.Operations.DeleteAfterTTLBySegmentID(c, relations, ttl) }()
+		go func() { h.services.Operations.DeleteAfterTTLBySegmentIDs(c, input.UserID, input.SegmentsIDs, ttl) }()
 	}
 
 	newResponse(c, http.StatusCreated, "operations_ids", operations)
@@ -68,12 +63,7 @@ func (h *Handler) deleteSegmentsById(c *gin.Context) {
 		return
 	}
 
-	var relations []entity.Relation
-	for _, segmentId := range input.SegmentsIDs {
-		relations = append(relations, entity.Relation{UserID: input.UserID, SegmentID: segmentId})
-	}
-
-	operations, err := h.services.Operations.DeleteBySegmentID(c, relations)
+	operations, err := h.services.Operations.DeleteBySegmentIDs(c, input.UserID, input.SegmentsIDs)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserDoesNotExist) || errors.Is(err, entity.ErrSegmentDoesNotExist) ||
 			errors.Is(err, entity.ErrRelationDoesNotExist) {
@@ -106,7 +96,7 @@ func (h *Handler) addSegmentsByName(c *gin.Context) {
 		return
 	}
 
-	operations, err := h.services.Operations.CreateBySegmentName(c, input.UserID, input.SegmentsNames)
+	operations, err := h.services.Operations.CreateBySegmentNames(c, input.UserID, input.SegmentsNames)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserDoesNotExist) || errors.Is(err, entity.ErrSegmentDoesNotExist) ||
 			errors.Is(err, entity.ErrRelationAlreadyExists) {
@@ -118,7 +108,7 @@ func (h *Handler) addSegmentsByName(c *gin.Context) {
 	}
 
 	if input.TTL != "" {
-		go func() { h.services.Operations.DeleteAfterTTLBySegmentName(c, input.UserID, input.SegmentsNames, ttl) }()
+		go func() { h.services.Operations.DeleteAfterTTLBySegmentNames(c, input.UserID, input.SegmentsNames, ttl) }()
 	}
 
 	newResponse(c, http.StatusCreated, "operations_ids", operations)
@@ -131,7 +121,7 @@ func (h *Handler) deleteSegmentsByName(c *gin.Context) {
 		return
 	}
 
-	operations, err := h.services.Operations.DeleteBySegmentName(c, input.UserID, input.SegmentsNames)
+	operations, err := h.services.Operations.DeleteBySegmentNames(c, input.UserID, input.SegmentsNames)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserDoesNotExist) || errors.Is(err, entity.ErrSegmentDoesNotExist) ||
 			errors.Is(err, entity.ErrRelationDoesNotExist) {

@@ -24,19 +24,19 @@ type (
 	Segments interface {
 		Create(ctx context.Context, segment entity.Segment) (int, error)
 		GetByID(ctx context.Context, id int) (entity.Segment, error)
-		GetActiveByUserID(ctx context.Context, userId int) ([]entity.Segment, error)
+		GetActiveSegmentsByUserID(ctx context.Context, userId int) ([]entity.Segment, error)
 		GetAll(ctx context.Context) ([]entity.Segment, error)
 		DeleteByName(ctx context.Context, name string) error
 		DeleteByID(ctx context.Context, id int) error
 	}
 
 	Operations interface {
-		CreateBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error)
-		CreateBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
-		DeleteBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error)
-		DeleteBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
-		DeleteAfterTTLBySegmentID(ctx context.Context, relations []entity.Relation, ttl time.Duration)
-		DeleteAfterTTLBySegmentName(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration)
+		CreateBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error)
+		CreateBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
+		DeleteBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error)
+		DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
+		DeleteAfterTTLBySegmentIDs(ctx context.Context, userId int, segmentIDs []int, ttl time.Duration)
+		DeleteAfterTTLBySegmentNames(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration)
 	}
 
 	//RelationsTTL interface {
