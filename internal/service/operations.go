@@ -7,6 +7,8 @@ import (
 	"github.com/lib/pq"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/repository"
+	"github.com/zenorachi/dynamic-user-segmentation/pkg/logger"
+	"time"
 )
 
 type OperationsService struct {
@@ -92,6 +94,34 @@ func (o *OperationsService) DeleteBySegmentName(ctx context.Context, userId int,
 	}
 
 	return operations, nil
+}
+
+func (o *OperationsService) DeleteAfterTTLBySegmentID(ctx context.Context, relations []entity.Relation, ttl time.Duration) {
+	select {
+	case <-time.After(ttl):
+		_, err := o.DeleteBySegmentID(ctx, relations)
+		if err != nil {
+			logger.Error("scheduler", err)
+		} else {
+			logger.Info("scheduler", "success")
+		}
+	case <-ctx.Done():
+		return
+	}
+}
+
+func (o *OperationsService) DeleteAfterTTLBySegmentName(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration) {
+	select {
+	case <-time.After(ttl):
+		_, err := o.DeleteBySegmentName(ctx, userId, segmentsNames)
+		if err != nil {
+			logger.Error("scheduler", err)
+		} else {
+			logger.Info("scheduler", "success")
+		}
+	case <-ctx.Done():
+		return
+	}
 }
 
 func (o *OperationsService) isUserExists(ctx context.Context, userId int) bool {

@@ -4,7 +4,7 @@ include .env
 .DEFAULT_GOAL = run
 
 CMD_UP = docker-compose up --remove-orphans
-CMD_DOWN = docker-compose down
+CMD_DOWN = docker-compose down --remove-orphans
 
 MIGRATION_DIR = ./scripts/migrations/
 

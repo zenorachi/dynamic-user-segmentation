@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
+	"github.com/zenorachi/dynamic-user-segmentation/tools"
 	"net/http"
 )
 
@@ -18,14 +19,21 @@ func (h *Handler) initOperationsRoutes(api *gin.RouterGroup) {
 }
 
 type operationSegmentsByIdInput struct {
-	UserID      int   `json:"user_id" binding:"required"`
-	SegmentsIDs []int `json:"segments_ids" binding:"required"`
+	UserID      int    `json:"user_id" binding:"required"`
+	SegmentsIDs []int  `json:"segments_ids" binding:"required"`
+	TTL         string `json:"ttl,omitempty"`
 }
 
 func (h *Handler) addSegmentsById(c *gin.Context) {
 	var input operationSegmentsByIdInput
 	if err := c.BindJSON(&input); err != nil || len(input.SegmentsIDs) == 0 {
 		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidInput.Error())
+		return
+	}
+
+	ttl, err := tools.ParseTTL(input.TTL)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidTTL.Error())
 		return
 	}
 
@@ -45,11 +53,16 @@ func (h *Handler) addSegmentsById(c *gin.Context) {
 		return
 	}
 
+	if input.TTL != "" {
+		go func() { h.services.Operations.DeleteAfterTTLBySegmentID(c, relations, ttl) }()
+	}
+
 	newResponse(c, http.StatusCreated, "operations_ids", operations)
 }
 
 func (h *Handler) deleteSegmentsById(c *gin.Context) {
 	var input operationSegmentsByIdInput
+
 	if err := c.BindJSON(&input); err != nil || len(input.SegmentsIDs) == 0 {
 		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidInput.Error())
 		return
@@ -77,12 +90,19 @@ func (h *Handler) deleteSegmentsById(c *gin.Context) {
 type operationSegmentsByNameInput struct {
 	UserID        int      `json:"user_id" binding:"required"`
 	SegmentsNames []string `json:"segments_names" binding:"required"`
+	TTL           string   `json:"ttl,omitempty"`
 }
 
 func (h *Handler) addSegmentsByName(c *gin.Context) {
 	var input operationSegmentsByNameInput
 	if err := c.BindJSON(&input); err != nil || len(input.SegmentsNames) == 0 {
 		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidInput.Error())
+		return
+	}
+
+	ttl, err := tools.ParseTTL(input.TTL)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidTTL.Error())
 		return
 	}
 
@@ -95,6 +115,10 @@ func (h *Handler) addSegmentsByName(c *gin.Context) {
 			newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		}
 		return
+	}
+
+	if input.TTL != "" {
+		go func() { h.services.Operations.DeleteAfterTTLBySegmentName(c, input.UserID, input.SegmentsNames, ttl) }()
 	}
 
 	newResponse(c, http.StatusCreated, "operations_ids", operations)
