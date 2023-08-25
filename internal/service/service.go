@@ -35,13 +35,23 @@ type (
 		CreateBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
 		DeleteBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error)
 		DeleteBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
+		DeleteAfterTTLBySegmentID(ctx context.Context, relations []entity.Relation, ttl time.Duration)
+		DeleteAfterTTLBySegmentName(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration)
 	}
+
+	//RelationsTTL interface {
+	//	GetTTL(ttl string) (time.Duration, error)
+	//	Create(ctx context.Context, relationsTTLs []entity.RelationTTL) error
+	//	DeleteAfterTTLBySegmentID(ctx context.Context) error
+	//	ScheduleCleanup(ctx context.Context)
+	//}
 )
 
 type Services struct {
 	Users
 	Segments
 	Operations
+	//RelationsTTL
 }
 
 type Deps struct {
@@ -57,5 +67,6 @@ func New(deps Deps) *Services {
 		Users:      NewUsers(deps.Repos.Users, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL),
 		Segments:   NewSegments(deps.Repos.Segments, deps.Repos.Users),
 		Operations: NewOperations(deps.Repos.Users, deps.Repos.Segments, deps.Repos.Operations),
+		//RelationsTTL: NewRelationsTTL(deps.Repos.RelationsTTL),
 	}
 }
