@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"github.com/lib/pq"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/repository"
 )
@@ -23,108 +24,88 @@ func NewOperations(usersRepo repository.Users, segmentsRepo repository.Segments,
 	}
 }
 
-func (o *OperationsService) CreateBySegmentID(ctx context.Context, relation entity.Relation) (int, error) {
-	_, err := o.usersRepo.GetByID(ctx, relation.UserID)
+func (o *OperationsService) CreateBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error) {
+	if !o.isUserExists(ctx, relations[0].UserID) {
+		return nil, entity.ErrUserDoesNotExist
+	}
+
+	operations, err := o.operationsRepo.CreateBySegmentID(ctx, relations)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return 0, entity.ErrUserDoesNotExist
+			return nil, entity.ErrSegmentDoesNotExist
 		}
-	}
-
-	_, err = o.segmentsRepo.GetByID(ctx, relation.SegmentID)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return 0, entity.ErrSegmentDoesNotExist
+		if o.isRelationExistsError(err) {
+			return nil, entity.ErrRelationAlreadyExists
 		}
+		return nil, err
 	}
 
-	isExists, err := o.isRelationExists(ctx, relation.UserID, relation.SegmentID)
-	if err != nil {
-		return 0, err
-	}
-	if isExists {
-		return 0, entity.ErrRelationAlreadyExists
-	}
-
-	return o.operationsRepo.CreateBySegmentID(ctx, relation)
+	return operations, nil
 }
 
-func (o *OperationsService) CreateBySegmentName(ctx context.Context, userId int, segmentName string) (int, error) {
+func (o *OperationsService) CreateBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+	if !o.isUserExists(ctx, userId) {
+		return nil, entity.ErrUserDoesNotExist
+	}
+
+	operations, err := o.operationsRepo.CreateBySegmentName(ctx, userId, segmentsNames)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, entity.ErrSegmentDoesNotExist
+		}
+		if o.isRelationExistsError(err) {
+			return nil, entity.ErrRelationAlreadyExists
+		}
+		return nil, err
+	}
+
+	return operations, nil
+}
+
+func (o *OperationsService) DeleteBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error) {
+	if !o.isUserExists(ctx, relations[0].UserID) {
+		return nil, entity.ErrUserDoesNotExist
+	}
+
+	operations, err := o.operationsRepo.DeleteBySegmentID(ctx, relations)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, entity.ErrSegmentDoesNotExist
+		}
+		return nil, err
+	}
+
+	return operations, nil
+}
+
+func (o *OperationsService) DeleteBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+	if !o.isUserExists(ctx, userId) {
+		return nil, entity.ErrUserDoesNotExist
+	}
+
+	operations, err := o.operationsRepo.DeleteBySegmentName(ctx, userId, segmentsNames)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, entity.ErrSegmentDoesNotExist
+		}
+		return nil, err
+	}
+
+	return operations, nil
+}
+
+func (o *OperationsService) isUserExists(ctx context.Context, userId int) bool {
 	_, err := o.usersRepo.GetByID(ctx, userId)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return 0, entity.ErrUserDoesNotExist
-		}
-	}
-
-	segment, err := o.segmentsRepo.GetByName(ctx, segmentName)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return 0, entity.ErrSegmentDoesNotExist
-		}
-	}
-
-	isExists, err := o.isRelationExists(ctx, userId, segment.ID)
-	if err != nil {
-		return 0, err
-	}
-	if isExists {
-		return 0, entity.ErrRelationAlreadyExists
-	}
-
-	return o.operationsRepo.CreateBySegmentName(ctx, userId, segmentName)
+	return !errors.Is(err, sql.ErrNoRows)
 }
 
-func (o *OperationsService) DeleteBySegmentID(ctx context.Context, relation entity.Relation) (int, error) {
-	isExists, err := o.isRelationExists(ctx, relation.UserID, relation.SegmentID)
-	if err != nil {
-		return 0, err
-	}
-	if !isExists {
-		return 0, entity.ErrRelationDoesNotExist
-	}
+func (o *OperationsService) isRelationExistsError(err error) bool {
+	var pqErr *pq.Error
+	isPqError := errors.As(err, &pqErr)
 
-	return o.operationsRepo.DeleteBySegmentID(ctx, relation)
-}
-
-func (o *OperationsService) DeleteBySegmentName(ctx context.Context, userId int, segmentName string) (int, error) {
-	segment, err := o.segmentsRepo.GetByName(ctx, segmentName)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return 0, entity.ErrSegmentDoesNotExist
-		}
+	if isPqError && pqErr.Code == "23505" {
+		return true
 	}
 
-	isExists, err := o.isRelationExists(ctx, userId, segment.ID)
-	if err != nil {
-		return 0, err
-	}
-	if !isExists {
-		return 0, entity.ErrRelationDoesNotExist
-	}
-
-	return o.operationsRepo.DeleteBySegmentName(ctx, userId, segmentName)
-}
-
-//func (o *OperationsService) GetActiveUserSegments(ctx context.Context, userId int) ([]entity.Segment, error) {
-//	_, err := o.usersRepo.GetByID(ctx, userId)
-//	if err != nil {
-//		if errors.Is(err, sql.ErrNoRows) {
-//			return nil, entity.ErrUserDoesNotExist
-//		}
-//	}
-//
-//	return o.operationsRepo.GetSegmentsByUserID(ctx, userId)
-//}
-
-func (o *OperationsService) isRelationExists(ctx context.Context, userId, segmentId int) (bool, error) {
-	_, err := o.operationsRepo.GetByBothIDs(ctx, userId, segmentId)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return false, nil
-		}
-		return false, err
-	}
-
-	return true, nil
+	return false
 }

@@ -27,13 +27,13 @@ type (
 	}
 
 	Operations interface {
-		CreateBySegmentID(ctx context.Context, relation entity.Relation) (int, error)
-		CreateBySegmentName(ctx context.Context, userId int, segmentName string) (int, error)
-		GetByBothIDs(ctx context.Context, userId, segmentId int) (entity.Relation, error)
+		CreateBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error)
+		CreateBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
+		//GetByBothIDs(ctx context.Context, userId, segmentId int) (entity.Relation, error)
 		//GetSegmentsByUserID(ctx context.Context, userId int) ([]entity.Segment, error)
 		//GetBySegmentID(ctx context.Context, segmentId int) (entity.Relation, error)
-		DeleteBySegmentID(ctx context.Context, relation entity.Relation) (int, error)
-		DeleteBySegmentName(ctx context.Context, userId int, segmentName string) (int, error)
+		DeleteBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error)
+		DeleteBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
 		GetOperations(ctx context.Context, userIds ...int) ([]entity.Operation, error)
 	}
 )

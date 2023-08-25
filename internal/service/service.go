@@ -31,10 +31,10 @@ type (
 	}
 
 	Operations interface {
-		CreateBySegmentID(ctx context.Context, relation entity.Relation) (int, error)
-		CreateBySegmentName(ctx context.Context, userId int, segmentName string) (int, error)
-		DeleteBySegmentID(ctx context.Context, relation entity.Relation) (int, error)
-		DeleteBySegmentName(ctx context.Context, userId int, segmentName string) (int, error)
+		CreateBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error)
+		CreateBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
+		DeleteBySegmentID(ctx context.Context, relations []entity.Relation) ([]int, error)
+		DeleteBySegmentName(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
 	}
 )
 
