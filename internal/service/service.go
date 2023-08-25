@@ -28,11 +28,19 @@ type (
 		DeleteByName(ctx context.Context, name string) error
 		DeleteByID(ctx context.Context, id int) error
 	}
+
+	Operations interface {
+		CreateBySegmentID(ctx context.Context, relation entity.Relation) (int, error)
+		CreateBySegmentName(ctx context.Context, userId int, segmentName string) (int, error)
+		DeleteBySegmentID(ctx context.Context, relation entity.Relation) (int, error)
+		DeleteBySegmentName(ctx context.Context, userId int, segmentName string) (int, error)
+	}
 )
 
 type Services struct {
 	Users
 	Segments
+	Operations
 }
 
 type Deps struct {
@@ -45,7 +53,8 @@ type Deps struct {
 
 func New(deps Deps) *Services {
 	return &Services{
-		Users:    NewUsers(deps.Repos.Users, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL),
-		Segments: NewSegments(deps.Repos.Segments),
+		Users:      NewUsers(deps.Repos.Users, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL),
+		Segments:   NewSegments(deps.Repos.Segments),
+		Operations: NewOperations(deps.Repos.Users, deps.Repos.Segments, deps.Repos.Operations),
 	}
 }

@@ -1,6 +1,8 @@
 package repository
 
 const (
-	collectionUsers    = "users"
-	collectionSegments = "segments"
+	collectionUsers      = "users"
+	collectionSegments   = "segments"
+	collectionRelations  = "relations"
+	collectionOperations = "operations"
 )
