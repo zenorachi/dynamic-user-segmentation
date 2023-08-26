@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"github.com/zenorachi/dynamic-user-segmentation/pkg/storage"
+	"github.com/zenorachi/dynamic-user-segmentation/internal/service/minio"
 	"time"
 
 	"github.com/lib/pq"
@@ -17,16 +17,16 @@ type OperationsService struct {
 	usersRepo      repository.Users
 	segmentsRepo   repository.Segments
 	operationsRepo repository.Operations
-	storage        storage.Provider
+	provider       minio.Provider
 }
 
 func NewOperations(usersRepo repository.Users, segmentsRepo repository.Segments,
-	operationsRepo repository.Operations, storage storage.Provider) *OperationsService {
+	operationsRepo repository.Operations, provider minio.Provider) *OperationsService {
 	return &OperationsService{
 		usersRepo:      usersRepo,
 		segmentsRepo:   segmentsRepo,
 		operationsRepo: operationsRepo,
-		storage:        storage,
+		provider:       provider,
 	}
 }
 
