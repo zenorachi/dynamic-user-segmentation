@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"github.com/zenorachi/dynamic-user-segmentation/pkg/storage"
 	"time"
 
 	"github.com/lib/pq"
@@ -16,14 +17,16 @@ type OperationsService struct {
 	usersRepo      repository.Users
 	segmentsRepo   repository.Segments
 	operationsRepo repository.Operations
+	storage        storage.Provider
 }
 
 func NewOperations(usersRepo repository.Users, segmentsRepo repository.Segments,
-	operationsRepo repository.Operations) *OperationsService {
+	operationsRepo repository.Operations, storage storage.Provider) *OperationsService {
 	return &OperationsService{
 		usersRepo:      usersRepo,
 		segmentsRepo:   segmentsRepo,
 		operationsRepo: operationsRepo,
+		storage:        storage,
 	}
 }
 
@@ -123,6 +126,13 @@ func (o *OperationsService) DeleteAfterTTLBySegmentNames(ctx context.Context, us
 	case <-ctx.Done():
 		return
 	}
+}
+
+func (o *OperationsService) GetOperationsHistory(ctx context.Context, year, month int, userIDs ...int) ([]entity.Operation, error) {
+	if year < 0 || month < 0 || year > time.Now().Year() || month > 12 {
+		return nil, entity.ErrInvalidHistoryPeriod
+	}
+	return o.operationsRepo.GetOperations(ctx, year, month, userIDs...)
 }
 
 func (o *OperationsService) isUserExists(ctx context.Context, userId int) bool {

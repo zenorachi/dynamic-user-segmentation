@@ -33,7 +33,7 @@ type (
 		CreateBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
 		DeleteBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int) ([]int, error)
 		DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
-		GetOperations(ctx context.Context, userIds ...int) ([]entity.Operation, error)
+		GetOperations(ctx context.Context, year, month int, userIDs ...int) ([]entity.Operation, error)
 	}
 )
 

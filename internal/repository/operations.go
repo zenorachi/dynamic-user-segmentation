@@ -104,53 +104,6 @@ func (o *OperationsRepository) CreateBySegmentNames(ctx context.Context, userId 
 	return operationsIDs, tx.Commit()
 }
 
-//func (o *OperationsRepository) GetBySegmentID(ctx context.Context, segmentId int) (entity.Relation, error) {
-//	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
-//		Isolation: sql.LevelSerializable,
-//		ReadOnly:  true,
-//	})
-//	if err != nil {
-//		return entity.Relation{}, err
-//	}
-//
-//	var (
-//		relation entity.Relation
-//		query    = fmt.Sprintf("SELECT * FROM %s WHERE segment_id = $1", collectionRelations)
-//	)
-//
-//	err = tx.QueryRowContext(ctx, query, segmentId).Scan(&relation.UserID, &relation.SegmentID)
-//	if err != nil {
-//		_ = tx.Rollback()
-//		return entity.Relation{}, err
-//	}
-//
-//	return relation, tx.Commit()
-//}
-
-//func (o *OperationsRepository) GetByBothIDs(ctx context.Context, userId, segmentId int) (entity.Relation, error) {
-//	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
-//		Isolation: sql.LevelSerializable,
-//		ReadOnly:  true,
-//	})
-//	if err != nil {
-//		return entity.Relation{}, err
-//	}
-//
-//	var (
-//		relation entity.Relation
-//		query    = fmt.Sprintf("SELECT * FROM %s WHERE user_id = $1 AND segment_id = $2",
-//			collectionRelations)
-//	)
-//
-//	err = tx.QueryRowContext(ctx, query, userId, segmentId).Scan(&relation.UserID, &relation.SegmentID)
-//	if err != nil {
-//		_ = tx.Rollback()
-//		return entity.Relation{}, err
-//	}
-//
-//	return relation, tx.Commit()
-//}
-
 func (o *OperationsRepository) DeleteBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int) ([]int, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
@@ -247,7 +200,7 @@ func (o *OperationsRepository) DeleteBySegmentNames(ctx context.Context, userId 
 	return operationsIDs, tx.Commit()
 }
 
-func (o *OperationsRepository) GetOperations(ctx context.Context, userIds ...int) ([]entity.Operation, error) {
+func (o *OperationsRepository) GetOperations(ctx context.Context, year, month int, userIDs ...int) ([]entity.Operation, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
 		ReadOnly:  true,
@@ -258,7 +211,7 @@ func (o *OperationsRepository) GetOperations(ctx context.Context, userIds ...int
 
 	var operations []entity.Operation
 
-	args, query := o.generateGetOperationsQuery(userIds...)
+	args, query := o.generateGetOperationsQuery(year, month, userIDs...)
 
 	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
@@ -269,7 +222,7 @@ func (o *OperationsRepository) GetOperations(ctx context.Context, userIds ...int
 
 	for rows.Next() {
 		var operation entity.Operation
-		err = rows.Scan(&operation.ID, &operation.UserID, &operation.SegmentName, &operation.Type, &operation.Date)
+		err = rows.Scan(&operation.UserID, &operation.SegmentName, &operation.Type, &operation.Date)
 		if err != nil {
 			_ = tx.Rollback()
 			return nil, err
@@ -286,25 +239,29 @@ func (o *OperationsRepository) GetOperations(ctx context.Context, userIds ...int
 	return operations, tx.Commit()
 }
 
-func (o *OperationsRepository) generateGetOperationsQuery(userIds ...int) ([]any, string) {
+func (o *OperationsRepository) generateGetOperationsQuery(year, month int, userIDs ...int) ([]any, string) {
 	var (
 		query string
 		args  []interface{}
+		i     int
+		id    int
 	)
 
-	if len(userIds) > 0 {
-		query = fmt.Sprintf("SELECT * FROM %s WHERE user_id IN (", collectionOperations)
-		for i, id := range userIds {
+	if len(userIDs) > 0 {
+		query = fmt.Sprintf("SELECT user_id, segment_name, type, date FROM %s WHERE user_id IN (", collectionOperations)
+		for i, id = range userIDs {
 			query += fmt.Sprintf("$%d", i+1)
 			args = append(args, id)
-			if i < len(userIds)-1 {
+			if i < len(userIDs)-1 {
 				query += ","
 			}
 		}
-		query += ")"
+		query += fmt.Sprintf(") AND EXTRACT(YEAR FROM date) = $%d AND EXTRACT(MONTH FROM date) = $%d", i+2, i+3)
 	} else {
-		query = fmt.Sprintf("SELECT * FROM %s", collectionOperations)
+		query = fmt.Sprintf("SELECT user_id, segment_name, type, date FROM %s WHERE EXTRACT(YEAR FROM date) = $1 AND EXTRACT(MONTH FROM date) = $2", collectionOperations)
 	}
+
+	args = append(args, year, month)
 
 	return args, query
 }

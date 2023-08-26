@@ -57,7 +57,7 @@ func (s *SegmentsService) GetActiveUsersBySegmentID(ctx context.Context, id int)
 	if err != nil {
 		return nil, err
 	}
-	//todo len check
+
 	return s.segmentsRepo.GetActiveUsersBySegmentID(ctx, id)
 }
 

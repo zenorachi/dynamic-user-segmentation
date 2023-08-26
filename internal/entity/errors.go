@@ -16,5 +16,5 @@ var (
 	ErrRelationDoesNotExist  = errors.New("relation does not exist")
 	ErrInvalidTTL            = errors.New("invalid ttl")
 	ErrInvalidAssignPercent  = errors.New("assign percent must be greater than zero")
-	//ErrTTLIsNotDefined       = errors.New("ttl is not defined")
+	ErrInvalidHistoryPeriod  = errors.New("invalid history period")
 )

@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"github.com/zenorachi/dynamic-user-segmentation/pkg/storage"
 	"time"
 
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
@@ -39,6 +40,7 @@ type (
 		DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
 		DeleteAfterTTLBySegmentIDs(ctx context.Context, userId int, segmentIDs []int, ttl time.Duration)
 		DeleteAfterTTLBySegmentNames(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration)
+		GetOperationsHistory(ctx context.Context, year, month int, userIDs ...int) ([]entity.Operation, error)
 	}
 )
 
@@ -54,12 +56,13 @@ type Deps struct {
 	TokenManager    auth.TokenManager
 	AccessTokenTTL  time.Duration
 	RefreshTokenTTL time.Duration
+	Storage         storage.Provider
 }
 
 func New(deps Deps) *Services {
 	return &Services{
 		Users:      NewUsers(deps.Repos.Users, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL),
 		Segments:   NewSegments(deps.Repos.Segments, deps.Repos.Users),
-		Operations: NewOperations(deps.Repos.Users, deps.Repos.Segments, deps.Repos.Operations),
+		Operations: NewOperations(deps.Repos.Users, deps.Repos.Segments, deps.Repos.Operations, deps.Storage),
 	}
 }
