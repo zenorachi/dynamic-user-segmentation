@@ -11,10 +11,11 @@ import (
 )
 
 type Config struct {
-	HTTP HTTPConfig
-	Auth AuthConfig
-	GIN  GINConfig
-	DB   postgres.DBConfig
+	HTTP  HTTPConfig
+	Auth  AuthConfig
+	Minio MinioConfig
+	GIN   GINConfig
+	DB    postgres.DBConfig
 }
 
 type (
@@ -32,6 +33,13 @@ type (
 		Secret          string
 	}
 
+	MinioConfig struct {
+		Endpoint string
+		Bucket   string
+		User     string
+		Password string
+	}
+
 	GINConfig struct {
 		Mode string
 	}
@@ -45,19 +53,23 @@ var (
 func New() *Config {
 	once.Do(func() {
 		if err := viper.Unmarshal(config); err != nil {
-			logger.Fatal("config", "viper initialization failed")
+			logger.Fatal("viper config", err.Error())
 		}
 
 		if err := envconfig.Process("db", &config.DB); err != nil {
-			logger.Fatal("config", "dbConfig initialization failed")
+			logger.Fatal("db config", err.Error())
 		}
 
 		if err := envconfig.Process("hash", &config.Auth); err != nil {
-			logger.Fatal("config", "hashConfig initialization failed")
+			logger.Fatal("hash envs", err.Error())
+		}
+
+		if err := envconfig.Process("minio", &config.Minio); err != nil {
+			logger.Fatal("minio", err.Error())
 		}
 
 		if err := envconfig.Process("gin", &config.GIN); err != nil {
-			logger.Fatal("config", "hashConfig initialization failed")
+			logger.Fatal("gin config", err.Error())
 		}
 	})
 

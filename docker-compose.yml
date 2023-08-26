@@ -11,7 +11,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - bm-backend
+      - dus-backend
 
   postgres:
     container_name: postgres
@@ -24,11 +24,26 @@ services:
       - pg-data:/var/lib/postgresql/data
     restart: on-failure
     networks:
-      - bm-backend
+      - dus-backend
+
+  minio:
+    image: minio/minio
+    command: minio server --console-address ":9001" /data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
+    volumes:
+      - minio-data:/data
+    networks:
+      - dus-backend
 
 networks:
-  bm-backend:
+  dus-backend:
     driver: bridge
 
 volumes:
   pg-data:
+  minio-data:
