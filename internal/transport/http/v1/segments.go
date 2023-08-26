@@ -22,7 +22,8 @@ func (h *Handler) initSegmentsRoutes(api *gin.RouterGroup) {
 }
 
 type createSegmentInput struct {
-	Name string `json:"name" binding:"required,min=2,max=64"`
+	Name          string  `json:"name" binding:"required,min=2,max=64"`
+	AssignPercent float64 `json:"assign_percent,omitempty"`
 }
 
 func (h *Handler) createSegment(c *gin.Context) {
@@ -32,9 +33,9 @@ func (h *Handler) createSegment(c *gin.Context) {
 		return
 	}
 
-	id, err := h.services.Segments.Create(c, entity.Segment{Name: input.Name})
+	id, err := h.services.Segments.Create(c, entity.Segment{Name: input.Name, AssignPercent: input.AssignPercent})
 	if err != nil {
-		if errors.Is(err, entity.ErrSegmentAlreadyExists) {
+		if errors.Is(err, entity.ErrSegmentAlreadyExists) || errors.Is(err, entity.ErrInvalidAssignPercent) {
 			newErrorResponse(c, http.StatusBadRequest, err.Error())
 		} else {
 			newErrorResponse(c, http.StatusInternalServerError, err.Error())
