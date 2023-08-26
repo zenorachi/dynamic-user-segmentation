@@ -33,22 +33,13 @@ type (
 		DeleteBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int) ([]int, error)
 		DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
 		GetOperations(ctx context.Context, userIds ...int) ([]entity.Operation, error)
-		//GetByBothIDs(ctx context.Context, userId, segmentId int) (entity.Relation, error)
-		//GetSegmentsByUserID(ctx context.Context, userId int) ([]entity.Segment, error)
-		//GetBySegmentID(ctx context.Context, segmentId int) (entity.Relation, error)
 	}
-
-	//RelationsTTL interface {
-	//	Create(ctx context.Context, relationsTTLs []entity.RelationTTL) error
-	//	DeleteAfterTTLBySegmentID(ctx context.Context) error
-	//}
 )
 
 type Repositories struct {
 	Users
 	Segments
 	Operations
-	//RelationsTTL
 }
 
 func New(db *sql.DB) *Repositories {
@@ -56,6 +47,5 @@ func New(db *sql.DB) *Repositories {
 		Users:      NewUsers(db),
 		Segments:   NewSegments(db),
 		Operations: NewOperations(db),
-		//RelationsTTL: NewRelationsTTL(db),
 	}
 }
