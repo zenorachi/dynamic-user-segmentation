@@ -52,7 +52,7 @@ func (h *Handler) addSegmentsById(c *gin.Context) {
 		go func() { h.services.Operations.DeleteAfterTTLBySegmentIDs(c, input.UserID, input.SegmentsIDs, ttl) }()
 	}
 
-	newResponse(c, http.StatusCreated, "operations_ids", operations)
+	newResponse(c, http.StatusCreated, "operation_ids", operations)
 }
 
 func (h *Handler) deleteSegmentsById(c *gin.Context) {
@@ -74,12 +74,12 @@ func (h *Handler) deleteSegmentsById(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusOK, "operations_ids", operations)
+	newResponse(c, http.StatusOK, "operation_ids", operations)
 }
 
 type operationSegmentsByNameInput struct {
 	UserID        int      `json:"user_id" binding:"required"`
-	SegmentsNames []string `json:"segments_names" binding:"required"`
+	SegmentsNames []string `json:"segment_names" binding:"required"`
 	TTL           string   `json:"ttl,omitempty"`
 }
 
@@ -111,7 +111,7 @@ func (h *Handler) addSegmentsByName(c *gin.Context) {
 		go func() { h.services.Operations.DeleteAfterTTLBySegmentNames(c, input.UserID, input.SegmentsNames, ttl) }()
 	}
 
-	newResponse(c, http.StatusCreated, "operations_ids", operations)
+	newResponse(c, http.StatusCreated, "operation_ids", operations)
 }
 
 func (h *Handler) deleteSegmentsByName(c *gin.Context) {
@@ -132,5 +132,5 @@ func (h *Handler) deleteSegmentsByName(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusOK, "operations_ids", operations)
+	newResponse(c, http.StatusOK, "operation_ids", operations)
 }

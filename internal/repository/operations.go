@@ -257,7 +257,7 @@ func (o *OperationsRepository) GetOperations(ctx context.Context, userIds ...int
 
 	var operations []entity.Operation
 
-	args, query := o.generateGetQuery(userIds...)
+	args, query := o.generateGetOperationsQuery(userIds...)
 
 	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
@@ -280,7 +280,7 @@ func (o *OperationsRepository) GetOperations(ctx context.Context, userIds ...int
 	return operations, tx.Commit()
 }
 
-func (o *OperationsRepository) generateGetQuery(userIds ...int) ([]any, string) {
+func (o *OperationsRepository) generateGetOperationsQuery(userIds ...int) ([]any, string) {
 	var (
 		query string
 		args  []interface{}
