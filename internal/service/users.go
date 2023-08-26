@@ -4,11 +4,12 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"time"
+
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/repository"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/auth"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/hash"
-	"time"
 )
 
 type UserService struct {

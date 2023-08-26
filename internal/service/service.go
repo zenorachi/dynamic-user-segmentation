@@ -2,11 +2,12 @@ package service
 
 import (
 	"context"
+	"time"
+
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/repository"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/auth"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/hash"
-	"time"
 )
 
 type Tokens struct {

@@ -3,6 +3,12 @@ package app
 import (
 	"context"
 	"errors"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
 	"github.com/zenorachi/dynamic-user-segmentation/internal/config"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/database"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/repository"
@@ -13,11 +19,6 @@ import (
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/database/postgres"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/hash"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/logger"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
 )
 
 const (

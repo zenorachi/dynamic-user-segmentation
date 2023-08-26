@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 )
 
@@ -110,6 +111,7 @@ func (s *SegmentsRepository) GetByUserID(ctx context.Context, userId int) ([]ent
 		_ = tx.Rollback()
 		return nil, err
 	}
+	defer func() { _ = rows.Close() }()
 
 	for rows.Next() {
 		var segment entity.Segment
@@ -120,6 +122,11 @@ func (s *SegmentsRepository) GetByUserID(ctx context.Context, userId int) ([]ent
 		}
 
 		segments = append(segments, segment)
+	}
+
+	if err = rows.Err(); err != nil {
+		_ = tx.Commit()
+		return nil, err
 	}
 
 	return segments, tx.Commit()
@@ -153,6 +160,11 @@ func (s *SegmentsRepository) GetAll(ctx context.Context) ([]entity.Segment, erro
 			return nil, err
 		}
 		segments = append(segments, segment)
+	}
+
+	if err = rows.Err(); err != nil {
+		_ = tx.Commit()
+		return nil, err
 	}
 
 	return segments, tx.Commit()

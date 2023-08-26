@@ -1,12 +1,13 @@
 package config
 
 import (
+	"sync"
+	"time"
+
 	"github.com/kelseyhightower/envconfig"
 	"github.com/spf13/viper"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/database/postgres"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/logger"
-	"sync"
-	"time"
 )
 
 type Config struct {

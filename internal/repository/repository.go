@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 )
 

@@ -1,10 +1,11 @@
 package v1
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 )
 
 const (

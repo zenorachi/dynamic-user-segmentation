@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 )
 
@@ -275,6 +276,11 @@ func (o *OperationsRepository) GetOperations(ctx context.Context, userIds ...int
 		}
 
 		operations = append(operations, operation)
+	}
+
+	if err = rows.Err(); err != nil {
+		_ = tx.Commit()
+		return nil, err
 	}
 
 	return operations, tx.Commit()

@@ -3,8 +3,9 @@ package server
 import (
 	"context"
 	"fmt"
-	"github.com/zenorachi/dynamic-user-segmentation/internal/config"
 	"net/http"
+
+	"github.com/zenorachi/dynamic-user-segmentation/internal/config"
 )
 
 type Server struct {

@@ -34,6 +34,9 @@ migrate-up:
 migrate-down:
 	migrate -path $(MIGRATION_DIR) -database $(POSTGRES_URL) down
 
+lint:
+	golangci-lint run
+
 clean:
 	rm -rf ./.bin
 

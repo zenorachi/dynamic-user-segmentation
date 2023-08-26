@@ -2,10 +2,11 @@ package v1
 
 import (
 	"errors"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"github.com/zenorachi/dynamic-user-segmentation/tools"
-	"net/http"
 )
 
 func (h *Handler) initOperationsRoutes(api *gin.RouterGroup) {

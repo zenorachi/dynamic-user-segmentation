@@ -3,6 +3,7 @@ package database
 import (
 	"errors"
 	"fmt"
+
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/database/postgres"
 
 	"github.com/golang-migrate/migrate/v4"

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 )
 
