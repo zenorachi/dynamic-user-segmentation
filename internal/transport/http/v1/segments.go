@@ -16,7 +16,7 @@ func (h *Handler) initSegmentsRoutes(api *gin.RouterGroup) {
 		segments.POST("/create", h.createSegment)
 		segments.GET("/", h.getAllSegments)
 		segments.GET("/:segment_id", h.getSegmentById)
-		segments.GET("/active/:user_id", h.getActiveUserSegments)
+		segments.GET("/active_users/:segment_id", h.getActiveUsers)
 		segments.DELETE("/delete", h.deleteSegmentByName)
 		segments.DELETE("/delete_by_id", h.deleteSegmentById)
 	}
@@ -82,17 +82,17 @@ func (h *Handler) getSegmentById(c *gin.Context) {
 	newResponse(c, http.StatusOK, "segment", segment)
 }
 
-func (h *Handler) getActiveUserSegments(c *gin.Context) {
-	paramId := strings.Trim(c.Param("user_id"), "/")
+func (h *Handler) getActiveUsers(c *gin.Context) {
+	paramId := strings.Trim(c.Param("segment_id"), "/")
 	id, err := strconv.Atoi(paramId)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid parameter (id)")
 		return
 	}
 
-	segments, err := h.services.Segments.GetActiveSegmentsByUserID(c, id)
+	users, err := h.services.Segments.GetActiveUsersBySegmentID(c, id)
 	if err != nil {
-		if errors.Is(err, entity.ErrUserDoesNotExist) {
+		if errors.Is(err, entity.ErrSegmentDoesNotExist) {
 			newErrorResponse(c, http.StatusBadRequest, err.Error())
 		} else {
 			newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -100,7 +100,7 @@ func (h *Handler) getActiveUserSegments(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusOK, "active_segments", segments)
+	newResponse(c, http.StatusOK, "active_users", users)
 }
 
 type deleteByNameInput struct {

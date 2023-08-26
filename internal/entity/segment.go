@@ -1,7 +1,7 @@
 package entity
 
 type Segment struct {
-	ID            int
-	Name          string
-	AssignPercent float64
+	ID            int     `json:"id,omitempty"`
+	Name          string  `json:"name,omitempty"`
+	AssignPercent float64 `json:"assign_percent,omitempty"`
 }

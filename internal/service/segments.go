@@ -52,16 +52,13 @@ func (s *SegmentsService) GetByID(ctx context.Context, id int) (entity.Segment, 
 	return segment, nil
 }
 
-func (s *SegmentsService) GetActiveSegmentsByUserID(ctx context.Context, userId int) ([]entity.Segment, error) {
-	isExists, err := s.isUserExists(ctx, userId)
+func (s *SegmentsService) GetActiveUsersBySegmentID(ctx context.Context, id int) ([]entity.User, error) {
+	_, err := s.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-	if !isExists {
-		return nil, entity.ErrUserDoesNotExist
-	}
-
-	return s.segmentsRepo.GetByUserID(ctx, userId)
+	//todo len check
+	return s.segmentsRepo.GetActiveUsersBySegmentID(ctx, id)
 }
 
 func (s *SegmentsService) GetAll(ctx context.Context) ([]entity.Segment, error) {
@@ -111,14 +108,7 @@ func (s *SegmentsService) isSegmentExists(ctx context.Context, name string) (boo
 	return true, nil
 }
 
-func (s *SegmentsService) isUserExists(ctx context.Context, userId int) (bool, error) {
+func (s *SegmentsService) isUserExists(ctx context.Context, userId int) bool {
 	_, err := s.usersRepo.GetByID(ctx, userId)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return false, nil
-		}
-		return false, err
-	}
-
-	return true, nil
+	return !errors.Is(err, sql.ErrNoRows)
 }

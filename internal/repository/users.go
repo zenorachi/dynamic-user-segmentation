@@ -140,6 +140,48 @@ func (u *UsersRepository) GetByRefreshToken(ctx context.Context, refreshToken st
 	return user, tx.Commit()
 }
 
+func (u *UsersRepository) GetActiveSegmentsByUserID(ctx context.Context, id int) ([]entity.Segment, error) {
+	tx, err := u.db.BeginTx(ctx, &sql.TxOptions{
+		Isolation: sql.LevelSerializable,
+		ReadOnly:  true,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var (
+		segments []entity.Segment
+		query    = fmt.Sprintf(
+			"SELECT name FROM %s JOIN %s ON %s.segment_id = id WHERE %s.user_id = $1",
+			collectionSegments, collectionRelations, collectionRelations, collectionRelations)
+	)
+
+	rows, err := tx.QueryContext(ctx, query, id)
+	if err != nil {
+		_ = tx.Rollback()
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	for rows.Next() {
+		var segment entity.Segment
+		err = rows.Scan(&segment.Name)
+		if err != nil {
+			_ = tx.Rollback()
+			return nil, err
+		}
+
+		segments = append(segments, segment)
+	}
+
+	if err = rows.Err(); err != nil {
+		_ = tx.Commit()
+		return nil, err
+	}
+
+	return segments, tx.Commit()
+}
+
 func (u *UsersRepository) SetSession(ctx context.Context, userId int, session entity.Session) error {
 	tx, err := u.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,

@@ -75,6 +75,18 @@ func (u *UserService) RefreshTokens(ctx context.Context, refreshToken string) (T
 	return u.createSession(ctx, user.ID)
 }
 
+func (u *UserService) GetActiveSegmentsByUserID(ctx context.Context, id int) ([]entity.Segment, error) {
+	_, err := u.repo.GetByID(ctx, id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, entity.ErrUserDoesNotExist
+		}
+		return nil, err
+	}
+
+	return u.repo.GetActiveSegmentsByUserID(ctx, id)
+}
+
 func (u *UserService) createSession(ctx context.Context, userId int) (Tokens, error) {
 	var (
 		tokens Tokens

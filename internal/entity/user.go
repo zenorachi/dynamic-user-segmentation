@@ -4,9 +4,9 @@ import "time"
 
 type User struct {
 	ID           int       `json:"id,omitempty"`
-	Login        string    `json:"login"`
-	Email        string    `json:"email"`
-	Password     string    `json:"password"`
+	Login        string    `json:"login,omitempty"`
+	Email        string    `json:"email,omitempty"`
+	Password     string    `json:"password,omitempty"`
 	RegisteredAt time.Time `json:"registered_at,omitempty"`
 }
 

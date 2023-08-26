@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
@@ -15,6 +17,7 @@ func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
 		users.POST("/sign-up", h.signUp)
 		users.POST("/sign-in", h.signIn)
 		users.GET("/refresh", h.refresh)
+		users.GET("/active_segments/:user_id", h.userIdentity, h.getActiveSegments)
 	}
 }
 
@@ -89,4 +92,25 @@ func (h *Handler) refresh(c *gin.Context) {
 
 	c.Header("Set-Cookie", fmt.Sprintf("refresh-token=%s; HttpOnly", tokens.RefreshToken))
 	newResponse(c, http.StatusOK, "token", tokens.AccessToken)
+}
+
+func (h *Handler) getActiveSegments(c *gin.Context) {
+	paramId := strings.Trim(c.Param("user_id"), "/")
+	id, err := strconv.Atoi(paramId)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid parameter (id)")
+		return
+	}
+
+	segments, err := h.services.Users.GetActiveSegmentsByUserID(c, id)
+	if err != nil {
+		if errors.Is(err, entity.ErrUserDoesNotExist) {
+			newErrorResponse(c, http.StatusBadRequest, err.Error())
+		} else {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		}
+		return
+	}
+
+	newResponse(c, http.StatusOK, "active_segments", segments)
 }

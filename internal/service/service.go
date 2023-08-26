@@ -20,12 +20,13 @@ type (
 		SignUp(ctx context.Context, login, email, password string) (int, error)
 		SignIn(ctx context.Context, login, password string) (Tokens, error)
 		RefreshTokens(ctx context.Context, refreshToken string) (Tokens, error)
+		GetActiveSegmentsByUserID(ctx context.Context, id int) ([]entity.Segment, error)
 	}
 
 	Segments interface {
 		Create(ctx context.Context, segment entity.Segment) (int, error)
 		GetByID(ctx context.Context, id int) (entity.Segment, error)
-		GetActiveSegmentsByUserID(ctx context.Context, userId int) ([]entity.Segment, error)
+		GetActiveUsersBySegmentID(ctx context.Context, id int) ([]entity.User, error)
 		GetAll(ctx context.Context) ([]entity.Segment, error)
 		DeleteByName(ctx context.Context, name string) error
 		DeleteByID(ctx context.Context, id int) error

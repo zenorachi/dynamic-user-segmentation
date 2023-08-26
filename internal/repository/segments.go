@@ -90,7 +90,7 @@ func (s *SegmentsRepository) GetByID(ctx context.Context, id int) (entity.Segmen
 	return segment, tx.Commit()
 }
 
-func (s *SegmentsRepository) GetByUserID(ctx context.Context, userId int) ([]entity.Segment, error) {
+func (s *SegmentsRepository) GetActiveUsersBySegmentID(ctx context.Context, id int) ([]entity.User, error) {
 	tx, err := s.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
 		ReadOnly:  true,
@@ -100,13 +100,13 @@ func (s *SegmentsRepository) GetByUserID(ctx context.Context, userId int) ([]ent
 	}
 
 	var (
-		segments []entity.Segment
-		query    = fmt.Sprintf(
-			"SELECT id, name FROM %s JOIN %s ON %s.segment_id = id WHERE %s.user_id = $1",
-			collectionSegments, collectionRelations, collectionRelations, collectionRelations)
+		users []entity.User
+		query = fmt.Sprintf(
+			"SELECT id, login, registered_at FROM %s JOIN %s ON %s.user_id = id WHERE %s.segment_id = $1",
+			collectionUsers, collectionRelations, collectionRelations, collectionRelations)
 	)
 
-	rows, err := tx.QueryContext(ctx, query, userId)
+	rows, err := tx.QueryContext(ctx, query, id)
 	if err != nil {
 		_ = tx.Rollback()
 		return nil, err
@@ -114,14 +114,14 @@ func (s *SegmentsRepository) GetByUserID(ctx context.Context, userId int) ([]ent
 	defer func() { _ = rows.Close() }()
 
 	for rows.Next() {
-		var segment entity.Segment
-		err = rows.Scan(&segment.ID, &segment.Name)
+		var user entity.User
+		err = rows.Scan(&user.ID, &user.Login, &user.RegisteredAt)
 		if err != nil {
 			_ = tx.Rollback()
 			return nil, err
 		}
 
-		segments = append(segments, segment)
+		users = append(users, user)
 	}
 
 	if err = rows.Err(); err != nil {
@@ -129,7 +129,7 @@ func (s *SegmentsRepository) GetByUserID(ctx context.Context, userId int) ([]ent
 		return nil, err
 	}
 
-	return segments, tx.Commit()
+	return users, tx.Commit()
 }
 
 func (s *SegmentsRepository) GetAll(ctx context.Context) ([]entity.Segment, error) {
@@ -156,7 +156,7 @@ func (s *SegmentsRepository) GetAll(ctx context.Context) ([]entity.Segment, erro
 
 	for rows.Next() {
 		var segment entity.Segment
-		if err = rows.Scan(&segment.ID, &segment.Name); err != nil {
+		if err = rows.Scan(&segment.ID, &segment.Name, &segment.AssignPercent); err != nil {
 			return nil, err
 		}
 		segments = append(segments, segment)
