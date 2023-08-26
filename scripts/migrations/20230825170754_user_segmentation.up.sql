@@ -17,7 +17,8 @@ CREATE TABLE users (
 -- SEGMENTS --
 CREATE TABLE segments (
     id              SERIAL PRIMARY KEY,
-    name            VARCHAR(255) UNIQUE NOT NULL
+    name            VARCHAR(255) UNIQUE NOT NULL,
+    assign_percent  NUMERIC(10, 2) DEFAULT 0.0
 );
 
 -- USER-SEGMENT RELATIONS (MANY-TO-MANY) --
@@ -46,7 +47,7 @@ CREATE OR REPLACE FUNCTION segment_deleted_trigger()
 RETURNS TRIGGER AS $$
 BEGIN
     IF OLD IS NOT NULL THEN
-        IF EXISTS (SELECT 1 FROM relations WHERE segment_id = OLD.id) THEN
+        IF EXISTS (SELECT FROM relations WHERE segment_id = OLD.id) THEN
             INSERT INTO operations (user_id, segment_name, type)
             SELECT user_id, OLD.name, 'deleted' FROM relations WHERE segment_id = OLD.id;
     END IF;
@@ -62,3 +63,35 @@ CREATE TRIGGER segment_deleted
     AFTER DELETE ON segments
     FOR EACH ROW
     EXECUTE FUNCTION segment_deleted_trigger();
+
+-- AUTOMATIC ASSIGN USERS BY AUTO-ASSIGN-PERCENT --
+CREATE OR REPLACE FUNCTION auto_assign_users_trigger()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.assign_percent > 0.0 THEN
+        DECLARE
+            total_users INT;
+            users_to_assign INT;
+            usr_id INT;
+        BEGIN
+            SELECT COUNT(*) INTO total_users FROM users;
+
+            users_to_assign := CEIL(NEW.assign_percent * total_users);
+
+            FOR usr_id IN SELECT id FROM users ORDER BY random() LIMIT users_to_assign
+            LOOP
+                INSERT INTO relations (user_id, segment_id) VALUES (usr_id, NEW.id);
+
+                INSERT INTO operations (user_id, segment_name, type) VALUES (usr_id, NEW.name, 'added');
+            END LOOP;
+        END;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- TRIGGER --
+CREATE TRIGGER auto_assign_users
+    AFTER INSERT ON segments
+    FOR EACH ROW
+    EXECUTE FUNCTION auto_assign_users_trigger();

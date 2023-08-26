@@ -26,11 +26,11 @@ func (s *SegmentsRepository) Create(ctx context.Context, segment entity.Segment)
 
 	var (
 		id    int
-		query = fmt.Sprintf("INSERT INTO %s (name) VALUES ($1) RETURNING id",
+		query = fmt.Sprintf("INSERT INTO %s (name, assign_percent) VALUES ($1, $2) RETURNING id",
 			collectionSegments)
 	)
 
-	err = tx.QueryRowContext(ctx, query, segment.Name).Scan(&id)
+	err = tx.QueryRowContext(ctx, query, segment.Name, segment.AssignPercent).Scan(&id)
 	if err != nil {
 		_ = tx.Rollback()
 		return 0, err
@@ -167,14 +167,9 @@ func (s *SegmentsRepository) DeleteByName(ctx context.Context, name string) erro
 		return err
 	}
 
-	var (
-		segment            entity.Segment
-		queryDeleteSegment = fmt.Sprintf("DELETE FROM %s WHERE name = $1 RETURNING id, name", collectionSegments)
-		//queryInsertOperations = fmt.Sprintf("INSERT INTO %s (user_id, segment_name, type) VALUES ($1, $2, $3) RETURNING id",
-		//	collectionOperations)
-	)
+	var queryDeleteSegment = fmt.Sprintf("DELETE FROM %s WHERE name = $1 RETURNING id, name", collectionSegments)
 
-	err = tx.QueryRowContext(ctx, queryDeleteSegment, name).Scan(&segment.ID, &segment.Name)
+	_, err = tx.ExecContext(ctx, queryDeleteSegment, name)
 	if err != nil {
 		_ = tx.Rollback()
 		return err

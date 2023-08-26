@@ -30,6 +30,12 @@ func (s *SegmentsService) Create(ctx context.Context, segment entity.Segment) (i
 		return 0, entity.ErrSegmentAlreadyExists
 	}
 
+	if segment.AssignPercent >= 0 {
+		segment.AssignPercent /= 100
+	} else {
+		return 0, entity.ErrInvalidAssignPercent
+	}
+
 	return s.segmentsRepo.Create(ctx, segment)
 }
 

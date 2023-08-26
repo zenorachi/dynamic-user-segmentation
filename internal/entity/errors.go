@@ -14,6 +14,7 @@ var (
 	ErrSegmentDoesNotExist   = errors.New("segment/segments does not exist")
 	ErrRelationAlreadyExists = errors.New("relation already exists")
 	ErrRelationDoesNotExist  = errors.New("relation does not exist")
-	ErrTTLIsNotDefined       = errors.New("ttl is not defined")
 	ErrInvalidTTL            = errors.New("invalid ttl")
+	ErrInvalidAssignPercent  = errors.New("assign percent must be greater than zero")
+	//ErrTTLIsNotDefined       = errors.New("ttl is not defined")
 )
