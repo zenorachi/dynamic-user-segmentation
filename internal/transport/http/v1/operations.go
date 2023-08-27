@@ -4,10 +4,10 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
-	"github.com/zenorachi/dynamic-user-segmentation/tools"
 )
 
 var (
@@ -38,7 +38,7 @@ func (h *Handler) addSegmentsById(c *gin.Context) {
 		return
 	}
 
-	ttl, err := tools.ParseTTL(input.TTL)
+	ttl, err := h.parseTTL(input.TTL)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidTTL.Error())
 		return
@@ -97,7 +97,7 @@ func (h *Handler) addSegmentsByName(c *gin.Context) {
 		return
 	}
 
-	ttl, err := tools.ParseTTL(input.TTL)
+	ttl, err := h.parseTTL(input.TTL)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidTTL.Error())
 		return
@@ -184,7 +184,7 @@ func (h *Handler) generateOperationsPagination(c *gin.Context, pageSize int, ope
 	if pageSize <= 0 {
 		pageSize = defaultPageSize
 	}
-	
+
 	startIndex := (page - 1) * pageSize
 	endIndex := startIndex + pageSize
 	if endIndex > len(operations) {
@@ -192,4 +192,17 @@ func (h *Handler) generateOperationsPagination(c *gin.Context, pageSize int, ope
 	}
 
 	return operations[startIndex:endIndex], nil
+}
+
+func (h *Handler) parseTTL(ttl string) (time.Duration, error) {
+	if ttl == "" {
+		return 0, nil
+	}
+
+	ttlDuration, err := time.ParseDuration(ttl)
+	if err != nil {
+		return 0, err
+	}
+
+	return ttlDuration, nil
 }
