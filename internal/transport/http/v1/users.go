@@ -29,13 +29,17 @@ type signUpInput struct {
 	Password string `json:"password" binding:"required,min=8,max=64"`
 }
 
+type signUpResponse struct {
+	ID int `json:"id"`
+}
+
 // @Summary User SignUp
 // @Description create user account
 // @Tags users-auth
 // @Accept json
 // @Produce json
 // @Param input body signUpInput true "input"
-// @Success 201 {object} map[string]any
+// @Success 201 {object} signUpResponse
 // @Failure 400 {object} errorResponse
 // @Failure 409 {object} errorResponse
 // @Failure 500 {object} errorResponse
@@ -57,7 +61,7 @@ func (h *Handler) signUp(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusCreated, "id", id)
+	newResponse(c, http.StatusCreated, signUpResponse{ID: id})
 }
 
 type signInInput struct {
@@ -65,6 +69,20 @@ type signInInput struct {
 	Password string `json:"password" binding:"required,min=8,max=64"`
 }
 
+type tokenResponse struct {
+	Token string `json:"token"`
+}
+
+// @Summary User SignIn
+// @Description user sign in
+// @Tags users-auth
+// @Accept json
+// @Produce json
+// @Param input body signInInput true "input"
+// @Success 200 {object} tokenResponse
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /users/sign-in [post]
 func (h *Handler) signIn(c *gin.Context) {
 	var input signInInput
 	if err := c.BindJSON(&input); err != nil {
@@ -83,9 +101,18 @@ func (h *Handler) signIn(c *gin.Context) {
 	}
 
 	c.Header("Set-Cookie", fmt.Sprintf("refresh-token=%s; HttpOnly", tokens.RefreshToken))
-	newResponse(c, http.StatusOK, "token", tokens.AccessToken)
+	newResponse(c, http.StatusOK, tokenResponse{Token: tokens.AccessToken})
 }
 
+// @Summary User Refresh Token
+// @Description refresh user's access token
+// @Tags users-auth
+// @Produce json
+// @HeaderParam Set-Cookie string true "RefreshToken"
+// @Success 200 {object} tokenResponse
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /users/refresh [get]
 func (h *Handler) refresh(c *gin.Context) {
 	refreshToken, err := c.Cookie("refresh-token")
 	if err != nil {
@@ -104,9 +131,23 @@ func (h *Handler) refresh(c *gin.Context) {
 	}
 
 	c.Header("Set-Cookie", fmt.Sprintf("refresh-token=%s; HttpOnly", tokens.RefreshToken))
-	newResponse(c, http.StatusOK, "token", tokens.AccessToken)
+	newResponse(c, http.StatusOK, tokenResponse{Token: tokens.AccessToken})
 }
 
+type getActiveSegmentsResponse struct {
+	Segments []entity.Segment `json:"segments"`
+}
+
+// @Summary Get active segments for a user
+// @Security JWT
+// @Description get active segments for a specific user by user_id
+// @Tags user-segments
+// @Produce json
+// @Param user_id path int true "User ID"
+// @Success 200 {object} getActiveSegmentsResponse
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /users/active_segments/:user_id [get]
 func (h *Handler) getActiveSegments(c *gin.Context) {
 	paramId := strings.Trim(c.Param("user_id"), "/")
 	id, err := strconv.Atoi(paramId)
@@ -125,5 +166,5 @@ func (h *Handler) getActiveSegments(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusOK, "active_segments", segments)
+	newResponse(c, http.StatusOK, getActiveSegmentsResponse{Segments: segments})
 }

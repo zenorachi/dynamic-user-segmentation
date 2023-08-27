@@ -1,9 +1,215 @@
 basePath: /
 definitions:
+  entity.Operation:
+    properties:
+      date:
+        type: string
+      id:
+        type: integer
+      segment_name:
+        type: string
+      type:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  entity.Segment:
+    properties:
+      assign_percent:
+        type: number
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  entity.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      login:
+        type: string
+      password:
+        type: string
+      registered_at:
+        type: string
+    type: object
+  v1.addSegmentsByIdInput:
+    properties:
+      segment_ids:
+        items:
+          type: integer
+        type: array
+      ttl:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - segment_ids
+    - user_id
+    type: object
+  v1.addSegmentsByNameInput:
+    properties:
+      segment_names:
+        items:
+          type: string
+        type: array
+      ttl:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - segment_names
+    - user_id
+    type: object
+  v1.createSegmentInput:
+    properties:
+      assign_percent:
+        type: number
+      name:
+        maxLength: 64
+        minLength: 2
+        type: string
+    required:
+    - name
+    type: object
+  v1.createSegmentResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  v1.deleteByIdInput:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
+  v1.deleteByNameInput:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  v1.deleteSegmentsByIdInput:
+    properties:
+      segment_ids:
+        items:
+          type: integer
+        type: array
+      user_id:
+        type: integer
+    required:
+    - segment_ids
+    - user_id
+    type: object
+  v1.deleteSegmentsByNameInput:
+    properties:
+      segment_names:
+        items:
+          type: string
+        type: array
+      user_id:
+        type: integer
+    required:
+    - segment_names
+    - user_id
+    type: object
   v1.errorResponse:
     properties:
       error:
         type: string
+    type: object
+  v1.getActiveSegmentsResponse:
+    properties:
+      segments:
+        items:
+          $ref: '#/definitions/entity.Segment'
+        type: array
+    type: object
+  v1.getActiveUsersResponse:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/entity.User'
+        type: array
+    type: object
+  v1.getAllSegmentsResponse:
+    properties:
+      segments:
+        items:
+          $ref: '#/definitions/entity.Segment'
+        type: array
+    type: object
+  v1.getOperationsHistoryInput:
+    properties:
+      month:
+        type: integer
+      page_size:
+        type: integer
+      user_ids:
+        items:
+          type: integer
+        type: array
+      year:
+        type: integer
+    required:
+    - month
+    - year
+    type: object
+  v1.getOperationsHistoryResponse:
+    properties:
+      operations:
+        items:
+          $ref: '#/definitions/entity.Operation'
+        type: array
+    type: object
+  v1.getReportInput:
+    properties:
+      month:
+        type: integer
+      user_ids:
+        items:
+          type: integer
+        type: array
+      year:
+        type: integer
+    required:
+    - month
+    - year
+    type: object
+  v1.getReportLinkResponse:
+    properties:
+      link:
+        type: string
+    type: object
+  v1.getSegmentByIdResponse:
+    properties:
+      segment:
+        $ref: '#/definitions/entity.Segment'
+    type: object
+  v1.operationResponse:
+    properties:
+      operation_ids:
+        items:
+          type: integer
+        type: array
+    type: object
+  v1.signInInput:
+    properties:
+      login:
+        maxLength: 64
+        minLength: 2
+        type: string
+      password:
+        maxLength: 64
+        minLength: 8
+        type: string
+    required:
+    - login
+    - password
     type: object
   v1.signUpInput:
     properties:
@@ -23,6 +229,16 @@ definitions:
     - login
     - password
     type: object
+  v1.signUpResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  v1.tokenResponse:
+    properties:
+      token:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -33,6 +249,483 @@ info:
   title: Dynamic User Segmentation Service
   version: "1.0"
 paths:
+  /operations/add_segments/:
+    post:
+      consumes:
+      - application/json
+      description: addition a user to segments by id
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.addSegmentsByIdInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/v1.operationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Add a user to segments by id
+      tags:
+      - operations
+  /operations/add_segments_by_names/:
+    post:
+      consumes:
+      - application/json
+      description: addition a user to segments by name
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.addSegmentsByNameInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/v1.operationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Add a user to segments by name
+      tags:
+      - operations
+  /operations/delete_segments/:
+    delete:
+      consumes:
+      - application/json
+      description: delete user-segments relation by ids
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.deleteSegmentsByIdInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.operationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Delete User From Segments by ids
+      tags:
+      - operations
+  /operations/delete_segments_by_names/:
+    delete:
+      consumes:
+      - application/json
+      description: delete user-segments relation by names
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.deleteSegmentsByNameInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.operationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Delete User From Segments By Names
+      tags:
+      - operations
+  /operations/history/:
+    get:
+      consumes:
+      - application/json
+      description: getting operations history
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.getOperationsHistoryInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.getOperationsHistoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Get Operations History
+      tags:
+      - operations
+  /reports/file/:
+    get:
+      consumes:
+      - application/json
+      description: getting history in csv format
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.getReportInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: CSV-File
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Get CSV-File History
+      tags:
+      - reports
+  /reports/link/:
+    get:
+      consumes:
+      - application/json
+      description: getting history by link to csv-file
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.getReportInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.getReportLinkResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Get CSV-File Link
+      tags:
+      - reports
+  /segments/:
+    get:
+      description: getting all segments
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.getAllSegmentsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Get all segments
+      tags:
+      - segments
+  /segments/:segment_id:
+    get:
+      description: getting segment by id
+      parameters:
+      - description: Segment ID
+        in: path
+        name: segment_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.getSegmentByIdResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Get Segment By ID
+      tags:
+      - segments
+  /segments/active_users/:segment_id:
+    get:
+      description: getting active users by id
+      parameters:
+      - description: Segment ID
+        in: path
+        name: segment_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.getActiveUsersResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Get Active Users By ID
+      tags:
+      - segment-users
+  /segments/create:
+    post:
+      consumes:
+      - application/json
+      description: create new segment
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.createSegmentInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/v1.createSegmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Create segment
+      tags:
+      - segments
+  /segments/delete/:
+    delete:
+      consumes:
+      - application/json
+      description: deletion segment by name
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.deleteByNameInput'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Delete Segment By Name
+      tags:
+      - segments
+  /segments/delete_by_id/:
+    delete:
+      consumes:
+      - application/json
+      description: deletion segment by id
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.deleteByIdInput'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Delete Segment By ID
+      tags:
+      - segments
+  /users/active_segments/:user_id:
+    get:
+      description: get active segments for a specific user by user_id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.getActiveSegmentsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - JWT: []
+      summary: Get active segments for a user
+      tags:
+      - user-segments
+  /users/refresh:
+    get:
+      description: refresh user's access token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.tokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      summary: User Refresh Token
+      tags:
+      - users-auth
+  /users/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: user sign in
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.signInInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.tokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      summary: User SignIn
+      tags:
+      - users-auth
   /users/sign-up:
     post:
       consumes:
@@ -51,8 +744,7 @@ paths:
         "201":
           description: Created
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/v1.signUpResponse'
         "400":
           description: Bad Request
           schema:

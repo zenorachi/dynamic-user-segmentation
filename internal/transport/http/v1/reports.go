@@ -22,6 +22,17 @@ type getReportInput struct {
 	Month   int   `json:"month" binding:"required"`
 }
 
+// @Summary Get CSV-File History
+// @Security JWT
+// @Description getting history in csv format
+// @Tags reports
+// @Accept json
+// @Produce json
+// @Param input body getReportInput true "input"
+// @Success 200 {string} csv "CSV-File"
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /reports/file/ [get]
 func (h *Handler) getReportFile(c *gin.Context) {
 	var input getReportInput
 	if err := c.BindJSON(&input); err != nil {
@@ -42,6 +53,21 @@ func (h *Handler) getReportFile(c *gin.Context) {
 	c.Data(http.StatusOK, "text/csv", file)
 }
 
+type getReportLinkResponse struct {
+	Link string `json:"link"`
+}
+
+// @Summary Get CSV-File Link
+// @Security JWT
+// @Description getting history by link to csv-file
+// @Tags reports
+// @Accept json
+// @Produce json
+// @Param input body getReportInput true "input"
+// @Success 200 {object} getReportLinkResponse
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /reports/link/ [get]
 func (h *Handler) getReportLink(c *gin.Context) {
 	var input getReportInput
 	if err := c.BindJSON(&input); err != nil {
@@ -59,5 +85,5 @@ func (h *Handler) getReportLink(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusOK, "link", link)
+	newResponse(c, http.StatusOK, getReportLinkResponse{Link: link})
 }

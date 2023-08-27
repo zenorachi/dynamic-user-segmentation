@@ -5,11 +5,9 @@ import (
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/logger"
 )
 
-type response gin.H
-
-func newResponse(c *gin.Context, statusCode int, key string, msg any) {
+func newResponse(c *gin.Context, statusCode int, msg any) {
 	logger.Info(c.Request.RequestURI, "successfully")
-	c.JSON(statusCode, response{key: msg})
+	c.JSON(statusCode, msg)
 }
 
 type errorResponse struct {

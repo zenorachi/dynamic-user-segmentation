@@ -2,6 +2,7 @@ package v1
 
 import (
 	"errors"
+	//_ "google.golang.org/genproto/googleapis/apps/drive/labels/v2beta"
 	"net/http"
 	"strconv"
 	"strings"
@@ -27,6 +28,22 @@ type createSegmentInput struct {
 	AssignPercent float64 `json:"assign_percent,omitempty"`
 }
 
+type createSegmentResponse struct {
+	ID int `json:"id"`
+}
+
+// @Summary Create segment
+// @Security JWT
+// @Description create new segment
+// @Tags segments
+// @Accept json
+// @Produce json
+// @Param input body createSegmentInput true "input"
+// @Success 201 {object} createSegmentResponse
+// @Failure 400 {object} errorResponse
+// @Failure 409 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /segments/create [post]
 func (h *Handler) createSegment(c *gin.Context) {
 	var input createSegmentInput
 	if err := c.BindJSON(&input); err != nil {
@@ -36,7 +53,9 @@ func (h *Handler) createSegment(c *gin.Context) {
 
 	id, err := h.services.Segments.Create(c, entity.Segment{Name: input.Name, AssignPercent: input.AssignPercent})
 	if err != nil {
-		if errors.Is(err, entity.ErrSegmentAlreadyExists) || errors.Is(err, entity.ErrInvalidAssignPercent) {
+		if errors.Is(err, entity.ErrSegmentAlreadyExists) {
+			newErrorResponse(c, http.StatusConflict, err.Error())
+		} else if errors.Is(err, entity.ErrInvalidAssignPercent) {
 			newErrorResponse(c, http.StatusBadRequest, err.Error())
 		} else {
 			newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -44,23 +63,50 @@ func (h *Handler) createSegment(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusCreated, "id", id)
+	newResponse(c, http.StatusCreated, createSegmentResponse{ID: id})
 }
 
+type getAllSegmentsResponse struct {
+	Segments []entity.Segment `json:"segments"`
+}
+
+// @Summary Get all segments
+// @Security JWT
+// @Description getting all segments
+// @Tags segments
+// @Produce json
+// @Success 200 {object} getAllSegmentsResponse
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /segments/ [get]
 func (h *Handler) getAllSegments(c *gin.Context) {
 	segments, err := h.services.Segments.GetAll(c)
 	if err != nil {
 		if errors.Is(err, entity.ErrSegmentDoesNotExist) {
-			newResponse(c, http.StatusOK, "message", "no available segments")
+			newErrorResponse(c, http.StatusBadRequest, err.Error())
 		} else {
 			newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		}
 		return
 	}
 
-	newResponse(c, http.StatusOK, "segments", segments)
+	newResponse(c, http.StatusOK, getAllSegmentsResponse{Segments: segments})
 }
 
+type getSegmentByIdResponse struct {
+	Segment entity.Segment `json:"segment"`
+}
+
+// @Summary Get Segment By ID
+// @Security JWT
+// @Description getting segment by id
+// @Tags segments
+// @Produce json
+// @Param segment_id path int true "Segment ID"
+// @Success 200 {object} getSegmentByIdResponse
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /segments/:segment_id [get]
 func (h *Handler) getSegmentById(c *gin.Context) {
 	paramId := strings.Trim(c.Param("segment_id"), "/")
 	id, err := strconv.Atoi(paramId)
@@ -79,9 +125,23 @@ func (h *Handler) getSegmentById(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusOK, "segment", segment)
+	newResponse(c, http.StatusOK, getSegmentByIdResponse{Segment: segment})
 }
 
+type getActiveUsersResponse struct {
+	Users []entity.User `json:"users"`
+}
+
+// @Summary Get Active Users By ID
+// @Security JWT
+// @Description getting active users by id
+// @Tags segment-users
+// @Produce json
+// @Param segment_id path int true "Segment ID"
+// @Success 200 {object} getActiveUsersResponse
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /segments/active_users/:segment_id [get]
 func (h *Handler) getActiveUsers(c *gin.Context) {
 	paramId := strings.Trim(c.Param("segment_id"), "/")
 	id, err := strconv.Atoi(paramId)
@@ -100,13 +160,23 @@ func (h *Handler) getActiveUsers(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusOK, "active_users", users)
+	newResponse(c, http.StatusOK, getActiveUsersResponse{Users: users})
 }
 
 type deleteByNameInput struct {
 	Name string `json:"name" binding:"required"`
 }
 
+// @Summary Delete Segment By Name
+// @Security JWT
+// @Description deletion segment by name
+// @Tags segments
+// @Accept json
+// @Param input body deleteByNameInput true "input"
+// @Success 204 "No Content"
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /segments/delete/ [delete]
 func (h *Handler) deleteSegmentByName(c *gin.Context) {
 	var input deleteByNameInput
 	if err := c.BindJSON(&input); err != nil {
@@ -124,13 +194,23 @@ func (h *Handler) deleteSegmentByName(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusNoContent, "", "")
+	newResponse(c, http.StatusNoContent, nil)
 }
 
 type deleteByIdInput struct {
 	ID int `json:"id" binding:"required"`
 }
 
+// @Summary Delete Segment By ID
+// @Security JWT
+// @Description deletion segment by id
+// @Tags segments
+// @Accept json
+// @Param input body deleteByIdInput true "input"
+// @Success 204 "No Content"
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /segments/delete_by_id/ [delete]
 func (h *Handler) deleteSegmentById(c *gin.Context) {
 	var input deleteByIdInput
 	if err := c.BindJSON(&input); err != nil {
@@ -148,5 +228,5 @@ func (h *Handler) deleteSegmentById(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusNoContent, "", "")
+	newResponse(c, http.StatusNoContent, nil)
 }
