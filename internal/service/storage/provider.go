@@ -1,4 +1,4 @@
-package minio
+package storage
 
 import (
 	"context"
@@ -6,44 +6,38 @@ import (
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/config"
-	"io"
+
+	"google.golang.org/api/drive/v3"
 )
 
 type UploadInput struct {
-	File        io.Reader
+	Data        []byte
 	Name        string
 	Size        int64
 	ContentType string
 }
 
 type Provider interface {
-	Upload(ctx context.Context, input UploadInput) (string, error)
+	UploadFile(ctx context.Context, input UploadInput) (string, error)
 	IsAvailable() bool
 }
 
 type FileStorage struct {
-	client      *minio.Client
-	bucket      string
-	endpoint    string
+	gDrive      drive.Service
 	isAvailable bool
 }
 
 func NewProvider(cfg *config.MinioConfig) *FileStorage {
-	isAvailable := true
-
 	minioClient, err := minio.New(cfg.Endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(cfg.User, cfg.Password, ""),
 		Secure: false,
 	})
-	if err != nil {
-		isAvailable = false
-	}
 
 	return &FileStorage{
 		client:      minioClient,
 		bucket:      cfg.Bucket,
 		endpoint:    cfg.Endpoint,
-		isAvailable: isAvailable,
+		isAvailable: err == nil,
 	}
 }
 

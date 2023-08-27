@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 	"errors"
-	"github.com/zenorachi/dynamic-user-segmentation/internal/service/minio"
+	"github.com/zenorachi/dynamic-user-segmentation/internal/service/storage"
 	"net/http"
 	"os"
 	"os/signal"
@@ -52,7 +52,7 @@ func Run(cfg *config.Config) {
 		TokenManager:    tokenManager,
 		AccessTokenTTL:  cfg.Auth.AccessTokenTTL,
 		RefreshTokenTTL: cfg.Auth.RefreshTokenTTL,
-		Storage:         minio.NewProvider(&cfg.Minio),
+		Storage:         storage.NewProvider(&cfg.Minio),
 	})
 
 	/* INIT HTTP HANDLER */

@@ -28,7 +28,7 @@ services:
 
   minio:
     image: minio/minio
-    command: minio server --console-address ":9001" /data
+    command: storage server --console-address ":9001" /data
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -36,7 +36,7 @@ services:
       MINIO_ROOT_USER: ${MINIO_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     volumes:
-      - minio-data:/data
+      - storage-data:/data
     networks:
       - dus-backend
 

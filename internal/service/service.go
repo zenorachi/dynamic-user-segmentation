@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"github.com/zenorachi/dynamic-user-segmentation/pkg/storage"
+	"github.com/zenorachi/dynamic-user-segmentation/internal/service/storage"
 	"time"
 
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
@@ -41,6 +41,10 @@ type (
 		DeleteAfterTTLBySegmentIDs(ctx context.Context, userId int, segmentIDs []int, ttl time.Duration)
 		DeleteAfterTTLBySegmentNames(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration)
 		GetOperationsHistory(ctx context.Context, year, month int, userIDs ...int) ([]entity.Operation, error)
+	}
+
+	Reports interface {
+		//TODO тут хранить всю суету (провайдера, вызывать метода репозитория операций и кайфовать, добавить методы создания файлы)
 	}
 )
 

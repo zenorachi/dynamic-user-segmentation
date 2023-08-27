@@ -11,11 +11,11 @@ import (
 )
 
 type Config struct {
-	HTTP  HTTPConfig
-	Auth  AuthConfig
-	Minio MinioConfig
-	GIN   GINConfig
-	DB    postgres.DBConfig
+	HTTP   HTTPConfig
+	Auth   AuthConfig
+	GDrive GDriveConfig
+	GIN    GINConfig
+	DB     postgres.DBConfig
 }
 
 type (
@@ -33,11 +33,8 @@ type (
 		Secret          string
 	}
 
-	MinioConfig struct {
-		Endpoint string
-		Bucket   string
-		User     string
-		Password string
+	GDriveConfig struct {
+		CredentialsPath string
 	}
 
 	GINConfig struct {
@@ -64,8 +61,8 @@ func New() *Config {
 			logger.Fatal("hash envs", err.Error())
 		}
 
-		if err := envconfig.Process("minio", &config.Minio); err != nil {
-			logger.Fatal("minio", err.Error())
+		if err := envconfig.Process("gdrive", &config.GDrive); err != nil {
+			logger.Fatal("gdrive", err.Error())
 		}
 
 		if err := envconfig.Process("gin", &config.GIN); err != nil {
