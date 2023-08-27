@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+
 	"github.com/zenorachi/dynamic-user-segmentation/internal/config"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/logger"

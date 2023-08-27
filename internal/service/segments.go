@@ -107,8 +107,3 @@ func (s *SegmentsService) isSegmentExists(ctx context.Context, name string) (boo
 
 	return true, nil
 }
-
-func (s *SegmentsService) isUserExists(ctx context.Context, userId int) bool {
-	_, err := s.usersRepo.GetByID(ctx, userId)
-	return !errors.Is(err, sql.ErrNoRows)
-}

@@ -1,0 +1,18 @@
+basePath: /
+host: localhost:8080
+info:
+  contact:
+    email: msonkin33@gmail.com
+    name: Maksim Sonkin
+  description: This is a service for segmenting users with the ability to automatically
+    add and remove users from segments.
+  title: Dynamic User Segmentation Service
+  version: "1.0"
+paths: {}
+securityDefinitions:
+  JWT:
+    description: JWT token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

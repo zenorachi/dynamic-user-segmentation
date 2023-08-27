@@ -3,12 +3,13 @@ package app
 import (
 	"context"
 	"errors"
-	"github.com/zenorachi/dynamic-user-segmentation/internal/service/storage"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/zenorachi/dynamic-user-segmentation/internal/service/storage"
 
 	"github.com/zenorachi/dynamic-user-segmentation/internal/config"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/database"
@@ -25,6 +26,18 @@ import (
 const (
 	shutdownTimeout = 5 * time.Second
 )
+
+// @title           			Dynamic User Segmentation Service
+// @version         			1.0
+// @description     			This is a service for segmenting users with the ability to automatically add and remove users from segments.
+// @contact.name   				Maksim Sonkin
+// @contact.email  				msonkin33@gmail.com
+// @host      					localhost:8080
+// @BasePath  					/
+// @securityDefinitions.apikey  JWT
+// @in                          header
+// @name                        Authorization
+// @description					JWT token
 
 func Run(cfg *config.Config) {
 	/* DO MIGRATIONS */

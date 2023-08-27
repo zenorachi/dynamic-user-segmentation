@@ -5,10 +5,11 @@ import (
 	"context"
 	"encoding/csv"
 	"fmt"
+	"time"
+
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/repository"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/service/storage"
-	"time"
 )
 
 type ReportsService struct {

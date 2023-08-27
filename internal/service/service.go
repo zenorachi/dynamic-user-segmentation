@@ -2,8 +2,9 @@ package service
 
 import (
 	"context"
-	"github.com/zenorachi/dynamic-user-segmentation/internal/service/storage"
 	"time"
+
+	"github.com/zenorachi/dynamic-user-segmentation/internal/service/storage"
 
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/repository"

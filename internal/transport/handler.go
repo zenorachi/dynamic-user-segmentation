@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	swagFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/config"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/service"
 	v1 "github.com/zenorachi/dynamic-user-segmentation/internal/transport/http/v1"
@@ -30,6 +32,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swagFiles.Handler))
 
 	h.initAPI(router)
 

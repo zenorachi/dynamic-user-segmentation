@@ -1,0 +1,23 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a service for segmenting users with the ability to automatically add and remove users from segments.",
+        "title": "Dynamic User Segmentation Service",
+        "contact": {
+            "name": "Maksim Sonkin",
+            "email": "msonkin33@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {},
+    "securityDefinitions": {
+        "JWT": {
+            "description": "JWT token",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
