@@ -34,7 +34,7 @@ type (
 	}
 
 	GDriveConfig struct {
-		CredentialsPath string
+		Credentials string
 	}
 
 	GINConfig struct {

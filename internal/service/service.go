@@ -44,7 +44,8 @@ type (
 	}
 
 	Reports interface {
-		//TODO тут хранить всю суету (провайдера, вызывать метода репозитория операций и кайфовать, добавить методы создания файлы)
+		CreateReportFile(ctx context.Context, year, month int, userIDs ...int) ([]byte, error)
+		CreateReportLink(ctx context.Context, year, month int, userIDs ...int) (string, error)
 	}
 )
 
@@ -52,6 +53,7 @@ type Services struct {
 	Users
 	Segments
 	Operations
+	Reports
 }
 
 type Deps struct {
@@ -60,13 +62,14 @@ type Deps struct {
 	TokenManager    auth.TokenManager
 	AccessTokenTTL  time.Duration
 	RefreshTokenTTL time.Duration
-	Storage         storage.Provider
+	Storage         *storage.GDriveStorage
 }
 
 func New(deps Deps) *Services {
 	return &Services{
 		Users:      NewUsers(deps.Repos.Users, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL),
 		Segments:   NewSegments(deps.Repos.Segments, deps.Repos.Users),
-		Operations: NewOperations(deps.Repos.Users, deps.Repos.Segments, deps.Repos.Operations, deps.Storage),
+		Operations: NewOperations(deps.Repos.Users, deps.Repos.Segments, deps.Repos.Operations),
+		Reports:    NewReports(deps.Repos.Operations, deps.Storage),
 	}
 }
