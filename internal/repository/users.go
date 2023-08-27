@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 )
 
@@ -202,3 +201,158 @@ func (u *UsersRepository) SetSession(ctx context.Context, userId int, session en
 
 	return tx.Commit()
 }
+
+//func (u *UsersRepository) AutoAssignUsers(ctx context.Context) {
+//	tx, err := u.db.BeginTx(ctx, &sql.TxOptions{
+//		Isolation: sql.LevelSerializable,
+//		ReadOnly:  false,
+//	})
+//	if err != nil {
+//		logger.Error("auto assign", err)
+//		return
+//	}
+//
+//	usersCount, err := u.getTotalUsers(ctx)
+//	if err != nil {
+//		_ = tx.Rollback()
+//		logger.Error("auto assign", err)
+//		return
+//	}
+//
+//	segments, err := u.getSegments(ctx)
+//	if err != nil {
+//		_ = tx.Rollback()
+//		logger.Error("auto assign", err)
+//		return
+//	}
+//
+//	var (
+//		queryInsertRelation = fmt.Sprintf("INSERT INTO %s (user_id, segment_id) VALUES ($1, $2)",
+//			collectionRelations)
+//		queryInsertOperations = fmt.Sprintf("INSERT INTO %s (user_id, segment_name, type) VALUES ($1, $2, $3)",
+//			collectionOperations)
+//	)
+//
+//	for _, segment := range segments {
+//		limit := float64(usersCount) * segment.AssignPercent
+//		userIDs, err := u.getRandomUserIDs(ctx, int(limit))
+//		if err != nil {
+//			_ = tx.Rollback()
+//			logger.Error("auto assign", err)
+//			return
+//		}
+//
+//		for _, id := range userIDs {
+//			_, err = tx.ExecContext(ctx, queryInsertRelation, id, segment.ID)
+//			if err != nil && !u.isRelationExistsError(err) {
+//				_ = tx.Rollback()
+//				logger.Error("auto assign", err)
+//				return
+//			}
+//
+//			_, err = tx.ExecContext(ctx, queryInsertOperations, id, segment.Name, "added")
+//			if err != nil {
+//				_ = tx.Rollback()
+//				logger.Error("auto assign", err)
+//				return
+//			}
+//		}
+//	}
+//
+//	_ = tx.Commit()
+//}
+//
+//func (u *UsersRepository) getTotalUsers(ctx context.Context) (int, error) {
+//	tx, err := u.db.BeginTx(ctx, &sql.TxOptions{
+//		Isolation: sql.LevelSerializable,
+//		ReadOnly:  true,
+//	})
+//
+//	var (
+//		userCount       int
+//		queryCountUsers = fmt.Sprintf("SELECT COUNT(*) FROM %s", collectionUsers)
+//	)
+//
+//	err = tx.QueryRow(queryCountUsers).Scan(&userCount)
+//	if err != nil {
+//		_ = tx.Rollback()
+//		return 0, err
+//	}
+//
+//	return userCount, tx.Commit()
+//}
+//
+//func (u *UsersRepository) getSegments(ctx context.Context) ([]entity.Segment, error) {
+//	tx, err := u.db.BeginTx(ctx, &sql.TxOptions{
+//		Isolation: sql.LevelSerializable,
+//		ReadOnly:  true,
+//	})
+//
+//	var (
+//		segments         []entity.Segment
+//		queryGetSegments = fmt.Sprintf("SELECT * FROM %s WHERE assign_percent > 0.0",
+//			collectionSegments)
+//	)
+//
+//	rows, err := tx.Query(queryGetSegments)
+//	if err != nil {
+//		_ = tx.Rollback()
+//		return nil, err
+//	}
+//
+//	for rows.Next() {
+//		var segment entity.Segment
+//		err = rows.Scan(&segment.ID, &segment.Name, &segment.AssignPercent)
+//		if err != nil {
+//			_ = tx.Rollback()
+//			return nil, err
+//		}
+//
+//		segments = append(segments, segment)
+//	}
+//
+//	return segments, tx.Commit()
+//}
+//
+//func (u *UsersRepository) getRandomUserIDs(ctx context.Context, limit int) ([]int, error) {
+//	tx, err := u.db.BeginTx(ctx, &sql.TxOptions{
+//		Isolation: sql.LevelSerializable,
+//		ReadOnly:  true,
+//	})
+//
+//	var (
+//		userIDs          []int
+//		queryGetSegments = fmt.Sprintf("SELECT id FROM %s ORDER BY random() LIMIT %d",
+//			collectionSegments, limit)
+//	)
+//
+//	rows, err := tx.Query(queryGetSegments)
+//	if err != nil {
+//		_ = tx.Rollback()
+//		return nil, err
+//	}
+//
+//	for rows.Next() {
+//		var id int
+//		err = rows.Scan(&id)
+//		if err != nil {
+//			_ = tx.Rollback()
+//			return nil, err
+//		}
+//
+//		userIDs = append(userIDs, id)
+//	}
+//
+//	return userIDs, tx.Commit()
+//}
+//
+//func (u *UsersRepository) isRelationExistsError(err error) bool {
+//	var pqErr *pq.Error
+//	isPqError := errors.As(err, &pqErr)
+//
+//	if isPqError && pqErr.Code == "23505" {
+//		return true
+//	}
+//
+//	return false
+//}

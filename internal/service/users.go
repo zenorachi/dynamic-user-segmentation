@@ -41,7 +41,15 @@ func (u *UserService) SignUp(ctx context.Context, login, email, password string)
 	}
 
 	user := entity.NewUser(login, email, hashedPassword)
-	return u.repo.Create(ctx, user)
+
+	id, err := u.repo.Create(ctx, user)
+	if err != nil {
+		return 0, err
+	}
+
+	//go func() { u.repo.AutoAssignUsers(ctx) }()
+
+	return id, err
 }
 
 func (u *UserService) SignIn(ctx context.Context, login, password string) (Tokens, error) {

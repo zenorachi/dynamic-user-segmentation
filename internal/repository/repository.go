@@ -16,6 +16,7 @@ type (
 		GetByRefreshToken(ctx context.Context, refreshToken string) (entity.User, error)
 		GetActiveSegmentsByUserID(ctx context.Context, id int) ([]entity.Segment, error)
 		SetSession(ctx context.Context, userId int, session entity.Session) error
+		//AutoAssignUsers(ctx context.Context)
 	}
 
 	Segments interface {
