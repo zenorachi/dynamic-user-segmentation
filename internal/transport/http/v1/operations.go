@@ -25,7 +25,7 @@ func (h *Handler) initOperationsRoutes(api *gin.RouterGroup) {
 	}
 }
 
-type operationResponse struct {
+type operationsResponse struct {
 	IDs []int `json:"operation_ids"`
 }
 
@@ -74,7 +74,7 @@ func (h *Handler) addSegmentsById(c *gin.Context) {
 		go func() { h.services.Operations.DeleteAfterTTLBySegmentIDs(c, input.UserID, input.SegmentsIDs, ttl) }()
 	}
 
-	newResponse(c, http.StatusCreated, operationResponse{IDs: operationIDs})
+	newResponse(c, http.StatusCreated, operationsResponse{IDs: operationIDs})
 }
 
 type addSegmentsByNameInput struct {
@@ -122,7 +122,7 @@ func (h *Handler) addSegmentsByName(c *gin.Context) {
 		go func() { h.services.Operations.DeleteAfterTTLBySegmentNames(c, input.UserID, input.SegmentsNames, ttl) }()
 	}
 
-	newResponse(c, http.StatusCreated, operationResponse{IDs: operationIDs})
+	newResponse(c, http.StatusCreated, operationsResponse{IDs: operationIDs})
 }
 
 type deleteSegmentsByIdInput struct {
@@ -142,7 +142,7 @@ type deleteSegmentsByIdInput struct {
 // @Failure 500 {object} errorResponse
 // @Router /operations/delete_segments/ [delete]
 func (h *Handler) deleteSegmentsById(c *gin.Context) {
-	var input addSegmentsByIdInput
+	var input deleteSegmentsByIdInput
 
 	if err := c.BindJSON(&input); err != nil || len(input.SegmentsIDs) == 0 {
 		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidInput.Error())
@@ -160,7 +160,7 @@ func (h *Handler) deleteSegmentsById(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusOK, operationResponse{IDs: operationIDs})
+	newResponse(c, http.StatusOK, operationsResponse{IDs: operationIDs})
 }
 
 type deleteSegmentsByNameInput struct {
@@ -197,7 +197,7 @@ func (h *Handler) deleteSegmentsByName(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusOK, operationResponse{IDs: operationIDs})
+	newResponse(c, http.StatusOK, operationsResponse{IDs: operationIDs})
 }
 
 type getOperationsHistoryInput struct {

@@ -8,7 +8,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/config"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/service"
-	"github.com/zenorachi/dynamic-user-segmentation/internal/transport/http/v1"
+	v1 "github.com/zenorachi/dynamic-user-segmentation/internal/transport/http/v1"
 	"github.com/zenorachi/dynamic-user-segmentation/pkg/auth"
 )
 
