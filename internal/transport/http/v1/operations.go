@@ -10,7 +10,7 @@ import (
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 )
 
-var (
+const (
 	defaultPageSize = 5
 )
 
