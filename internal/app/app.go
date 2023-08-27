@@ -11,6 +11,7 @@ import (
 
 	"github.com/zenorachi/dynamic-user-segmentation/internal/service/storage"
 
+	_ "github.com/zenorachi/dynamic-user-segmentation/docs"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/config"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/database"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/repository"
