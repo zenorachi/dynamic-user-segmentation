@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"github.com/zenorachi/dynamic-user-segmentation/internal/service/storage"
 	"time"
 
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
@@ -39,6 +40,12 @@ type (
 		DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
 		DeleteAfterTTLBySegmentIDs(ctx context.Context, userId int, segmentIDs []int, ttl time.Duration)
 		DeleteAfterTTLBySegmentNames(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration)
+		GetOperationsHistory(ctx context.Context, year, month int, userIDs ...int) ([]entity.Operation, error)
+	}
+
+	Reports interface {
+		CreateReportFile(ctx context.Context, year, month int, userIDs ...int) ([]byte, error)
+		CreateReportLink(ctx context.Context, year, month int, userIDs ...int) (string, error)
 	}
 )
 
@@ -46,6 +53,7 @@ type Services struct {
 	Users
 	Segments
 	Operations
+	Reports
 }
 
 type Deps struct {
@@ -54,6 +62,7 @@ type Deps struct {
 	TokenManager    auth.TokenManager
 	AccessTokenTTL  time.Duration
 	RefreshTokenTTL time.Duration
+	Storage         *storage.GDriveStorage
 }
 
 func New(deps Deps) *Services {
@@ -61,5 +70,6 @@ func New(deps Deps) *Services {
 		Users:      NewUsers(deps.Repos.Users, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL),
 		Segments:   NewSegments(deps.Repos.Segments, deps.Repos.Users),
 		Operations: NewOperations(deps.Repos.Users, deps.Repos.Segments, deps.Repos.Operations),
+		Reports:    NewReports(deps.Repos.Operations, deps.Storage),
 	}
 }

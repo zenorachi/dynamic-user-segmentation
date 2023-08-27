@@ -125,6 +125,13 @@ func (o *OperationsService) DeleteAfterTTLBySegmentNames(ctx context.Context, us
 	}
 }
 
+func (o *OperationsService) GetOperationsHistory(ctx context.Context, year, month int, userIDs ...int) ([]entity.Operation, error) {
+	if year < 0 || month < 0 || year > time.Now().Year() || month > 12 {
+		return nil, entity.ErrInvalidHistoryPeriod
+	}
+	return o.operationsRepo.GetOperations(ctx, year, month, userIDs...)
+}
+
 func (o *OperationsService) isUserExists(ctx context.Context, userId int) bool {
 	_, err := o.usersRepo.GetByID(ctx, userId)
 	return !errors.Is(err, sql.ErrNoRows)

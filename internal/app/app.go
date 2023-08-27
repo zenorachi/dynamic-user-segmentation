@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	"github.com/zenorachi/dynamic-user-segmentation/internal/service/storage"
 	"net/http"
 	"os"
 	"os/signal"
@@ -51,6 +52,7 @@ func Run(cfg *config.Config) {
 		TokenManager:    tokenManager,
 		AccessTokenTTL:  cfg.Auth.AccessTokenTTL,
 		RefreshTokenTTL: cfg.Auth.RefreshTokenTTL,
+		Storage:         storage.NewProvider(&cfg.GDrive),
 	})
 
 	/* INIT HTTP HANDLER */
@@ -69,8 +71,10 @@ func Run(cfg *config.Config) {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 
+	/* WAITING FOR SYSCALL */
 	<-quit
 
+	/* SHUTTING DOWN */
 	logger.Info("server", "shutting down")
 	ctx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
 	defer cancel()

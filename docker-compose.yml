@@ -11,7 +11,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - bm-backend
+      - dus-backend
 
   postgres:
     container_name: postgres
@@ -24,11 +24,12 @@ services:
       - pg-data:/var/lib/postgresql/data
     restart: on-failure
     networks:
-      - bm-backend
+      - dus-backend
 
 networks:
-  bm-backend:
+  dus-backend:
     driver: bridge
 
 volumes:
   pg-data:
+  minio-data:

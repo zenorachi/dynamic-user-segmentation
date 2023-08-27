@@ -8,11 +8,11 @@ const (
 )
 
 type Operation struct {
-	ID          int
-	UserID      int
-	SegmentName string
-	Type        string
-	Date        time.Time
+	ID          int       `json:"id,omitempty"`
+	UserID      int       `json:"user_id,omitempty"`
+	SegmentName string    `json:"segment_name,omitempty"`
+	Type        string    `json:"type,omitempty"`
+	Date        time.Time `json:"date,omitempty"`
 }
 
 func NewOperation(userId int, segmentName string, opType string) Operation {
