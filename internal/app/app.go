@@ -30,10 +30,13 @@ const (
 // @title           			Dynamic User Segmentation Service
 // @version         			1.0
 // @description     			This is a service for segmenting users with the ability to automatically add and remove users from segments.
+
 // @contact.name   				Maksim Sonkin
 // @contact.email  				msonkin33@gmail.com
+
 // @host      					localhost:8080
 // @BasePath  					/
+
 // @securityDefinitions.apikey  JWT
 // @in                          header
 // @name                        Authorization

@@ -17,6 +17,8 @@ func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
 		users.POST("/sign-up", h.signUp)
 		users.POST("/sign-in", h.signIn)
 		users.GET("/refresh", h.refresh)
+	}
+	{
 		users.GET("/active_segments/:user_id", h.userIdentity, h.getActiveSegments)
 	}
 }
@@ -27,6 +29,17 @@ type signUpInput struct {
 	Password string `json:"password" binding:"required,min=8,max=64"`
 }
 
+// @Summary User SignUp
+// @Description create user account
+// @Tags users-auth
+// @Accept json
+// @Produce json
+// @Param input body signUpInput true "input"
+// @Success 201 {object} map[string]any
+// @Failure 400 {object} errorResponse
+// @Failure 409 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Router /users/sign-up [post]
 func (h *Handler) signUp(c *gin.Context) {
 	var input signUpInput
 	if err := c.BindJSON(&input); err != nil {
@@ -44,7 +57,7 @@ func (h *Handler) signUp(c *gin.Context) {
 		return
 	}
 
-	newResponse(c, http.StatusOK, "id", id)
+	newResponse(c, http.StatusCreated, "id", id)
 }
 
 type signInInput struct {

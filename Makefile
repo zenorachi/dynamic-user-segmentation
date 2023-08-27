@@ -38,7 +38,7 @@ lint:
 	golangci-lint run
 
 swag:
-	swag init -g ./internal/app/app.go
+	 swag init -g internal/app/app.go
 
 clean:
 	rm -rf ./.bin

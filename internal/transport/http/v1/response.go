@@ -12,7 +12,11 @@ func newResponse(c *gin.Context, statusCode int, key string, msg any) {
 	c.JSON(statusCode, response{key: msg})
 }
 
+type errorResponse struct {
+	Error string `json:"error"`
+}
+
 func newErrorResponse(c *gin.Context, statusCode int, err string) {
 	logger.Error(c.Request.RequestURI, err)
-	c.AbortWithStatusJSON(statusCode, response{"error": err})
+	c.AbortWithStatusJSON(statusCode, errorResponse{Error: err})
 }

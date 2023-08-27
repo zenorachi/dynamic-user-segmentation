@@ -8,6 +8,9 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    volumes:
+      - ./secrets:/root/secrets
+      - ./scripts:/root/scripts
     depends_on:
       - postgres
     networks:

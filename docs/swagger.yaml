@@ -1,4 +1,28 @@
 basePath: /
+definitions:
+  v1.errorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  v1.signUpInput:
+    properties:
+      email:
+        maxLength: 64
+        type: string
+      login:
+        maxLength: 64
+        minLength: 2
+        type: string
+      password:
+        maxLength: 64
+        minLength: 8
+        type: string
+    required:
+    - email
+    - login
+    - password
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -8,10 +32,44 @@ info:
     add and remove users from segments.
   title: Dynamic User Segmentation Service
   version: "1.0"
-paths: {}
+paths:
+  /users/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: create user account
+      parameters:
+      - description: input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.signUpInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      summary: User SignUp
+      tags:
+      - users-auth
 securityDefinitions:
   JWT:
-    description: JWT token
     in: header
     name: Authorization
     type: apiKey
