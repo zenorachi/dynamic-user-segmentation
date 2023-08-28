@@ -496,11 +496,12 @@ paths:
       summary: Get all segments
       tags:
       - segments
-  /api/v1/segments/:segment_id:
+  /api/v1/segments/{id}:
     get:
       description: getting segment by id
       parameters:
       - description: Segment ID
+        example: 1
         in: path
         name: segment_id
         required: true

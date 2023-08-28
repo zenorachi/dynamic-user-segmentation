@@ -76,12 +76,12 @@ func (s *SegmentsRepository) GetByID(ctx context.Context, id int) (entity.Segmen
 
 	var (
 		segment entity.Segment
-		query   = fmt.Sprintf("SELECT id, name FROM %s WHERE id = $1",
+		query   = fmt.Sprintf("SELECT * FROM %s WHERE id = $1",
 			collectionSegments)
 	)
 
 	err = tx.QueryRowContext(ctx, query, id).
-		Scan(&segment.ID, &segment.Name)
+		Scan(&segment.ID, &segment.Name, &segment.AssignPercent)
 	if err != nil {
 		_ = tx.Rollback()
 		return entity.Segment{}, err

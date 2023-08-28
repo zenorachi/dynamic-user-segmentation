@@ -106,7 +106,7 @@ type getSegmentByIdResponse struct {
 // @Success 200 {object} getSegmentByIdResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /api/v1/segments/:segment_id [get]
+// @Router /api/v1/segments/{id} [get]
 func (h *Handler) getSegmentById(c *gin.Context) {
 	paramId := strings.Trim(c.Param("segment_id"), "/")
 	id, err := strconv.Atoi(paramId)

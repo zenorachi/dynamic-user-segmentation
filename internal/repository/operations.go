@@ -118,7 +118,7 @@ func (o *OperationsRepository) DeleteBySegmentIDs(ctx context.Context, userId in
 		operationId          int
 		segmentName          string
 		queryGetSegmentName  = fmt.Sprintf("SELECT name FROM %s WHERE id = $1", collectionSegments)
-		queryDeleteRelation  = fmt.Sprintf("DELETE FROM %s WHERE segment_id = $1", collectionRelations)
+		queryDeleteRelation  = fmt.Sprintf("DELETE FROM %s WHERE user_id = $1 AND segment_id = $2", collectionRelations)
 		queryInsertOperation = fmt.Sprintf("INSERT INTO %s (user_id, segment_name, type) VALUES ($1, $2, $3) RETURNING id",
 			collectionOperations)
 	)
@@ -130,7 +130,7 @@ func (o *OperationsRepository) DeleteBySegmentIDs(ctx context.Context, userId in
 			return nil, err
 		}
 
-		result, err := tx.ExecContext(ctx, queryDeleteRelation, segmentId)
+		result, err := tx.ExecContext(ctx, queryDeleteRelation, userId, segmentId)
 		if err != nil {
 			_ = tx.Rollback()
 			return nil, err
@@ -166,7 +166,7 @@ func (o *OperationsRepository) DeleteBySegmentNames(ctx context.Context, userId 
 		operationsIDs        []int
 		operationId          int
 		queryGetSegmentId    = fmt.Sprintf("SELECT id FROM %s WHERE name = $1", collectionSegments)
-		queryDeleteRelation  = fmt.Sprintf("DELETE FROM %s WHERE segment_id = $1", collectionRelations)
+		queryDeleteRelation  = fmt.Sprintf("DELETE FROM %s WHERE user_id = $1 AND segment_id = $2", collectionRelations)
 		queryInsertOperation = fmt.Sprintf("INSERT INTO %s (user_id, segment_name, type) VALUES ($1, $2, $3) RETURNING id",
 			collectionOperations)
 	)
@@ -178,7 +178,7 @@ func (o *OperationsRepository) DeleteBySegmentNames(ctx context.Context, userId 
 			return nil, err
 		}
 
-		result, err := tx.ExecContext(ctx, queryDeleteRelation, segmentId)
+		result, err := tx.ExecContext(ctx, queryDeleteRelation, userId, segmentId)
 		if err != nil {
 			_ = tx.Rollback()
 			return nil, err
