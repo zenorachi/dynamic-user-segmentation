@@ -20,7 +20,9 @@
 - [JWT Аутентификация](https://jwt.io/)
 
 ### Установка
-`go get github.com/zenorachi/dynamic-user-segmentation`
+```shell
+git clone git@github.com/zenorachi/dynamic-user-segmentation.git
+```
 
 ### Начало работы
 1. **Чтобы сервис корректно обрабатывал запросы на получение ссылки на csv-файл,

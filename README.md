@@ -18,7 +18,9 @@
 - [JWT Authentication](https://jwt.io/)
 
 ### Installation
-`go get github.com/zenorachi/dynamic-user-segmentation`
+```shell
+git clone git@github.com/zenorachi/dynamic-user-segmentation.git
+```
 
 ### Getting started
 1. **In order for the service to correctly process requests for obtaining a link to a CSV file, it is necessary to:**
