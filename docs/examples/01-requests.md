@@ -4,7 +4,7 @@
 
 ## Users
 
-### 1. Registration:
+### 1. Registration
 * Request example:
 ```shell
 curl -X 'POST' \
@@ -24,7 +24,7 @@ curl -X 'POST' \
 }
 ```
 
-### 2. Authentication:
+### 2. Authentication
 * Request example:
 ```shell
 curl -X 'POST' \
@@ -43,7 +43,7 @@ curl -X 'POST' \
 }
 ```
 
-### 3. Refresh token:
+### 3. Refresh token
 * Request example:
 ```shell
 curl -X 'GET' \
@@ -61,7 +61,7 @@ curl -X 'GET' \
 
 ## Segments
 
-### 1. Создание сегмента:
+### 1. Create a segment
 * Request example:
 ```shell
 curl -X 'POST' \
@@ -79,7 +79,7 @@ curl -X 'POST' \
   "id": 1
 }
 ```
-#### 1.1 Создание сегмента с указанием процента автоматического добавления:
+### 2. Create a segment with an indication of the percentage of automatic addition
 * Request example:
 ```shell
 curl -X 'POST' \
@@ -99,7 +99,7 @@ curl -X 'POST' \
 }
 ```
 
-### 2. Удаление сегмента по имени:
+### 3. Delete a segment by name
 * Request example:
 ```shell
 curl -X 'DELETE' \
@@ -112,9 +112,9 @@ curl -X 'DELETE' \
 }'
 ```
 * Response example отсутствует
-> **Пояснение:** если удаление прошло успешно, сервер вернет 204 код (NO CONTENT).
+> **Hint:** if the deletion was successful, the server will return code 204 (NO CONTENT).
 
-### 3. Удаление сегмента по ID:
+### 4. Delete a segment by ID
 * Request example:
 ```shell
 curl -X 'DELETE' \
@@ -127,9 +127,9 @@ curl -X 'DELETE' \
 }'
 ```
 * Response example отсутствует
-> **Пояснение:** если удаление прошло успешно, сервер вернет 204 код (NO CONTENT).
+> **Hint:** if the deletion was successful, the server will return code 204 (NO CONTENT).
 
-### 4. Получение всех сегментов:
+### 5. Get all segments
 * Request example:
 ```shell
 curl -X 'GET' \
@@ -159,8 +159,8 @@ curl -X 'GET' \
 }
 ```
 
-### 5. Получение сегмента по ID:
->**Подсказка:** ID сегмента указывается параметром в URL.
+### 6. Get a segment by ID
+>**Hint:** the segment ID is specified as a parameter in the URL.
 * Request example:
 ```shell
 curl -X 'GET' \
@@ -181,8 +181,8 @@ curl -X 'GET' \
 
 ---
 
-## Операции добавления / удаления сегментов пользователя:
-### 1. Добавление сегментов пользователю по списку имен:
+## User segment addition / removal operations
+### 1. Add segments to a user by a list of names
 * Request example:
 ```shell
 curl -X 'POST' \
@@ -207,7 +207,7 @@ curl -X 'POST' \
   ]
 }
 ```
-#### 1.1 Добавление сегментов пользователю по списку имен с указанием времени жизни:
+### 2. Add segments to the user by a list of names with an indication of the ttl
 * Request example:
 ```shell
 curl -X 'POST' \
@@ -234,7 +234,7 @@ curl -X 'POST' \
 }
 ```
 
-### 2. Добавление сегментов пользователю по списку ID:
+### 3. Add segments to a user by a list of ID
 * Request example:
 ```shell
 curl -X 'POST' \
@@ -259,7 +259,7 @@ curl -X 'POST' \
   ]
 }
 ```
-#### 2.1 Добавление сегментов пользователю по списку ID с указанием времени жизни:
+### 4. Add segments to the user by a list of ID with an indication of the ttl
 * Request example:
 ```shell
 curl -X 'POST' \
@@ -286,7 +286,7 @@ curl -X 'POST' \
 }
 ```
 
-### 3. Удаление сегментов у пользователя по списку имен:
+### 5. Delete segments from a user by a list of names
 * Request example:
 ```shell
 curl -X 'DELETE' \
@@ -311,7 +311,7 @@ curl -X 'DELETE' \
   ]
 }
 ```
-### 4. Удаление сегментов у пользователя по списку ID:
+### 6. Delete segments from a user by a list of ID
 * Request example:
 ```shell
 curl -X 'DELETE' \
@@ -339,9 +339,9 @@ curl -X 'DELETE' \
 
 ---
 
-## Отношения пользователи-сегменты
-### 1. Получение активных сегментов пользователя
->**Подсказка:** ID пользователя указывается параметром в URL.
+## User-segment relations
+### 1. Get active segments of a user
+>**Hint:** the user ID is specified as a parameter in the URL.
 * Request example:
 ```shell
 curl -X 'GET' \
@@ -360,7 +360,7 @@ curl -X 'GET' \
 }
 ```
 
-### 2. Получение активных пользователей сегмента:
+### 2. Get active users of a segment
 * Request example:
 ```shell
 curl -X 'GET' \
@@ -383,9 +383,9 @@ curl -X 'GET' \
 
 ---
 
-## Отчеты
-### 1. Получение истории операций:
->**Подсказка:** В запросе есть возможность указать размер страницы ("page_size": `size`) (сколько операций будет отображаться), а также не указывать user_ids (в таком случае вернется история по всем операциям для всех пользователей).
+## Reports
+### 1. Get operation history
+>**Hint:** in the request, it is possible to specify the page size ("page_size": `size`) (how many operations will be displayed), and also not to specify user_ids (in this case, the history of all operations for all users will be returned).
 * Request example:
 ```shell
 curl -X 'GET' \
@@ -433,8 +433,8 @@ curl -X 'GET' \
 }
 ```
 
-### 2. Получение истории операций в виде csv-файла:
->**Подсказка:** В запросе есть также не указывать user_ids (в таком случае вернется файл со всеми операциями для всех пользователей).
+### 2. Get operation history in the form of a CSV file
+>**Подсказка:** there is also no need to specify user_ids in the request (in this case, a file with all operations for all users will be returned).
 * Request example:
 ```shell
 curl -X 'GET' \
@@ -461,8 +461,8 @@ user-id,segment-name,type,date
 1,AVITO-THE-BEST,added,2023-08-28 10:40:56
 ```
 
-### 3. Получение истории операций в виде ссылки на csv-файл:
->**Подсказка:** В запросе есть также не указывать user_ids (в таком случае вернется файл со всеми операциями для всех пользователей).
+### 3. Get operation history in the form of a CSV file link
+>**Hint:** there is also no need to specify user_ids in the request (in this case, a link to the file with all operations for all users will be returned).
 * Request example:
 ```shell
 curl -X 'GET' \

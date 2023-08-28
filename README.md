@@ -65,34 +65,37 @@ http://localhost:8080/docs/index.html to access the Swagger documentation.**
 
 ---
 
-### Examples of requests
+### [Examples of requests](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md)
 
-**Users**
-* Registration
-* Authentication
-* Refresh token
+**[Users](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#Users)**
+* [Registration](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#1-registration)
+* [Authentication](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#2-authentication)
+* [Refresh token](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#3-refresh-token)
 
-**Segments**
-* Create a segment
-* Delete a segment by name
-* Delete a segment by ID
-* Get all segments
-* Get a segment by ID
+**[Segments](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#Segments)**
+* [Create a segment](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#1-create-a-segment)
+* [Create a segment with an indication of the percentage of automatic addition](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#2-create-a-segment-with-an-indication-of-the-percentage-of-automatic-addition)
+* [Delete a segment by name](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#3-delete-a-segment-by-name)
+* [Delete a segment by ID](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#4-delete-a-segment-by-id)
+* [Get all segments](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#5-get-all-segments)
+* [Get a segment by ID](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#6-get-a-segment-by-id)
 
-**User segment addition/removal operations**
-* Adding segments to a user by a list of names
-* Adding segments to a user by a list of ID
-* Deleting segments from a user by a list of names
-* Deleting segments from a user by a list of ID
+**[User segment addition / removal operations](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#user-segment-addition--removal-operations)**
+* [Add segments to a user by a list of names](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#1-add-segments-to-a-user-by-a-list-of-names)
+* [Add segments to the user by a list of names with an indication of the ttl](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#2-add-segments-to-the-user-by-a-list-of-names-with-an-indication-of-the-ttl)
+* [Add segments to a user by a list of ID](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#3-add-segments-to-a-user-by-a-list-of-id)
+* [Add segments to the user by a list of ID with an indication of the ttl](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#4-add-segments-to-the-user-by-a-list-of-id-with-an-indication-of-the-ttl)
+* [Delete segments from a user by a list of names](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#5-delete-segments-from-a-user-by-a-list-of-names)
+* [Delete segments from a user by a list of ID](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#6-delete-segments-from-a-user-by-a-list-of-id)
 
-**User-segment relations**
-* Getting active segments of a user
-* Getting active users of a segment
+**[User-segment relations](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#user-segment-relations)**
+* [Get active segments of a user](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#1-get-active-segments-of-a-user)
+* [Get active users of a segment](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#2-get-active-users-of-a-segment)
 
-**Reports**
-* Getting operation history.
-* Getting operation history in the form of a CSV file
-* Getting operation history in the form of a CSV file link
+**[Reports](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#Reports)**
+* [Getting operation history](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#1-get-operation-history)
+* [Getting operation history in the form of a CSV file](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#2-get-operation-history-in-the-form-of-a-csv-file)
+* [Getting operation history in the form of a CSV file link](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md#3-get-operation-history-in-the-form-of-a-csv-file-link)
 
 ---
 
