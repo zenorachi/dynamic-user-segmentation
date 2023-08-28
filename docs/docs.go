@@ -23,7 +23,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "addition a user to segments by id",
@@ -74,7 +74,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "addition a user to segments by name",
@@ -125,7 +125,7 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "delete user-segments relation by ids",
@@ -176,7 +176,7 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "delete user-segments relation by names",
@@ -227,7 +227,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting operations history",
@@ -278,7 +278,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting history in csv format",
@@ -329,7 +329,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting history by link to csv-file",
@@ -380,7 +380,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting all segments",
@@ -417,7 +417,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting segment by id",
@@ -463,7 +463,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting active users by id",
@@ -509,7 +509,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "create new segment",
@@ -566,7 +566,7 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "deletion segment by name",
@@ -611,7 +611,7 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "deletion segment by id",
@@ -656,7 +656,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "get active segments for a specific user by user_id",
@@ -1193,7 +1193,7 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "JWT": {
+        "Bearer": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

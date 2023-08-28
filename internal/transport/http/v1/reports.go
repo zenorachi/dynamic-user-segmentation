@@ -23,7 +23,7 @@ type getReportInput struct {
 }
 
 // @Summary Get CSV-File History
-// @Security JWT
+// @Security Bearer
 // @Description getting history in csv format
 // @Tags reports
 // @Accept json
@@ -58,7 +58,7 @@ type getReportLinkResponse struct {
 }
 
 // @Summary Get CSV-File Link
-// @Security JWT
+// @Security Bearer
 // @Description getting history by link to csv-file
 // @Tags reports
 // @Accept json

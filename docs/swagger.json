@@ -16,7 +16,7 @@
             "post": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "addition a user to segments by id",
@@ -67,7 +67,7 @@
             "post": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "addition a user to segments by name",
@@ -118,7 +118,7 @@
             "delete": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "delete user-segments relation by ids",
@@ -169,7 +169,7 @@
             "delete": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "delete user-segments relation by names",
@@ -220,7 +220,7 @@
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting operations history",
@@ -271,7 +271,7 @@
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting history in csv format",
@@ -322,7 +322,7 @@
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting history by link to csv-file",
@@ -373,7 +373,7 @@
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting all segments",
@@ -410,7 +410,7 @@
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting segment by id",
@@ -456,7 +456,7 @@
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "getting active users by id",
@@ -502,7 +502,7 @@
             "post": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "create new segment",
@@ -559,7 +559,7 @@
             "delete": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "deletion segment by name",
@@ -604,7 +604,7 @@
             "delete": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "deletion segment by id",
@@ -649,7 +649,7 @@
             "get": {
                 "security": [
                     {
-                        "JWT": []
+                        "Bearer": []
                     }
                 ],
                 "description": "get active segments for a specific user by user_id",
@@ -1186,7 +1186,7 @@
         }
     },
     "securityDefinitions": {
-        "JWT": {
+        "Bearer": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

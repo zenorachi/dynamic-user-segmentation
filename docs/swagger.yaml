@@ -277,7 +277,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Add a user to segments by id
       tags:
       - operations
@@ -309,7 +309,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Add a user to segments by name
       tags:
       - operations
@@ -341,7 +341,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Delete User From Segments by ids
       tags:
       - operations
@@ -373,7 +373,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Delete User From Segments By Names
       tags:
       - operations
@@ -405,7 +405,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Get Operations History
       tags:
       - operations
@@ -437,7 +437,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Get CSV-File History
       tags:
       - reports
@@ -469,7 +469,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Get CSV-File Link
       tags:
       - reports
@@ -492,7 +492,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Get all segments
       tags:
       - segments
@@ -521,7 +521,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Get Segment By ID
       tags:
       - segments
@@ -550,7 +550,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Get Active Users By ID
       tags:
       - segment-users
@@ -586,7 +586,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Create segment
       tags:
       - segments
@@ -614,7 +614,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Delete Segment By Name
       tags:
       - segments
@@ -642,7 +642,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Delete Segment By ID
       tags:
       - segments
@@ -671,7 +671,7 @@ paths:
           schema:
             $ref: '#/definitions/v1.errorResponse'
       security:
-      - JWT: []
+      - Bearer: []
       summary: Get active segments for a user
       tags:
       - user-segments
@@ -761,7 +761,7 @@ paths:
       tags:
       - auth
 securityDefinitions:
-  JWT:
+  Bearer:
     in: header
     name: Authorization
     type: apiKey

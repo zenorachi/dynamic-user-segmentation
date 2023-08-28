@@ -36,7 +36,7 @@ type addSegmentsByIdInput struct {
 }
 
 // @Summary Add a user to segments by id
-// @Security JWT
+// @Security Bearer
 // @Description addition a user to segments by id
 // @Tags operations
 // @Accept json
@@ -84,7 +84,7 @@ type addSegmentsByNameInput struct {
 }
 
 // @Summary Add a user to segments by name
-// @Security JWT
+// @Security Bearer
 // @Description addition a user to segments by name
 // @Tags operations
 // @Accept json
@@ -131,7 +131,7 @@ type deleteSegmentsByIdInput struct {
 }
 
 // @Summary Delete User From Segments by ids
-// @Security JWT
+// @Security Bearer
 // @Description delete user-segments relation by ids
 // @Tags operations
 // @Accept json
@@ -169,7 +169,7 @@ type deleteSegmentsByNameInput struct {
 }
 
 // @Summary Delete User From Segments By Names
-// @Security JWT
+// @Security Bearer
 // @Description delete user-segments relation by names
 // @Tags operations
 // @Accept json
@@ -212,7 +212,7 @@ type getOperationsHistoryResponse struct {
 }
 
 // @Summary Get Operations History
-// @Security JWT
+// @Security Bearer
 // @Description getting operations history
 // @Tags operations
 // @Accept json

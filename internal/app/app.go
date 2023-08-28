@@ -38,10 +38,10 @@ const (
 // @host      					localhost:8080
 // @BasePath  					/
 
-// @securityDefinitions.apikey  JWT
-// @in                          header
-// @name                        Authorization
-// @description					JWT token
+// @securityDefinitions.apikey  Bearer
+// @in 						    header
+// @name 					    Authorization
+// @description					Type "Bearer" followed by a space and JWT token.
 
 func Run(cfg *config.Config) {
 	/* DO MIGRATIONS */

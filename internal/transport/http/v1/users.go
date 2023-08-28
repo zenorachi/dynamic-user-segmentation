@@ -139,7 +139,7 @@ type getActiveSegmentsResponse struct {
 }
 
 // @Summary Get active segments for a user
-// @Security JWT
+// @Security Bearer
 // @Description get active segments for a specific user by user_id
 // @Tags user-segments
 // @Produce json

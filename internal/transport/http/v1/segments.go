@@ -33,7 +33,7 @@ type createSegmentResponse struct {
 }
 
 // @Summary Create segment
-// @Security JWT
+// @Security Bearer
 // @Description create new segment
 // @Tags segments
 // @Accept json
@@ -71,7 +71,7 @@ type getAllSegmentsResponse struct {
 }
 
 // @Summary Get all segments
-// @Security JWT
+// @Security Bearer
 // @Description getting all segments
 // @Tags segments
 // @Produce json
@@ -98,7 +98,7 @@ type getSegmentByIdResponse struct {
 }
 
 // @Summary Get Segment By ID
-// @Security JWT
+// @Security Bearer
 // @Description getting segment by id
 // @Tags segments
 // @Produce json
@@ -133,7 +133,7 @@ type getActiveUsersResponse struct {
 }
 
 // @Summary Get Active Users By ID
-// @Security JWT
+// @Security Bearer
 // @Description getting active users by id
 // @Tags segment-users
 // @Produce json
@@ -168,7 +168,7 @@ type deleteByNameInput struct {
 }
 
 // @Summary Delete Segment By Name
-// @Security JWT
+// @Security Bearer
 // @Description deletion segment by name
 // @Tags segments
 // @Accept json
@@ -202,7 +202,7 @@ type deleteByIdInput struct {
 }
 
 // @Summary Delete Segment By ID
-// @Security JWT
+// @Security Bearer
 // @Description deletion segment by id
 // @Tags segments
 // @Accept json
