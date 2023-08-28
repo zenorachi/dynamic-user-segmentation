@@ -115,7 +115,6 @@ func (u *UserService) createSession(ctx context.Context, userId int) (Tokens, er
 		return Tokens{}, err
 	}
 
-	//session := entity.NewSession(tokens.RefreshToken, time.Now().Add(u.refreshTokenTTL))
 	return tokens, u.repo.SetSession(ctx, userId, entity.Session{
 		RefreshToken: tokens.RefreshToken,
 		ExpiresAt:    time.Now().Add(u.refreshTokenTTL),
