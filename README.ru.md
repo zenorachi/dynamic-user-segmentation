@@ -27,7 +27,7 @@ git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 ### Начало работы
 1. **Чтобы сервис корректно обрабатывал запросы на получение ссылки на csv-файл,
    необходимо:**
-    * Зарегистрировать приложение в [Google Cloud Platform](https://developers.google.com/workspace/guides/create-project);
+    * Зарегистрировать приложение в [Google Cloud](https://developers.google.com/workspace/guides/create-project);
     * Создать сервисный аккаунт и секретный ключ для него;
     * Добавить в директорию `secrets` полученный секретный ключ;
     * Изменить переменную окружения `GDRIVE_CREDENTIALS` в .env.
