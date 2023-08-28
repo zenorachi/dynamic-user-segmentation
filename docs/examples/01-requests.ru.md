@@ -1,11 +1,10 @@
-# Examples of requests
+# Примеры запросов
 
 ---
 
-## Users
-
-### 1. Registration:
-* Request example:
+## Пользователи
+### 1. Регистрация
+* Пример запроса:
 ```shell
 curl -X 'POST' \
   'http://localhost:8080/api/v1/users/sign-up' \
@@ -17,15 +16,15 @@ curl -X 'POST' \
   "password": "qwerty123"
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "id": 1
 }
 ```
 
-### 2. Authentication:
-* Request example:
+### 2. Аутентификация
+* Пример запроса:
 ```shell
 curl -X 'POST' \
   'http://localhost:8080/api/v1/users/sign-in' \
@@ -36,21 +35,21 @@ curl -X 'POST' \
   "password": "qwerty123"
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMyMzA4NDMsInN1YiI6IjEifQ.wJAI1tRNd3NFQ-KYw5e3Iy8RuXHRqIJoqeTAwXdMbNc"
 }
 ```
 
-### 3. Refresh token:
-* Request example:
+### 3. Обновление токена
+* Пример запроса:
 ```shell
 curl -X 'GET' \
   'http://localhost:8080/api/v1/users/refresh' \
   -H 'accept: application/json'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMyMzA4ODAsInN1YiI6IjEifQ.abo2LM6Xu13IHueO3Ia8K1UJh966S89QOifQ4cpPwqU"
@@ -59,10 +58,9 @@ curl -X 'GET' \
 
 ---
 
-## Segments
-
-### 1. Создание сегмента:
-* Request example:
+## Сегменты
+### 1. Создание сегмента
+* Пример запроса:
 ```shell
 curl -X 'POST' \
   'http://localhost:8080/api/v1/segments/create' \
@@ -73,14 +71,14 @@ curl -X 'POST' \
   "name": "AVITO-INTERNS"
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "id": 1
 }
 ```
-#### 1.1 Создание сегмента с указанием процента автоматического добавления:
-* Request example:
+### 2. Создание сегмента с указанием процента автоматического добавления
+* Пример запроса:
 ```shell
 curl -X 'POST' \
   'http://localhost:8080/api/v1/segments/create' \
@@ -92,15 +90,15 @@ curl -X 'POST' \
   "assign_percent": 50
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "id": 1
 }
 ```
 
-### 2. Удаление сегмента по имени:
-* Request example:
+### 3. Удаление сегмента по имени
+* Пример запроса:
 ```shell
 curl -X 'DELETE' \
   'http://localhost:8080/api/v1/segments/delete/' \
@@ -111,11 +109,11 @@ curl -X 'DELETE' \
   "name": "TEST-PERCENT-10"
 }'
 ```
-* Response example отсутствует
+* Пример ответа отсутствует
 > **Пояснение:** если удаление прошло успешно, сервер вернет 204 код (NO CONTENT).
 
-### 3. Удаление сегмента по ID:
-* Request example:
+### 4. Удаление сегмента по ID
+* Пример запроса:
 ```shell
 curl -X 'DELETE' \
   'http://localhost:8080/api/v1/segments/delete_by_id/' \
@@ -126,18 +124,18 @@ curl -X 'DELETE' \
   "id": 8
 }'
 ```
-* Response example отсутствует
+* Пример ответа отсутствует
 > **Пояснение:** если удаление прошло успешно, сервер вернет 204 код (NO CONTENT).
 
-### 4. Получение всех сегментов:
-* Request example:
+### 5. Получение всех сегментов
+* Пример запроса:
 ```shell
 curl -X 'GET' \
   'http://localhost:8080/api/v1/segments/' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMyMzU5MDIsInN1YiI6IjEifQ.DvE1rs1OVyocP669GtCmD2Lk7DwbH37jsRePhfCP9Nk'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "segments": [
@@ -159,16 +157,16 @@ curl -X 'GET' \
 }
 ```
 
-### 5. Получение сегмента по ID:
+### 6. Получение сегмента по ID
 >**Подсказка:** ID сегмента указывается параметром в URL.
-* Request example:
+* Пример запроса:
 ```shell
 curl -X 'GET' \
   'http://localhost:8080/api/v1/segments/10' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4Mjg0ODYsInN1YiI6IjEifQ.n1r4juv8EIvFdZr89Hb_9DRTa5vp2csaITWx-P3Le30'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "segment": {
@@ -181,9 +179,9 @@ curl -X 'GET' \
 
 ---
 
-## Операции добавления / удаления сегментов пользователя:
-### 1. Добавление сегментов пользователю по списку имен:
-* Request example:
+## Операции добавления / удаления сегментов пользователя
+### 1. Добавление сегментов пользователю по списку имен
+* Пример запроса:
 ```shell
 curl -X 'POST' \
   'http://localhost:8080/api/v1/operations/add_segments_by_names/' \
@@ -198,7 +196,7 @@ curl -X 'POST' \
   ]
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "operation_ids": [
@@ -207,8 +205,8 @@ curl -X 'POST' \
   ]
 }
 ```
-#### 1.1 Добавление сегментов пользователю по списку имен с указанием времени жизни:
-* Request example:
+### 2. Добавление сегментов пользователю по списку имен с указанием времени жизни
+* Пример запроса:
 ```shell
 curl -X 'POST' \
   'http://localhost:8080/api/v1/operations/add_segments_by_names/' \
@@ -224,7 +222,7 @@ curl -X 'POST' \
   "ttl": "1h"
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "operation_ids": [
@@ -234,8 +232,8 @@ curl -X 'POST' \
 }
 ```
 
-### 2. Добавление сегментов пользователю по списку ID:
-* Request example:
+### 3. Добавление сегментов пользователю по списку ID
+* Пример запроса:
 ```shell
 curl -X 'POST' \
   'http://localhost:8080/api/v1/operations/add_segments_by_names/' \
@@ -250,7 +248,7 @@ curl -X 'POST' \
   ]
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "operation_ids": [
@@ -259,8 +257,8 @@ curl -X 'POST' \
   ]
 }
 ```
-#### 2.1 Добавление сегментов пользователю по списку ID с указанием времени жизни:
-* Request example:
+### 4. Добавление сегментов пользователю по списку ID с указанием времени жизни
+* Пример запроса:
 ```shell
 curl -X 'POST' \
   'http://localhost:8080/api/v1/operations/add_segments_by_names/' \
@@ -276,7 +274,7 @@ curl -X 'POST' \
   "ttl": "1h"
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "operation_ids": [
@@ -286,8 +284,8 @@ curl -X 'POST' \
 }
 ```
 
-### 3. Удаление сегментов у пользователя по списку имен:
-* Request example:
+### 5. Удаление сегментов у пользователя по списку имен
+* Пример запроса:
 ```shell
 curl -X 'DELETE' \
   'http://localhost:8080/api/v1/operations/delete_segments_by_names/' \
@@ -302,7 +300,7 @@ curl -X 'DELETE' \
   "user_id": 6
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "operation_ids": [
@@ -311,8 +309,8 @@ curl -X 'DELETE' \
   ]
 }
 ```
-### 4. Удаление сегментов у пользователя по списку ID:
-* Request example:
+### 6. Удаление сегментов у пользователя по списку ID
+* Пример запроса:
 ```shell
 curl -X 'DELETE' \
   'http://localhost:8080/api/v1/operations/delete_segments_by_names/' \
@@ -327,7 +325,7 @@ curl -X 'DELETE' \
   "user_id": 6
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "operation_ids": [
@@ -342,14 +340,14 @@ curl -X 'DELETE' \
 ## Отношения пользователи-сегменты
 ### 1. Получение активных сегментов пользователя
 >**Подсказка:** ID пользователя указывается параметром в URL.
-* Request example:
+* Пример запроса:
 ```shell
 curl -X 'GET' \
   'http://localhost:8080/api/v1/users/active_segments/1' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MzExMTQsInN1YiI6IjEifQ.Cnnk6GRGFbBcSv5kDOtLfVgE2L9vubHpcxw5urnC_0A'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "segments": [
@@ -360,15 +358,15 @@ curl -X 'GET' \
 }
 ```
 
-### 2. Получение активных пользователей сегмента:
-* Request example:
+### 2. Получение активных пользователей сегмента
+* Пример запроса:
 ```shell
 curl -X 'GET' \
   'http://localhost:8080/api/v1/segments/active_users/7' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MzExMTQsInN1YiI6IjEifQ.Cnnk6GRGFbBcSv5kDOtLfVgE2L9vubHpcxw5urnC_0A'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "users": [
@@ -384,9 +382,9 @@ curl -X 'GET' \
 ---
 
 ## Отчеты
-### 1. Получение истории операций:
+### 1. Получение истории операций
 >**Подсказка:** В запросе есть возможность указать размер страницы ("page_size": `size`) (сколько операций будет отображаться), а также не указывать user_ids (в таком случае вернется история по всем операциям для всех пользователей).
-* Request example:
+* Пример запроса:
 ```shell
 curl -X 'GET' \
   'http://localhost:8080/api/v1/operations/history' \
@@ -401,7 +399,7 @@ curl -X 'GET' \
   "month": 8
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "operations": [
@@ -433,9 +431,9 @@ curl -X 'GET' \
 }
 ```
 
-### 2. Получение истории операций в виде csv-файла:
+### 2. Получение истории операций в виде csv-файла
 >**Подсказка:** В запросе есть также не указывать user_ids (в таком случае вернется файл со всеми операциями для всех пользователей).
-* Request example:
+* Пример запроса:
 ```shell
 curl -X 'GET' \
   'http://localhost:8080/api/v1/reports/file' \
@@ -450,7 +448,7 @@ curl -X 'GET' \
   "month": 8
 }'
 ```
-* Response example:
+* Пример ответа:
 ```text
 user-id,segment-name,type,date
 1,TEST-PERCENT,added,2023-08-28 10:29:19
@@ -461,9 +459,9 @@ user-id,segment-name,type,date
 1,AVITO-THE-BEST,added,2023-08-28 10:40:56
 ```
 
-### 3. Получение истории операций в виде ссылки на csv-файл:
+### 3. Получение истории операций в виде ссылки на csv-файл
 >**Подсказка:** В запросе есть также не указывать user_ids (в таком случае вернется файл со всеми операциями для всех пользователей).
-* Request example:
+* Пример запроса:
 ```shell
 curl -X 'GET' \
   'http://localhost:8080/api/v1/reports/link' \
@@ -478,7 +476,7 @@ curl -X 'GET' \
   "month": 8
 }'
 ```
-* Response example:
+* Пример ответа:
 ```json
 {
   "link": "https://drive.google.com/file/d/1rBU6b17M_Edi9bqygu9sPU0Ve3IKPb1b/view?usp=sharing"

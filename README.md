@@ -2,36 +2,33 @@
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 <div align="center">
-    <h1>Сервис динамического сегментирования пользователей</h1>
+    <h1>Dynamic User Segmentation service</h1>
     <h5>
-        Микросервис, написанный на языке Golang, для добавления пользователей в определенные группы (сегменты),
-удаления пользователей из сегментов с возможностью автоматизировать данные процессы. Также присутствует возможность
-получить сводный отчет по всем операциям (с возможность указать конкретных пользователей) в формате csv-файла или ссылки на csv файл.
+        A microservice written in the Go programming language is designed to add users to specific groups (segments) and remove users from segments with the capability to automate these processes. Additionally, it offers the ability to generate comprehensive reports on all operations, including the option to specify particular users, in the form of CSV files or links to CSV files.
     </h5>
     <p>
-        Russian | <a href="README.en.md">English</a> 
+        English | <a href="README.ru.md">Russian</a> 
     </p>
 </div>
 
-### Используемые технологии:
+### Technologies used:
 - [Golang](https://go.dev), [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/), [Nginx](https://nginx.org/ru/)
 - [REST](https://ru.wikipedia.org/wiki/REST), [Swagger UI](https://swagger.io/tools/swagger-ui/)
-- [JWT Аутентификация](https://jwt.io/)
+- [JWT Authentication](https://jwt.io/)
 
-### Установка
+### Installation
 `go get github.com/zenorachi/dynamic-user-segmentation`
 
-### Начало работы
-1. **Чтобы сервис корректно обрабатывал запросы на получение ссылки на csv-файл,
-необходимо:**
-    * Зарегистрировать приложение в [Google Cloud Platform](https://developers.google.com/workspace/guides/create-project);
-    * Создать сервисный аккаунт и секретный ключ для него;
-    * Добавить в директорию secrets полученный секретный ключ;
-    * Изменить переменную окружения `GDRIVE_CREDENTIALS` в .env.
-> **Подсказка:** сервис можно запустить без интеграции с Google Drive. В таком случае
-> при запросе на получение ссылки на csv-файл будет ошибка, говорящая, что сервис GDrive недоступен.
-2. **Настройка переменных окружения (создайте файл .env в корне проекта):**
+### Getting started
+1. **In order for the service to correctly process requests for obtaining a link to a CSV file, it is necessary to:**
+    * Register the application in [Google Cloud Platform](https://developers.google.com/workspace/guides/create-project);
+    * Create a service account and generate a secret key for it;
+    * Add the received secret key to the `secrets` directory.;
+    * Modify the environment variable `GDRIVE_CREDENTIALS` in the .env file.
+> **Hint:** the service can be launched without integrating with Google Drive.
+> In this case, when requesting a link to a CSV file, an error will occur stating that the GDrive service is unavailable.
+2. **Setting up environment variables (create a .env file in the project root):**
 ```dotenv
 # Database
 export DB_HOST=
@@ -57,61 +54,62 @@ export GDRIVE_CREDENTIALS=./secrets/your_credentials_file.json
 # Gin mode (optional, default - release)
 export GIN_MODE=
 ```
-> **Подсказка:** если вы запускаете проект с помощью Docker, установите `DB_HOST`=postgres (как имя сервиса Postgres в docker-compose).
-3. **Запуск сервиса:**
+> **Hint:**
+if you are running the project using Docker, set `DB_HOST` to "**postgres**" (as the service name of Postgres in the docker-compose).
+3. **Compile and run the project:**
 ```shell
 make
 ```
-4. **Чтобы протестировать работу сервиса, можно перейти по адресу
-`http://localhost:8080/docs/index.html` для получения Swagger документации.**
+4. **To test the service's functionality, you can navigate to the address 
+http://localhost:8080/docs/index.html to access the Swagger documentation.**
 
 ---
 
-### Примеры запросов
+### Examples of requests
 
-**Пользователи:**
-* Регистрация
-* Аутентификация
-* Обновление токена
+**Users**
+* Registration
+* Authentication
+* Refresh token
 
-**Сегменты:**
-* Создание сегмента
-* Удаление сегмента по имени
-* Удаление сегмента по ID
-* Получение всех сегментов
-* Получение сегмента по ID
+**Segments**
+* Create a segment
+* Delete a segment by name
+* Delete a segment by ID
+* Get all segments
+* Get a segment by ID
 
-**Операции добавления / удаления сегментов пользователя:**
-* Добавление сегментов пользователю по списку имен
-* Добавление сегментов пользователю по списку ID
-* Удаление сегментов у пользователя по списку имен
-* Удаление сегментов у пользователя по списку ID
+**User segment addition/removal operations**
+* Adding segments to a user by a list of names
+* Adding segments to a user by a list of ID
+* Deleting segments from a user by a list of names
+* Deleting segments from a user by a list of ID
 
-**Отношения пользователи-сегменты:**
-* Получение активных сегментов пользователя
-* Получение активных пользователей сегмента
+**User-segment relations**
+* Getting active segments of a user
+* Getting active users of a segment
 
-**Отчеты:**
-* Получение истории операций
-* Получение истории операций в виде csv-файла
-* Получение истории операций в виде ссылки на csv-файл
+**Reports**
+* Getting operation history.
+* Getting operation history in the form of a CSV file
+* Getting operation history in the form of a CSV file link
 
 ---
 
-### Дополнительные возможности:
-1. **Запуск тестов:**
+### Additional features
+1. **Running tests:**
 ```shell
 make test
 ```
-2. **Запуск линтера:**
+2. **Running the linter:**
 ```shell
 make lint
 ```
-3. **Создание файлов миграций:**
+3. **Creating migration files:**
 ```shell
 make migrate-create
 ```
-4. **Миграции вверх/вниз:**
+4. **Migrations up / down:**
 ```shell
 make migrate-up
 ```
