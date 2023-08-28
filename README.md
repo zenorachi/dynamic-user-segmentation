@@ -23,7 +23,8 @@ git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 ```
 
 ### Getting started
-1. **In order for the service to correctly process requests for obtaining a link to a CSV file, it is necessary to:**
+#### [Detailed Guide to Google Drive Integration](https://github.com/zenorachi/dynamic-user-segmentation/blob/main//docs/examples/01-google-drive-setup.ru.md)
+1. **Google Drive integration:**
     * Register the application in [Google Cloud](https://developers.google.com/workspace/guides/create-project);
     * Create a service account and generate a secret key for it;
     * Add the received secret key to the `secrets` directory.;
