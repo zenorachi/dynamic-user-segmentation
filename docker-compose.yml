@@ -11,6 +11,7 @@ services:
     volumes:
       - ./secrets:/root/secrets
       - ./scripts:/root/scripts
+      - ./docs:/root/docs
     depends_on:
       - postgres
     networks:
