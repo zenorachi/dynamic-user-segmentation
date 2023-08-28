@@ -52,7 +52,7 @@ func (g *GDriveStorage) IsAvailable() bool {
 
 func (g *GDriveStorage) UploadFile(ctx context.Context, input FileInput) (string, error) {
 	fileId, err := g.getFileIdByName(ctx, input.Name)
-	var id string
+
 	if err != nil {
 		if !errors.Is(err, entity.ErrFileNotFound) {
 			return "", err
@@ -71,7 +71,7 @@ func (g *GDriveStorage) UploadFile(ctx context.Context, input FileInput) (string
 		return "", err
 	}
 
-	return g.generateFileUrl(id), nil
+	return g.generateFileUrl(fileId), nil
 }
 
 func (g *GDriveStorage) createFile(ctx context.Context, input FileInput) (string, error) {
