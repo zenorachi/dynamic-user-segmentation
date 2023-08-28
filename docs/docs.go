@@ -19,7 +19,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/operations/add_segments/": {
+        "/api/v1/operations/add_segments/": {
             "post": {
                 "security": [
                     {
@@ -52,7 +52,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/v1.operationResponse"
+                            "$ref": "#/definitions/v1.operationsResponse"
                         }
                     },
                     "400": {
@@ -70,7 +70,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/operations/add_segments_by_names/": {
+        "/api/v1/operations/add_segments_by_names/": {
             "post": {
                 "security": [
                     {
@@ -103,7 +103,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/v1.operationResponse"
+                            "$ref": "#/definitions/v1.operationsResponse"
                         }
                     },
                     "400": {
@@ -121,7 +121,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/operations/delete_segments/": {
+        "/api/v1/operations/delete_segments/": {
             "delete": {
                 "security": [
                     {
@@ -154,7 +154,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.operationResponse"
+                            "$ref": "#/definitions/v1.operationsResponse"
                         }
                     },
                     "400": {
@@ -172,7 +172,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/operations/delete_segments_by_names/": {
+        "/api/v1/operations/delete_segments_by_names/": {
             "delete": {
                 "security": [
                     {
@@ -205,7 +205,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.operationResponse"
+                            "$ref": "#/definitions/v1.operationsResponse"
                         }
                     },
                     "400": {
@@ -223,7 +223,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/operations/history/": {
+        "/api/v1/operations/history/": {
             "get": {
                 "security": [
                     {
@@ -274,7 +274,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/reports/file/": {
+        "/api/v1/reports/file/": {
             "get": {
                 "security": [
                     {
@@ -325,7 +325,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/reports/link/": {
+        "/api/v1/reports/link/": {
             "get": {
                 "security": [
                     {
@@ -376,7 +376,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/segments/": {
+        "/api/v1/segments/": {
             "get": {
                 "security": [
                     {
@@ -413,7 +413,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/segments/:segment_id": {
+        "/api/v1/segments/:segment_id": {
             "get": {
                 "security": [
                     {
@@ -459,7 +459,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/segments/active_users/:segment_id": {
+        "/api/v1/segments/active_users/:segment_id": {
             "get": {
                 "security": [
                     {
@@ -505,7 +505,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/segments/create": {
+        "/api/v1/segments/create": {
             "post": {
                 "security": [
                     {
@@ -562,7 +562,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/segments/delete/": {
+        "/api/v1/segments/delete/": {
             "delete": {
                 "security": [
                     {
@@ -607,7 +607,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/segments/delete_by_id/": {
+        "/api/v1/segments/delete_by_id/": {
             "delete": {
                 "security": [
                     {
@@ -652,7 +652,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/active_segments/:user_id": {
+        "/api/v1/users/active_segments/:user_id": {
             "get": {
                 "security": [
                     {
@@ -698,14 +698,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/refresh": {
+        "/api/v1/users/refresh": {
             "get": {
                 "description": "refresh user's access token",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "users-auth"
+                    "auth"
                 ],
                 "summary": "User Refresh Token",
                 "responses": {
@@ -730,7 +730,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/sign-in": {
+        "/api/v1/users/sign-in": {
             "post": {
                 "description": "user sign in",
                 "consumes": [
@@ -740,7 +740,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users-auth"
+                    "auth"
                 ],
                 "summary": "User SignIn",
                 "parameters": [
@@ -776,7 +776,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/sign-up": {
+        "/api/v1/users/sign-up": {
             "post": {
                 "description": "create user account",
                 "consumes": [
@@ -786,7 +786,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users-auth"
+                    "auth"
                 ],
                 "summary": "User SignUp",
                 "parameters": [
@@ -1121,7 +1121,7 @@ const docTemplate = `{
                 }
             }
         },
-        "v1.operationResponse": {
+        "v1.operationsResponse": {
             "type": "object",
             "properties": {
                 "operation_ids": {

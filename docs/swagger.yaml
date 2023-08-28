@@ -190,7 +190,7 @@ definitions:
       segment:
         $ref: '#/definitions/entity.Segment'
     type: object
-  v1.operationResponse:
+  v1.operationsResponse:
     properties:
       operation_ids:
         items:
@@ -249,7 +249,7 @@ info:
   title: Dynamic User Segmentation Service
   version: "1.0"
 paths:
-  /operations/add_segments/:
+  /api/v1/operations/add_segments/:
     post:
       consumes:
       - application/json
@@ -267,7 +267,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/v1.operationResponse'
+            $ref: '#/definitions/v1.operationsResponse'
         "400":
           description: Bad Request
           schema:
@@ -281,7 +281,7 @@ paths:
       summary: Add a user to segments by id
       tags:
       - operations
-  /operations/add_segments_by_names/:
+  /api/v1/operations/add_segments_by_names/:
     post:
       consumes:
       - application/json
@@ -299,7 +299,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/v1.operationResponse'
+            $ref: '#/definitions/v1.operationsResponse'
         "400":
           description: Bad Request
           schema:
@@ -313,7 +313,7 @@ paths:
       summary: Add a user to segments by name
       tags:
       - operations
-  /operations/delete_segments/:
+  /api/v1/operations/delete_segments/:
     delete:
       consumes:
       - application/json
@@ -331,7 +331,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.operationResponse'
+            $ref: '#/definitions/v1.operationsResponse'
         "400":
           description: Bad Request
           schema:
@@ -345,7 +345,7 @@ paths:
       summary: Delete User From Segments by ids
       tags:
       - operations
-  /operations/delete_segments_by_names/:
+  /api/v1/operations/delete_segments_by_names/:
     delete:
       consumes:
       - application/json
@@ -363,7 +363,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.operationResponse'
+            $ref: '#/definitions/v1.operationsResponse'
         "400":
           description: Bad Request
           schema:
@@ -377,7 +377,7 @@ paths:
       summary: Delete User From Segments By Names
       tags:
       - operations
-  /operations/history/:
+  /api/v1/operations/history/:
     get:
       consumes:
       - application/json
@@ -409,7 +409,7 @@ paths:
       summary: Get Operations History
       tags:
       - operations
-  /reports/file/:
+  /api/v1/reports/file/:
     get:
       consumes:
       - application/json
@@ -441,7 +441,7 @@ paths:
       summary: Get CSV-File History
       tags:
       - reports
-  /reports/link/:
+  /api/v1/reports/link/:
     get:
       consumes:
       - application/json
@@ -473,7 +473,7 @@ paths:
       summary: Get CSV-File Link
       tags:
       - reports
-  /segments/:
+  /api/v1/segments/:
     get:
       description: getting all segments
       produces:
@@ -496,7 +496,7 @@ paths:
       summary: Get all segments
       tags:
       - segments
-  /segments/:segment_id:
+  /api/v1/segments/:segment_id:
     get:
       description: getting segment by id
       parameters:
@@ -525,7 +525,7 @@ paths:
       summary: Get Segment By ID
       tags:
       - segments
-  /segments/active_users/:segment_id:
+  /api/v1/segments/active_users/:segment_id:
     get:
       description: getting active users by id
       parameters:
@@ -554,7 +554,7 @@ paths:
       summary: Get Active Users By ID
       tags:
       - segment-users
-  /segments/create:
+  /api/v1/segments/create:
     post:
       consumes:
       - application/json
@@ -590,7 +590,7 @@ paths:
       summary: Create segment
       tags:
       - segments
-  /segments/delete/:
+  /api/v1/segments/delete/:
     delete:
       consumes:
       - application/json
@@ -618,7 +618,7 @@ paths:
       summary: Delete Segment By Name
       tags:
       - segments
-  /segments/delete_by_id/:
+  /api/v1/segments/delete_by_id/:
     delete:
       consumes:
       - application/json
@@ -646,7 +646,7 @@ paths:
       summary: Delete Segment By ID
       tags:
       - segments
-  /users/active_segments/:user_id:
+  /api/v1/users/active_segments/:user_id:
     get:
       description: get active segments for a specific user by user_id
       parameters:
@@ -675,7 +675,7 @@ paths:
       summary: Get active segments for a user
       tags:
       - user-segments
-  /users/refresh:
+  /api/v1/users/refresh:
     get:
       description: refresh user's access token
       produces:
@@ -695,8 +695,8 @@ paths:
             $ref: '#/definitions/v1.errorResponse'
       summary: User Refresh Token
       tags:
-      - users-auth
-  /users/sign-in:
+      - auth
+  /api/v1/users/sign-in:
     post:
       consumes:
       - application/json
@@ -725,8 +725,8 @@ paths:
             $ref: '#/definitions/v1.errorResponse'
       summary: User SignIn
       tags:
-      - users-auth
-  /users/sign-up:
+      - auth
+  /api/v1/users/sign-up:
     post:
       consumes:
       - application/json
@@ -759,7 +759,7 @@ paths:
             $ref: '#/definitions/v1.errorResponse'
       summary: User SignUp
       tags:
-      - users-auth
+      - auth
 securityDefinitions:
   JWT:
     in: header

@@ -57,7 +57,7 @@ func Run(cfg *config.Config) {
 	if err != nil {
 		logger.Fatal("database-connection", err)
 	}
-	logger.Info("database", "postgres started")
+	logger.Info("database", "postgres connected")
 
 	/* INIT TOKEN MANAGER */
 	tokenManager := auth.NewManager(cfg.Auth.Secret)

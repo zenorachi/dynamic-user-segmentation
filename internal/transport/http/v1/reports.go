@@ -32,7 +32,7 @@ type getReportInput struct {
 // @Success 200 {string} csv "CSV-File"
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /reports/file/ [get]
+// @Router /api/v1/reports/file/ [get]
 func (h *Handler) getReportFile(c *gin.Context) {
 	var input getReportInput
 	if err := c.BindJSON(&input); err != nil {
@@ -67,7 +67,7 @@ type getReportLinkResponse struct {
 // @Success 200 {object} getReportLinkResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /reports/link/ [get]
+// @Router /api/v1/reports/link/ [get]
 func (h *Handler) getReportLink(c *gin.Context) {
 	var input getReportInput
 	if err := c.BindJSON(&input); err != nil {

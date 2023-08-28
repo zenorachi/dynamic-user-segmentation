@@ -42,10 +42,10 @@ type addSegmentsByIdInput struct {
 // @Accept json
 // @Produce json
 // @Param input body addSegmentsByIdInput true "input"
-// @Success 201 {object} operationResponse
+// @Success 201 {object} operationsResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /operations/add_segments/ [post]
+// @Router /api/v1/operations/add_segments/ [post]
 func (h *Handler) addSegmentsById(c *gin.Context) {
 	var input addSegmentsByIdInput
 	if err := c.BindJSON(&input); err != nil || len(input.SegmentsIDs) == 0 {
@@ -90,10 +90,10 @@ type addSegmentsByNameInput struct {
 // @Accept json
 // @Produce json
 // @Param input body addSegmentsByNameInput true "input"
-// @Success 201 {object} operationResponse
+// @Success 201 {object} operationsResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /operations/add_segments_by_names/ [post]
+// @Router /api/v1/operations/add_segments_by_names/ [post]
 func (h *Handler) addSegmentsByName(c *gin.Context) {
 	var input addSegmentsByNameInput
 	if err := c.BindJSON(&input); err != nil || len(input.SegmentsNames) == 0 {
@@ -137,10 +137,10 @@ type deleteSegmentsByIdInput struct {
 // @Accept json
 // @Produce json
 // @Param input body deleteSegmentsByIdInput true "input"
-// @Success 200 {object} operationResponse
+// @Success 200 {object} operationsResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /operations/delete_segments/ [delete]
+// @Router /api/v1/operations/delete_segments/ [delete]
 func (h *Handler) deleteSegmentsById(c *gin.Context) {
 	var input deleteSegmentsByIdInput
 
@@ -175,10 +175,10 @@ type deleteSegmentsByNameInput struct {
 // @Accept json
 // @Produce json
 // @Param input body deleteSegmentsByNameInput true "input"
-// @Success 200 {object} operationResponse
+// @Success 200 {object} operationsResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /operations/delete_segments_by_names/ [delete]
+// @Router /api/v1/operations/delete_segments_by_names/ [delete]
 func (h *Handler) deleteSegmentsByName(c *gin.Context) {
 	var input deleteSegmentsByNameInput
 	if err := c.BindJSON(&input); err != nil || len(input.SegmentsNames) == 0 {
@@ -221,7 +221,7 @@ type getOperationsHistoryResponse struct {
 // @Success 200 {object} getOperationsHistoryResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /operations/history/ [get]
+// @Router /api/v1/operations/history/ [get]
 func (h *Handler) getOperationsHistory(c *gin.Context) {
 	var input getOperationsHistoryInput
 	if err := c.BindJSON(&input); err != nil {

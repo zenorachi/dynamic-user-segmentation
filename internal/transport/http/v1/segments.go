@@ -43,7 +43,7 @@ type createSegmentResponse struct {
 // @Failure 400 {object} errorResponse
 // @Failure 409 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /segments/create [post]
+// @Router /api/v1/segments/create [post]
 func (h *Handler) createSegment(c *gin.Context) {
 	var input createSegmentInput
 	if err := c.BindJSON(&input); err != nil {
@@ -78,7 +78,7 @@ type getAllSegmentsResponse struct {
 // @Success 200 {object} getAllSegmentsResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /segments/ [get]
+// @Router /api/v1/segments/ [get]
 func (h *Handler) getAllSegments(c *gin.Context) {
 	segments, err := h.services.Segments.GetAll(c)
 	if err != nil {
@@ -106,7 +106,7 @@ type getSegmentByIdResponse struct {
 // @Success 200 {object} getSegmentByIdResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /segments/:segment_id [get]
+// @Router /api/v1/segments/:segment_id [get]
 func (h *Handler) getSegmentById(c *gin.Context) {
 	paramId := strings.Trim(c.Param("segment_id"), "/")
 	id, err := strconv.Atoi(paramId)
@@ -141,7 +141,7 @@ type getActiveUsersResponse struct {
 // @Success 200 {object} getActiveUsersResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /segments/active_users/:segment_id [get]
+// @Router /api/v1/segments/active_users/:segment_id [get]
 func (h *Handler) getActiveUsers(c *gin.Context) {
 	paramId := strings.Trim(c.Param("segment_id"), "/")
 	id, err := strconv.Atoi(paramId)
@@ -176,7 +176,7 @@ type deleteByNameInput struct {
 // @Success 204 "No Content"
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /segments/delete/ [delete]
+// @Router /api/v1/segments/delete/ [delete]
 func (h *Handler) deleteSegmentByName(c *gin.Context) {
 	var input deleteByNameInput
 	if err := c.BindJSON(&input); err != nil {
@@ -210,7 +210,7 @@ type deleteByIdInput struct {
 // @Success 204 "No Content"
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /segments/delete_by_id/ [delete]
+// @Router /api/v1/segments/delete_by_id/ [delete]
 func (h *Handler) deleteSegmentById(c *gin.Context) {
 	var input deleteByIdInput
 	if err := c.BindJSON(&input); err != nil {
