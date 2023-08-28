@@ -25,7 +25,13 @@ func NewHandler(services *service.Services, tokenManager auth.TokenManager) *Han
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
-	gin.SetMode(config.New().GIN.Mode)
+	ginMode := config.New().GIN.Mode
+
+	if ginMode == "" {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(ginMode)
+	}
 
 	router := gin.New()
 

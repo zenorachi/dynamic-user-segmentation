@@ -38,9 +38,9 @@ lint:
 	golangci-lint run
 
 swag:
-	 swag init -g internal/app/app.go
+	 swag init -g internal/app/app.go -o ./docs/swagger/
 
 clean:
 	rm -rf ./.bin
 
-.PHONY: build run rebuild up-postgres stop migrate-create migrate-down migrate-up clean
+.PHONY: build run rebuild up-postgres stop migrate-create migrate-down migrate-up lint swag clean
