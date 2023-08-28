@@ -54,8 +54,12 @@ export POSTGRES_PASSWORD=
 export HASH_SALT=
 export HASH_SECRET=
 
+# Nginx
+export NGINX_PORT=
+export HTTPS_PORT=
+
 # Path to Google Drive credentials.json
-export GDRIVE_CREDENTIALS=./secrets/your_credentials_file.json
+export GDRIVE_CREDENTIALS=./secrets/credentials/your_credentials_file.json
 
 # Gin mode (optional, default - release)
 export GIN_MODE=
