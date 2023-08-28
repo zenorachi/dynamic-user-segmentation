@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"github.com/lib/pq"
 	"time"
 
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
@@ -40,14 +41,17 @@ func (u *UserService) SignUp(ctx context.Context, login, email, password string)
 		return 0, err
 	}
 
-	user := entity.NewUser(login, email, hashedPassword)
-
-	id, err := u.repo.Create(ctx, user)
+	id, err := u.repo.Create(ctx, entity.User{
+		Login:    login,
+		Email:    email,
+		Password: hashedPassword,
+	})
 	if err != nil {
+		if u.isEmailExists(err) {
+			return 0, entity.ErrUserAlreadyExists
+		}
 		return 0, err
 	}
-
-	//go func() { u.repo.AutoAssignUsers(ctx) }()
 
 	return id, err
 }
@@ -111,11 +115,25 @@ func (u *UserService) createSession(ctx context.Context, userId int) (Tokens, er
 		return Tokens{}, err
 	}
 
-	session := entity.NewSession(tokens.RefreshToken, time.Now().Add(u.refreshTokenTTL))
-	return tokens, u.repo.SetSession(ctx, userId, session)
+	//session := entity.NewSession(tokens.RefreshToken, time.Now().Add(u.refreshTokenTTL))
+	return tokens, u.repo.SetSession(ctx, userId, entity.Session{
+		RefreshToken: tokens.RefreshToken,
+		ExpiresAt:    time.Now().Add(u.refreshTokenTTL),
+	})
 }
 
 func (u *UserService) isUserExists(ctx context.Context, login string) bool {
 	_, err := u.repo.GetByLogin(ctx, login)
 	return !errors.Is(err, sql.ErrNoRows)
+}
+
+func (u *UserService) isEmailExists(err error) bool {
+	var pqErr *pq.Error
+	isPqError := errors.As(err, &pqErr)
+
+	if isPqError && pqErr.Code == "23505" {
+		return true
+	}
+
+	return false
 }

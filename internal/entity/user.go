@@ -9,11 +9,3 @@ type User struct {
 	Password     string    `json:"password,omitempty"`
 	RegisteredAt time.Time `json:"registered_at,omitempty"`
 }
-
-func NewUser(login, email, password string) User {
-	return User{
-		Login:    login,
-		Email:    email,
-		Password: password,
-	}
-}

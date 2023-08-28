@@ -14,11 +14,3 @@ type Operation struct {
 	Type        string    `json:"type,omitempty"`
 	Date        time.Time `json:"date,omitempty"`
 }
-
-func NewOperation(userId int, segmentName string, opType string) Operation {
-	return Operation{
-		UserID:      userId,
-		SegmentName: segmentName,
-		Type:        opType,
-	}
-}
