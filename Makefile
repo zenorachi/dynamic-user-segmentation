@@ -25,6 +25,13 @@ up-postgres:
 stop:
 	$(CMD_DOWN)
 
+test:
+	go test -coverprofile=cover.out -v ./...
+	make --silent test-coverage
+
+test-coverage:
+	go tool cover -func=cover.out | grep "total"
+
 migrate-create:
 	migrate create -ext sql -dir $(MIGRATION_DIR) 'user_segmentation'
 
@@ -41,6 +48,6 @@ swag:
 	 swag init -g internal/app/app.go -o ./docs/swagger/
 
 clean:
-	rm -rf ./.bin
+	rm -rf ./.bin cover.out
 
-.PHONY: build run rebuild up-postgres stop migrate-create migrate-down migrate-up lint swag clean
+.PHONY: build run rebuild up-postgres stop test test-coverage html-coverage migrate-create migrate-down migrate-up lint swag clean
