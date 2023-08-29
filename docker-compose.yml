@@ -2,8 +2,9 @@ version: '3.9'
 
 services:
   app:
-    container_name: user-segmentation
-    build: ./
+    container_name: app
+    build:
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     env_file:
@@ -32,14 +33,14 @@ services:
 
   nginx:
     container_name: nginx
-    image: nginx
+    build:
+      dockerfile: Dockerfile.nginx
     ports:
-      - "${NGINX_PORT}:80"
       - "${HTTPS_PORT}:${HTTPS_PORT}"
     env_file:
       - .env
     volumes:
-      - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./scripts/nginx/setup.sh:/setup.sh
       - ./secrets/certs:/etc/nginx/ssl
     depends_on:
       - app
@@ -52,4 +53,3 @@ networks:
 
 volumes:
   pg-data:
-  minio-data:

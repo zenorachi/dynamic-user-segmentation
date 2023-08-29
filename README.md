@@ -51,8 +51,7 @@ export POSTGRES_PASSWORD=
 export HASH_SALT=
 export HASH_SECRET=
 
-# Nginx
-export NGINX_PORT=
+# Nginx & HTTPS
 export HTTPS_PORT=
 
 # Path to Google Drive credentials.json

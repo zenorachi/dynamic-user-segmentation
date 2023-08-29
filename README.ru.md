@@ -54,7 +54,7 @@ export POSTGRES_PASSWORD=
 export HASH_SALT=
 export HASH_SECRET=
 
-# Nginx
+# Nginx & HTTPS
 export NGINX_PORT=
 export HTTPS_PORT=
 

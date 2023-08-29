@@ -1,0 +1,7 @@
+FROM nginx:latest
+
+WORKDIR /
+
+COPY ./configs/nginx.template.conf /etc/nginx/nginx.template.conf
+
+CMD ["sh", "-c", "sh ./setup.sh"]
