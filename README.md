@@ -23,7 +23,7 @@ git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 ```
 
 ### Getting started
-#### [Detailed Guide to Google Drive Integration](https://github.com/zenorachi/dynamic-user-segmentation/blob/main//docs/examples/01-google-drive-setup.ru.md)
+#### [Detailed Guide to Google Drive Integration](./docs/examples/01-google-drive-setup.ru.md)
 1. **Google Drive integration:**
     * Register the application in [Google Cloud](https://developers.google.com/workspace/guides/create-project);
     * Create a service account and generate a secret key for it;
@@ -83,7 +83,7 @@ http://localhost:8080/docs/index.html to access the Swagger documentation.**
 
 ---
 
-### [Examples of requests](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/docs/examples/01-requests.md)
+### [Examples of requests](./docs/examples/02-requests.md)
 
 **[Users](./docs/examples/02-requests.md#Users)**
 * [Registration](./docs/examples/02-requests.md#1-registration)

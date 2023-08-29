@@ -25,7 +25,7 @@ git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 ```
 
 ### Начало работы
-#### [Подробная инструкция по интеграции Google Drive](https://github.com/zenorachi/dynamic-user-segmentation/blob/main//docs/examples/01-google-drive-setup.ru.md)
+#### [Подробная инструкция по интеграции Google Drive](./docs/examples/01-google-drive-setup.ru.md)
 1. **Интеграция Google Drive:**
     * Регистрируем приложение в [Google Cloud](https://developers.google.com/workspace/guides/create-project);
     * Создаем сервисный аккаунт и секретный ключ для него;
