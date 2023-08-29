@@ -29,8 +29,8 @@ git clone git@github.com/zenorachi/dynamic-user-segmentation.git
     * Create a service account and generate a secret key for it;
     * Add the received secret key to the `secrets` directory.;
     * Modify the environment variable `GDRIVE_CREDENTIALS` in the .env file.
-> **Hint:** the service can be launched without integrating with Google Drive.
-> In this case, when requesting a link to a CSV file, an error will occur stating that the GDrive service is unavailable.
+> **Hint:** the service can be launched without integrating with Google Drive. In this case, you need to leave the value of the `GDRIVE_CREDENTIALS` variable empty.
+> In this case, when requesting a link to a CSV file, an error will occur stating that the Google Drive service is unavailable.
 2. **Setting up environment variables (create a .env file in the project root):**
 ```dotenv
 # Database

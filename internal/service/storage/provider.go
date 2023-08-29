@@ -36,7 +36,7 @@ func NewProvider(cfg *config.GDriveConfig) *GDriveStorage {
 
 	gDrive, err := drive.NewService(context.Background(), option.WithCredentialsFile(cfg.Credentials))
 	if err != nil {
-		logger.Error("gdrive", err)
+		logger.Error("google drive", err)
 		return &GDriveStorage{isAvailable: false}
 	}
 

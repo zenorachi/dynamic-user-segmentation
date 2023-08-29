@@ -17,6 +17,7 @@ var (
 	ErrInvalidTTL            = errors.New("invalid ttl")
 	ErrInvalidAssignPercent  = errors.New("assign percent must be greater than zero")
 	ErrInvalidHistoryPeriod  = errors.New("invalid history period")
-	ErrGDriveIsNotAvailable  = errors.New("gdrive is not available")
+	ErrGDriveIsNotAvailable  = errors.New("google drive service is not available")
 	ErrFileNotFound          = errors.New("file not found")
+	ErrPageIsOutOfBounds     = errors.New("page is out of bounds")
 )

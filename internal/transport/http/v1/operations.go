@@ -259,6 +259,10 @@ func (h *Handler) generateOperationsPagination(c *gin.Context, pageSize int, ope
 	}
 
 	startIndex := (page - 1) * pageSize
+	if startIndex > len(operations) {
+		return nil, entity.ErrPageIsOutOfBounds
+	}
+
 	endIndex := startIndex + pageSize
 	if endIndex > len(operations) {
 		endIndex = len(operations)
