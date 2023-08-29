@@ -85,37 +85,37 @@ make
 
 ---
 
-### [Примеры запросов](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md)
+### [Примеры запросов](./docs/examples/02-requests.ru.md)
 
-**[Пользователи](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#Пользователи)**
-* [Регистрация](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#1-регистрация)
-* [Аутентификация](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#2-аутентификация)
-* [Обновление токена](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#3-обновление-токена)
+**[Пользователи](./docs/examples/02-requests.ru.md#Пользователи)**
+* [Регистрация](./docs/examples/02-requests.ru.md#1-регистрация)
+* [Аутентификация](./docs/examples/02-requests.ru.md#2-аутентификация)
+* [Обновление токена](./docs/examples/02-requests.ru.md#3-обновление-токена)
 
-**[Сегменты](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#Сегменты)**
-* [Создание сегмента](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#1-создание-сегмента)
-* [Создание сегмента с указанием процента автоматического добавления](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#2-создание-сегмента-с-указанием-процента-автоматического-добавления)
-* [Удаление сегмента по имени](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#3-удаление-сегмента-по-имени)
-* [Удаление сегмента по ID](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#4-удаление-сегмента-по-id)
-* [Получение всех сегментов](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#5-получение-всех-сегментов)
-* [Получение сегмента по ID](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#6-получение-сегмента-по-id)
+**[Сегменты](./docs/examples/02-requests.ru.md#Сегменты)**
+* [Создание сегмента](./docs/examples/02-requests.ru.md#1-создание-сегмента)
+* [Создание сегмента с указанием процента автоматического добавления](./docs/examples/02-requests.ru.md#2-создание-сегмента-с-указанием-процента-автоматического-добавления)
+* [Удаление сегмента по имени](./docs/examples/02-requests.ru.md#3-удаление-сегмента-по-имени)
+* [Удаление сегмента по ID](./docs/examples/02-requests.ru.md#4-удаление-сегмента-по-id)
+* [Получение всех сегментов](./docs/examples/02-requests.ru.md#5-получение-всех-сегментов)
+* [Получение сегмента по ID](./docs/examples/02-requests.ru.md#6-получение-сегмента-по-id)
 
-**[Операции добавления / удаления сегментов пользователя](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#операции-добавления--удаления-сегментов-пользователя)**
-* [Добавление сегментов пользователю по списку имен](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#1-добавление-сегментов-пользователю-по-списку-имен)
-* [Добавление сегментов пользователю по списку имен с указанием времени жизни](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#2-добавление-сегментов-пользователю-по-списку-имен-с-указанием-времени-жизни)
-* [Добавление сегментов пользователю по списку ID](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#3-добавление-сегментов-пользователю-по-списку-id)
-* [Добавление сегментов пользователю по списку ID с указанием времени жизни](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#4-добавление-сегментов-пользователю-по-списку-id-с-указанием-времени-жизни)
-* [Удаление сегментов у пользователя по списку имен](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#5-удаление-сегментов-у-пользователя-по-списку-имен)
-* [Удаление сегментов у пользователя по списку ID](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#6-удаление-сегментов-у-пользователя-по-списку-id)
+**[Операции добавления / удаления сегментов пользователя](./docs/examples/02-requests.ru.md#операции-добавления--удаления-сегментов-пользователя)**
+* [Добавление сегментов пользователю по списку имен](./docs/examples/02-requests.ru.md#1-добавление-сегментов-пользователю-по-списку-имен)
+* [Добавление сегментов пользователю по списку имен с указанием времени жизни](./docs/examples/02-requests.ru.md#2-добавление-сегментов-пользователю-по-списку-имен-с-указанием-времени-жизни)
+* [Добавление сегментов пользователю по списку ID](./docs/examples/02-requests.ru.md#3-добавление-сегментов-пользователю-по-списку-id)
+* [Добавление сегментов пользователю по списку ID с указанием времени жизни](./docs/examples/02-requests.ru.md#4-добавление-сегментов-пользователю-по-списку-id-с-указанием-времени-жизни)
+* [Удаление сегментов у пользователя по списку имен](./docs/examples/02-requests.ru.md#5-удаление-сегментов-у-пользователя-по-списку-имен)
+* [Удаление сегментов у пользователя по списку ID](./docs/examples/02-requests.ru.md#6-удаление-сегментов-у-пользователя-по-списку-id)
 
-**[Отношения пользователи-сегменты](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#отношения-пользователи-сегменты)**
-* [Получение активных сегментов пользователя](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#1-получение-активных-сегментов-пользователя)
-* [Получение активных пользователей сегмента](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#2-получение-активных-пользователей-сегмента)
+**[Отношения пользователи-сегменты](./docs/examples/02-requests.ru.md#отношения-пользователи-сегменты)**
+* [Получение активных сегментов пользователя](./docs/examples/02-requests.ru.md#1-получение-активных-сегментов-пользователя)
+* [Получение активных пользователей сегмента](./docs/examples/02-requests.ru.md#2-получение-активных-пользователей-сегмента)
 
-**[Отчеты](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#Отчеты)**
-* [Получение истории операций](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#1-получение-истории-операций)
-* [Получение истории операций в виде csv-файла](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#2-получение-истории-операций-в-виде-csv-файла)
-* [Получение истории операций в виде ссылки на csv-файл](https://github.com/zenorachi/dynamic-user-segmentation/blob/main/docs/examples/01-requests.ru.md#3-получение-истории-операций-в-виде-ссылки-на-csv-файл)
+**[Отчеты](./docs/examples/02-requests.ru.md#Отчеты)**
+* [Получение истории операций](./docs/examples/02-requests.ru.md#1-получение-истории-операций)
+* [Получение истории операций в виде csv-файла](./docs/examples/02-requests.ru.md#2-получение-истории-операций-в-виде-csv-файла)
+* [Получение истории операций в виде ссылки на csv-файл](./docs/examples/02-requests.ru.md#3-получение-истории-операций-в-виде-ссылки-на-csv-файл)
 
 ---
 
