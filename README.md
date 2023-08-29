@@ -51,22 +51,34 @@ export POSTGRES_PASSWORD=
 export HASH_SALT=
 export HASH_SECRET=
 
-# Nginx & HTTPS
-export HTTPS_PORT=
-
 # Path to Google Drive credentials.json
 export GDRIVE_CREDENTIALS=./secrets/credentials/your_credentials_file.json
 
-# Gin mode (optional, default - release)
+# GIN mode (optional, default - release)
 export GIN_MODE=
+
+# Nginx & HTTPS
+# name of the app's service (app)
+export APP_HOST=
+
+# app's port (as in main.yml)
+export APP_PORT=
+
+# HTTPS connection (443, for example)
+export HTTPS_PORT=
 ```
 > **Hint:**
 if you are running the project using Docker, set `DB_HOST` to "**postgres**" (as the service name of Postgres in the docker-compose).
-3. **Compile and run the project:**
+
+3. **(Optional) Adding certificates for Nginx to work correctly:**
+> You need to generate certificates and place them in the `secrets/certs` directory in order to be able to access the service via HTTPS.
+You can use the [**minica**](https://github.com/jsha/minica) utility.
+
+4. **Compile and run the project:**
 ```shell
 make
 ```
-4. **To test the service's functionality, you can navigate to the address 
+5. **To test the service's functionality, you can navigate to the address 
 http://localhost:8080/docs/index.html to access the Swagger documentation.**
 
 ---

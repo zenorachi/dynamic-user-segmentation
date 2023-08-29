@@ -38,7 +38,7 @@ curl -X 'POST' \
 * Пример ответа:
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMyMzA4NDMsInN1YiI6IjEifQ.wJAI1tRNd3NFQ-KYw5e3Iy8RuXHRqIJoqeTAwXdMbNc"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw"
 }
 ```
 
@@ -52,7 +52,7 @@ curl -X 'GET' \
 * Пример ответа:
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMyMzA4ODAsInN1YiI6IjEifQ.abo2LM6Xu13IHueO3Ia8K1UJh966S89QOifQ4cpPwqU"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4NTIsInN1YiI6IjE0In0.cmXwc15TmNSI2mILSZjoqRhhtUN2AYZQu5had9OW07k"
 }
 ```
 
@@ -65,7 +65,7 @@ curl -X 'GET' \
 curl -X 'POST' \
   'http://localhost:8080/api/v1/segments/create' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MjE3NjEsInN1YiI6IjEifQ.DSf-xaovGIiwmRKB3Zfa4E1eFvwDvYPv3RciLOEIvU0' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "name": "AVITO-INTERNS"
@@ -83,7 +83,7 @@ curl -X 'POST' \
 curl -X 'POST' \
   'http://localhost:8080/api/v1/segments/create' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMyMzU5MDIsInN1YiI6IjEifQ.DvE1rs1OVyocP669GtCmD2Lk7DwbH37jsRePhfCP9Nk' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "name": "VOICE-MESSAGE",
@@ -103,7 +103,7 @@ curl -X 'POST' \
 curl -X 'DELETE' \
   'http://localhost:8080/api/v1/segments/delete/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MjE3NjEsInN1YiI6IjEifQ.DSf-xaovGIiwmRKB3Zfa4E1eFvwDvYPv3RciLOEIvU0' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "name": "TEST-PERCENT-10"
@@ -118,7 +118,7 @@ curl -X 'DELETE' \
 curl -X 'DELETE' \
   'http://localhost:8080/api/v1/segments/delete_by_id/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MjE3NjEsInN1YiI6IjEifQ.DSf-xaovGIiwmRKB3Zfa4E1eFvwDvYPv3RciLOEIvU0' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": 8
@@ -133,7 +133,7 @@ curl -X 'DELETE' \
 curl -X 'GET' \
   'http://localhost:8080/api/v1/segments/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMyMzU5MDIsInN1YiI6IjEifQ.DvE1rs1OVyocP669GtCmD2Lk7DwbH37jsRePhfCP9Nk'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw'
 ```
 * Пример ответа:
 ```json
@@ -164,7 +164,7 @@ curl -X 'GET' \
 curl -X 'GET' \
   'http://localhost:8080/api/v1/segments/10' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4Mjg0ODYsInN1YiI6IjEifQ.n1r4juv8EIvFdZr89Hb_9DRTa5vp2csaITWx-P3Le30'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw'
 ```
 * Пример ответа:
 ```json
@@ -186,7 +186,7 @@ curl -X 'GET' \
 curl -X 'POST' \
   'http://localhost:8080/api/v1/operations/add_segments_by_names/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4Mjk2OTgsInN1YiI6IjEifQ.0n5dMO_JwxKpaesCTP-cxSwQ_PInydRqSAhBGDebhDA' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "user_id": 1,
@@ -211,7 +211,7 @@ curl -X 'POST' \
 curl -X 'POST' \
   'http://localhost:8080/api/v1/operations/add_segments_by_names/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4Mjk2OTgsInN1YiI6IjEifQ.0n5dMO_JwxKpaesCTP-cxSwQ_PInydRqSAhBGDebhDA' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "user_id": 1,
@@ -238,7 +238,7 @@ curl -X 'POST' \
 curl -X 'POST' \
   'http://localhost:8080/api/v1/operations/add_segments_by_names/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4Mjk2OTgsInN1YiI6IjEifQ.0n5dMO_JwxKpaesCTP-cxSwQ_PInydRqSAhBGDebhDA' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "user_id": 1,
@@ -263,7 +263,7 @@ curl -X 'POST' \
 curl -X 'POST' \
   'http://localhost:8080/api/v1/operations/add_segments_by_names/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4Mjk2OTgsInN1YiI6IjEifQ.0n5dMO_JwxKpaesCTP-cxSwQ_PInydRqSAhBGDebhDA' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "user_id": 1,
@@ -290,7 +290,7 @@ curl -X 'POST' \
 curl -X 'DELETE' \
   'http://localhost:8080/api/v1/operations/delete_segments_by_names/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MzExMTQsInN1YiI6IjEifQ.Cnnk6GRGFbBcSv5kDOtLfVgE2L9vubHpcxw5urnC_0A' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "segment_names": [
@@ -315,7 +315,7 @@ curl -X 'DELETE' \
 curl -X 'DELETE' \
   'http://localhost:8080/api/v1/operations/delete_segments_by_names/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MzExMTQsInN1YiI6IjEifQ.Cnnk6GRGFbBcSv5kDOtLfVgE2L9vubHpcxw5urnC_0A' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "segment_ids": [
@@ -345,7 +345,7 @@ curl -X 'DELETE' \
 curl -X 'GET' \
   'http://localhost:8080/api/v1/users/active_segments/1' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MzExMTQsInN1YiI6IjEifQ.Cnnk6GRGFbBcSv5kDOtLfVgE2L9vubHpcxw5urnC_0A'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw'
 ```
 * Пример ответа:
 ```json
@@ -364,7 +364,7 @@ curl -X 'GET' \
 curl -X 'GET' \
   'http://localhost:8080/api/v1/segments/active_users/7' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MzExMTQsInN1YiI6IjEifQ.Cnnk6GRGFbBcSv5kDOtLfVgE2L9vubHpcxw5urnC_0A'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw'
 ```
 * Пример ответа:
 ```json
@@ -389,7 +389,7 @@ curl -X 'GET' \
 curl -X 'GET' \
   'http://localhost:8080/api/v1/operations/history' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MzExMTQsInN1YiI6IjEifQ.Cnnk6GRGFbBcSv5kDOtLfVgE2L9vubHpcxw5urnC_0A' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "user_ids": [
@@ -438,7 +438,7 @@ curl -X 'GET' \
 curl -X 'GET' \
   'http://localhost:8080/api/v1/reports/file' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MzExMTQsInN1YiI6IjEifQ.Cnnk6GRGFbBcSv5kDOtLfVgE2L9vubHpcxw5urnC_0A' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "user_ids": [
@@ -466,7 +466,7 @@ user-id,segment-name,type,date
 curl -X 'GET' \
   'http://localhost:8080/api/v1/reports/link' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU4MzExMTQsInN1YiI6IjEifQ.Cnnk6GRGFbBcSv5kDOtLfVgE2L9vubHpcxw5urnC_0A' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
   -H 'Content-Type: application/json' \
   -d '{
   "user_ids": [

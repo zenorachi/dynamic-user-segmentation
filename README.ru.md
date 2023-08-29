@@ -36,7 +36,7 @@ git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 
 2. **Настройка переменных окружения (создайте файл .env в корне проекта):**
 ```dotenv
-# Database
+# База данных
 export DB_HOST=
 export DB_PORT=
 export DB_USER=
@@ -44,32 +44,43 @@ export DB_NAME=
 export DB_SSLMODE=
 export DB_PASSWORD=
 
-# Local database
+# Локальный порт для базы данных
 export LOCAL_DB_PORT=
 
-# Postgres service
+# Сервис postgres
 export POSTGRES_PASSWORD=
 
-# Password Hasher
+# Хеширование паролей
 export HASH_SALT=
 export HASH_SECRET=
 
-# Nginx & HTTPS
-export NGINX_PORT=
-export HTTPS_PORT=
-
-# Path to Google Drive credentials.json
+# Путь к секретному ключу для сервисного аккаунта Google Drive
 export GDRIVE_CREDENTIALS=./secrets/credentials/your_credentials_file.json
 
-# Gin mode (optional, default - release)
+# GIN мод (необзятельно, по умолчанию - release)
 export GIN_MODE=
+
+# Nginx & HTTPS
+# имя сервиса приложения, как в docker-compose (app)
+export APP_HOST=
+
+# порт на котором работает приложение (как в main.yml)
+export APP_PORT=
+
+# порт для HTTPS соединения (443)
+export HTTPS_PORT=
 ```
 > **Подсказка:** если вы запускаете проект с помощью Docker, установите `DB_HOST`=postgres (как имя сервиса Postgres в docker-compose).
-3. **Запуск сервиса:**
+4. **Запуск сервиса:**
 ```shell
 make
 ```
-4. **Чтобы протестировать работу сервиса, можно перейти по адресу
+
+3. **(Необязательно) Добавление сертификатов для корректной работы Nginx:**
+> Необходимо сгенерировать сертификаты и поместить их в директорию `secrets/certs`, чтобы была возможность обращаться к сервису по HTTPS. 
+Можно использовать утилиту [**minica**](https://github.com/jsha/minica). 
+
+5. **Чтобы протестировать работу сервиса, можно перейти по адресу
    http://localhost:8080/docs/index.html для получения Swagger документации.**
 
 ---
