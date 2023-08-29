@@ -139,3 +139,7 @@ make migrate-up
 ```shell
 make migrate-down
 ```
+5. **Остановка всех запущенных контейнеров**
+```shell
+make stop
+```

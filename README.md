@@ -118,22 +118,26 @@ http://localhost:8080/docs/index.html to access the Swagger documentation.**
 ---
 
 ### Additional features
-1. **Running tests:**
+1. **Run tests**
 ```shell
 make test
 ```
-2. **Running the linter:**
+2. **Run the linter**
 ```shell
 make lint
 ```
-3. **Creating migration files:**
+3. **Create migration files**
 ```shell
 make migrate-create
 ```
-4. **Migrations up / down:**
+4. **Migrations up / down**
 ```shell
 make migrate-up
 ```
 ```shell
 make migrate-down
+```
+5. **Stop all running containers**
+```shell
+make stop
 ```
