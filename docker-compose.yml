@@ -40,7 +40,6 @@ services:
     env_file:
       - .env
     volumes:
-      - ./scripts/nginx/setup.sh:/setup.sh
       - ./secrets/certs:/etc/nginx/ssl
     depends_on:
       - app
