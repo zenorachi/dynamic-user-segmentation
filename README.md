@@ -11,16 +11,22 @@
     </p>
 </div>
 
+---
+
 ### Technologies used:
 - [Golang](https://go.dev), [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/), [Nginx](https://nginx.org/ru/)
 - [REST](https://ru.wikipedia.org/wiki/REST), [Swagger UI](https://swagger.io/tools/swagger-ui/)
 - [JWT Authentication](https://jwt.io/)
 
+---
+
 ### Installation
 ```shell
 git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 ```
+
+---
 
 ### Getting started
 #### [Detailed Guide to Google Drive Integration](./docs/examples/01-google-drive-setup.md)
@@ -141,3 +147,32 @@ make migrate-down
 ```shell
 make stop
 ```
+
+---
+
+### Decisions
+In the process of project implementation, I made the following decisions regarding certain contentious issues:
+* **How to implement a *many-to-many* relationship between users and segments?**
+> **Decision:** it seemed to me that it would be more appropriate to use a linking table called `relations`.
+This approach enables easy scalability of the application in the future without altering the current structure.
+It simplifies the process of adding segments to a user and removing them, as well as streamlines the associated queries.
+* **Which request method is better to use when adding segments to a user (*POST* or *PUT*)?**
+> **Decision:** it seemed to me that it would be more appropriate to use the *POST* method since new relations between users and segments are being created.
+* **How to implement automatic removal of users from segments if a TTL is specified in the request?**
+> **Decision:** there was a choice between creating a separate service that would periodically check whether
+the relationship between a user and segments has expired (for example, using `time.Ticker` or the `cron` utility),
+or simply launching a separate goroutine if a TTL is specified in the request. This goroutine, using a `select` statement,
+would wait for the specified time (or the context to be canceled) and then proceed to remove segments from users.
+The chosen approach is relatively simple to implement, especially considering that the functionality to record
+operations in the `operations` table was already implemented in the segment removal method for users. 
+This greatly simplifies the process. However, it's worth noting that this approach has its downsides,
+such as potentially launching a large number of goroutines (so many that it could deplete the available memory),
+or other unfavorable scenarios that could disrupt the service. Therefore, if the application were not in a "test" mode,
+it would definitely be advisable to use the first approach. But in this case, to expedite the project,
+I decided to go with the second option.
+* **What service to use to generate a link to a CSV file?**
+> **Decision:** as soon as I read the task, I immediately understood that I would likely use an S3 storage,
+since I already had experience with S3 in the project [**ImageBox**](https://github.com/zenorachi/image-box).
+However, I can't deny that I was quite intrigued by the idea from the 2022 internship candidate of using
+Google Drive as a service. So, I decided to try something new for myself and implemented 
+the generation of a link to the CSV file using the Google Drive API integration.
