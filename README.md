@@ -128,6 +128,8 @@ http://localhost:8080/docs/index.html to access the Swagger documentation.**
 ```shell
 make test
 ```
+> **Hint:** for the tests to work correctly for configurations, it is necessary to comment
+out the first line in the Makefile: `include .env`.
 2. **Run the linter**
 ```shell
 make lint
