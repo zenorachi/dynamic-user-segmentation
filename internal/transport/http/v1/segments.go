@@ -17,7 +17,7 @@ func (h *Handler) initSegmentsRoutes(api *gin.RouterGroup) {
 		segments.POST("/create", h.createSegment)
 		segments.GET("/", h.getAllSegments)
 		segments.GET("/:segment_id", h.getSegmentById)
-		segments.GET("/active_users/:segment_id", h.getActiveUsers)
+		segments.GET("/active_users/", h.getActiveUsers)
 		segments.DELETE("/delete", h.deleteSegmentByName)
 		segments.DELETE("/delete_by_id", h.deleteSegmentById)
 	}
@@ -128,6 +128,10 @@ func (h *Handler) getSegmentById(c *gin.Context) {
 	newResponse(c, http.StatusOK, getSegmentByIdResponse{Segment: segment})
 }
 
+type getActiveUsersInput struct {
+	SegmentID int `json:"segment_id"`
+}
+
 type getActiveUsersResponse struct {
 	Users []entity.User `json:"users"`
 }
@@ -136,21 +140,21 @@ type getActiveUsersResponse struct {
 // @Security Bearer
 // @Description getting active users by id
 // @Tags segment-users
+// @Accept json
 // @Produce json
-// @Param segment_id path int true "Segment ID"
+// @Param input body getActiveUsersInput true "input"
 // @Success 200 {object} getActiveUsersResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /api/v1/segments/active_users/:segment_id [get]
+// @Router /api/v1/segments/active_users/ [get]
 func (h *Handler) getActiveUsers(c *gin.Context) {
-	paramId := strings.Trim(c.Param("segment_id"), "/")
-	id, err := strconv.Atoi(paramId)
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid parameter (id)")
+	var input getActiveUsersInput
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidInput.Error())
 		return
 	}
 
-	users, err := h.services.Segments.GetActiveUsersBySegmentID(c, id)
+	users, err := h.services.Segments.GetActiveUsersBySegmentID(c, input.SegmentID)
 	if err != nil {
 		if errors.Is(err, entity.ErrSegmentDoesNotExist) {
 			newErrorResponse(c, http.StatusBadRequest, err.Error())

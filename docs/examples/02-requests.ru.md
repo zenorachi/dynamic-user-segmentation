@@ -339,13 +339,16 @@ curl -X 'DELETE' \
 
 ## Отношения пользователи-сегменты
 ### 1. Получение активных сегментов пользователя
->**Подсказка:** ID пользователя указывается параметром в URL.
 * Пример запроса:
 ```shell
 curl -X 'GET' \
-  'http://localhost:8080/api/v1/users/active_segments/1' \
+  'http://localhost:8080/api/v1/users/active_segments/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMzQyNDUsInN1YiI6IjExIn0.XxlMAboSUE2Wey8wsbT4IxqmAXj6MfJfL7L8Pd3QthA' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "user_id": 1
+}'
 ```
 * Пример ответа:
 ```json
@@ -362,9 +365,13 @@ curl -X 'GET' \
 * Пример запроса:
 ```shell
 curl -X 'GET' \
-  'http://localhost:8080/api/v1/segments/active_users/7' \
+  'http://localhost:8080/api/v1/segments/active_users/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "segment_id": 1
+}'
 ```
 * Пример ответа:
 ```json

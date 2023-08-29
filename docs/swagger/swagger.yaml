@@ -122,12 +122,22 @@ definitions:
       error:
         type: string
     type: object
+  v1.getActiveSegmentsInput:
+    properties:
+      user_id:
+        type: integer
+    type: object
   v1.getActiveSegmentsResponse:
     properties:
       segments:
         items:
           $ref: '#/definitions/entity.Segment'
         type: array
+    type: object
+  v1.getActiveUsersInput:
+    properties:
+      segment_id:
+        type: integer
     type: object
   v1.getActiveUsersResponse:
     properties:
@@ -501,7 +511,6 @@ paths:
       description: getting segment by id
       parameters:
       - description: Segment ID
-        example: 1
         in: path
         name: segment_id
         required: true
@@ -526,15 +535,18 @@ paths:
       summary: Get Segment By ID
       tags:
       - segments
-  /api/v1/segments/active_users/:segment_id:
+  /api/v1/segments/active_users/:
     get:
+      consumes:
+      - application/json
       description: getting active users by id
       parameters:
-      - description: Segment ID
-        in: path
-        name: segment_id
+      - description: input
+        in: body
+        name: input
         required: true
-        type: integer
+        schema:
+          $ref: '#/definitions/v1.getActiveUsersInput'
       produces:
       - application/json
       responses:
@@ -647,15 +659,18 @@ paths:
       summary: Delete Segment By ID
       tags:
       - segments
-  /api/v1/users/active_segments/:user_id:
+  /api/v1/users/active_segments/:
     get:
+      consumes:
+      - application/json
       description: get active segments for a specific user by user_id
       parameters:
-      - description: User ID
-        in: path
-        name: user_id
+      - description: input
+        in: body
+        name: input
         required: true
-        type: integer
+        schema:
+          $ref: '#/definitions/v1.getActiveSegmentsInput'
       produces:
       - application/json
       responses:

@@ -176,3 +176,6 @@ since I already had experience with S3 in the project [**ImageBox**](https://git
 However, I can't deny that I was quite intrigued by the idea from the 2022 internship candidate of using
 Google Drive as a service. So, I decided to try something new for myself and implemented 
 the generation of a link to the CSV file using the Google Drive API integration.
+* **Should an error be returned if a user (segment) has no active segments (users)?**
+> **Decision:** it seemed to me that this would be superfluous and not entirely appropriate, because the request is processed correctly,
+there is simply no active connection between users and segments.

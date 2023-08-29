@@ -406,7 +406,7 @@
                 }
             }
         },
-        "/api/v1/segments/active_users/:segment_id": {
+        "/api/v1/segments/active_users/": {
             "get": {
                 "security": [
                     {
@@ -414,6 +414,9 @@
                     }
                 ],
                 "description": "getting active users by id",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -423,11 +426,13 @@
                 "summary": "Get Active Users By ID",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Segment ID",
-                        "name": "segment_id",
-                        "in": "path",
-                        "required": true
+                        "description": "input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.getActiveUsersInput"
+                        }
                     }
                 ],
                 "responses": {
@@ -617,7 +622,6 @@
                 "parameters": [
                     {
                         "type": "integer",
-                        "example": 1,
                         "description": "Segment ID",
                         "name": "segment_id",
                         "in": "path",
@@ -646,7 +650,7 @@
                 }
             }
         },
-        "/api/v1/users/active_segments/:user_id": {
+        "/api/v1/users/active_segments/": {
             "get": {
                 "security": [
                     {
@@ -654,6 +658,9 @@
                     }
                 ],
                 "description": "get active segments for a specific user by user_id",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -663,11 +670,13 @@
                 "summary": "Get active segments for a user",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "user_id",
-                        "in": "path",
-                        "required": true
+                        "description": "input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.getActiveSegmentsInput"
+                        }
                     }
                 ],
                 "responses": {
@@ -1010,6 +1019,14 @@
                 }
             }
         },
+        "v1.getActiveSegmentsInput": {
+            "type": "object",
+            "properties": {
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "v1.getActiveSegmentsResponse": {
             "type": "object",
             "properties": {
@@ -1018,6 +1035,14 @@
                     "items": {
                         "$ref": "#/definitions/entity.Segment"
                     }
+                }
+            }
+        },
+        "v1.getActiveUsersInput": {
+            "type": "object",
+            "properties": {
+                "segment_id": {
+                    "type": "integer"
                 }
             }
         },

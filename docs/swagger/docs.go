@@ -413,7 +413,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/segments/active_users/:segment_id": {
+        "/api/v1/segments/active_users/": {
             "get": {
                 "security": [
                     {
@@ -421,6 +421,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "getting active users by id",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -430,11 +433,13 @@ const docTemplate = `{
                 "summary": "Get Active Users By ID",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Segment ID",
-                        "name": "segment_id",
-                        "in": "path",
-                        "required": true
+                        "description": "input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.getActiveUsersInput"
+                        }
                     }
                 ],
                 "responses": {
@@ -624,7 +629,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "example": 1,
                         "description": "Segment ID",
                         "name": "segment_id",
                         "in": "path",
@@ -653,7 +657,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/users/active_segments/:user_id": {
+        "/api/v1/users/active_segments/": {
             "get": {
                 "security": [
                     {
@@ -661,6 +665,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "get active segments for a specific user by user_id",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -670,11 +677,13 @@ const docTemplate = `{
                 "summary": "Get active segments for a user",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "user_id",
-                        "in": "path",
-                        "required": true
+                        "description": "input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.getActiveSegmentsInput"
+                        }
                     }
                 ],
                 "responses": {
@@ -1017,6 +1026,14 @@ const docTemplate = `{
                 }
             }
         },
+        "v1.getActiveSegmentsInput": {
+            "type": "object",
+            "properties": {
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "v1.getActiveSegmentsResponse": {
             "type": "object",
             "properties": {
@@ -1025,6 +1042,14 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/entity.Segment"
                     }
+                }
+            }
+        },
+        "v1.getActiveUsersInput": {
+            "type": "object",
+            "properties": {
+                "segment_id": {
+                    "type": "integer"
                 }
             }
         },

@@ -3,12 +3,9 @@ package v1
 import (
 	"errors"
 	"fmt"
-	"net/http"
-	"strconv"
-	"strings"
-
 	"github.com/gin-gonic/gin"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
+	"net/http"
 )
 
 func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
@@ -19,7 +16,7 @@ func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
 		users.GET("/refresh", h.refresh)
 	}
 	{
-		users.GET("/active_segments/:user_id", h.userIdentity, h.getActiveSegments)
+		users.GET("/active_segments/", h.userIdentity, h.getActiveSegments)
 	}
 }
 
@@ -134,6 +131,10 @@ func (h *Handler) refresh(c *gin.Context) {
 	newResponse(c, http.StatusOK, tokenResponse{Token: tokens.AccessToken})
 }
 
+type getActiveSegmentsInput struct {
+	UserID int `json:"user_id"`
+}
+
 type getActiveSegmentsResponse struct {
 	Segments []entity.Segment `json:"segments"`
 }
@@ -142,21 +143,21 @@ type getActiveSegmentsResponse struct {
 // @Security Bearer
 // @Description get active segments for a specific user by user_id
 // @Tags user-segments
+// @Accept json
 // @Produce json
-// @Param user_id path int true "User ID"
+// @Param input body getActiveSegmentsInput true "input"
 // @Success 200 {object} getActiveSegmentsResponse
 // @Failure 400 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /api/v1/users/active_segments/:user_id [get]
+// @Router /api/v1/users/active_segments/ [get]
 func (h *Handler) getActiveSegments(c *gin.Context) {
-	paramId := strings.Trim(c.Param("user_id"), "/")
-	id, err := strconv.Atoi(paramId)
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid parameter (id)")
+	var input getActiveSegmentsInput
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, entity.ErrInvalidInput.Error())
 		return
 	}
 
-	segments, err := h.services.Users.GetActiveSegmentsByUserID(c, id)
+	segments, err := h.services.Users.GetActiveSegmentsByUserID(c, input.UserID)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserDoesNotExist) {
 			newErrorResponse(c, http.StatusBadRequest, err.Error())

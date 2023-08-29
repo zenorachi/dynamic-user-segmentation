@@ -341,13 +341,16 @@ curl -X 'DELETE' \
 
 ## User-segment relations
 ### 1. Get active segments of a user
->**Hint:** the user ID is specified as a parameter in the URL.
 * Request example:
 ```shell
 curl -X 'GET' \
-  'http://localhost:8080/api/v1/users/active_segments/1' \
+  'http://localhost:8080/api/v1/users/active_segments/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMzQyNDUsInN1YiI6IjExIn0.XxlMAboSUE2Wey8wsbT4IxqmAXj6MfJfL7L8Pd3QthA' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "user_id": 1
+}'
 ```
 * Response example:
 ```json
@@ -364,9 +367,13 @@ curl -X 'GET' \
 * Request example:
 ```shell
 curl -X 'GET' \
-  'http://localhost:8080/api/v1/segments/active_users/7' \
+  'http://localhost:8080/api/v1/segments/active_users/' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMzMDc4MjksInN1YiI6IjE0In0.N1QBZb1uVZQGJ7vROHhCdlaySu1o31yjTzFLnVk_XYw' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "segment_id": 1
+}'
 ```
 * Response example:
 ```json
