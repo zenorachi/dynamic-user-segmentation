@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"errors"
-	"fmt"
 	"regexp"
 	"testing"
 	"time"
@@ -356,9 +355,8 @@ func TestSegmentsRepository_GetActiveUsersBySegmentID(t *testing.T) {
 					AddRow(1, "user1", time.Time{}).
 					AddRow(2, "user2", time.Time{})
 
-				expectedQuery := fmt.Sprintf(
-					"SELECT %s.id, %s.login, %s.registered_at FROM %s JOIN %s ON %s.user_id = %s.id WHERE %s.segment_id = $1",
-					collectionUsers, collectionUsers, collectionUsers, collectionUsers, collectionRelations, collectionRelations, collectionUsers, collectionRelations)
+				expectedQuery :=
+					"SELECT users.id, users.login, users.registered_at FROM users JOIN relations ON relations.user_id = users.id WHERE relations.segment_id = $1"
 				mock.ExpectQuery(regexp.QuoteMeta(expectedQuery)).WithArgs(args.id).
 					WillReturnRows(rows)
 
@@ -374,9 +372,8 @@ func TestSegmentsRepository_GetActiveUsersBySegmentID(t *testing.T) {
 			mockBehaviour: func(args args) {
 				mock.ExpectBegin()
 
-				expectedQuery := fmt.Sprintf(
-					"SELECT %s.id, %s.login, %s.registered_at FROM %s JOIN %s ON %s.user_id = %s.id WHERE %s.segment_id = $1",
-					collectionUsers, collectionUsers, collectionUsers, collectionUsers, collectionRelations, collectionRelations, collectionUsers, collectionRelations)
+				expectedQuery :=
+					"SELECT users.id, users.login, users.registered_at FROM users JOIN relations ON relations.user_id = users.id WHERE relations.segment_id = $1"
 				mock.ExpectQuery(regexp.QuoteMeta(expectedQuery)).WithArgs(args.id).
 					WillReturnError(errors.New("test error"))
 
@@ -430,7 +427,7 @@ func TestSegmentsRepository_DeleteByName(t *testing.T) {
 			mockBehaviour: func(args args) {
 				mock.ExpectBegin()
 
-				expectedDeleteQuery := fmt.Sprintf("DELETE FROM %s WHERE name = $1", collectionSegments)
+				expectedDeleteQuery := "DELETE FROM segments WHERE name = $1"
 				mock.ExpectExec(regexp.QuoteMeta(expectedDeleteQuery)).WithArgs(args.segmentName).
 					WillReturnResult(sqlmock.NewResult(0, 1))
 
@@ -442,7 +439,7 @@ func TestSegmentsRepository_DeleteByName(t *testing.T) {
 			mockBehaviour: func(args args) {
 				mock.ExpectBegin()
 
-				expectedDeleteQuery := fmt.Sprintf("DELETE FROM %s WHERE name = $1", collectionSegments)
+				expectedDeleteQuery := "DELETE FROM segments WHERE name = $1"
 				mock.ExpectExec(regexp.QuoteMeta(expectedDeleteQuery)).WithArgs(args.segmentName).
 					WillReturnError(errors.New("test error"))
 
@@ -495,7 +492,7 @@ func TestSegmentsRepository_DeleteByID(t *testing.T) {
 			mockBehaviour: func(args args) {
 				mock.ExpectBegin()
 
-				expectedDeleteQuery := fmt.Sprintf("DELETE FROM %s WHERE id = $1", collectionSegments)
+				expectedDeleteQuery := "DELETE FROM segments WHERE id = $1"
 				mock.ExpectExec(regexp.QuoteMeta(expectedDeleteQuery)).WithArgs(args.segmentId).
 					WillReturnResult(sqlmock.NewResult(0, 1))
 
@@ -507,7 +504,7 @@ func TestSegmentsRepository_DeleteByID(t *testing.T) {
 			mockBehaviour: func(args args) {
 				mock.ExpectBegin()
 
-				expectedDeleteQuery := fmt.Sprintf("DELETE FROM %s WHERE name = $1", collectionSegments)
+				expectedDeleteQuery := "DELETE FROM segments WHERE id = $1"
 				mock.ExpectExec(regexp.QuoteMeta(expectedDeleteQuery)).WithArgs(args.segmentId).
 					WillReturnError(errors.New("test error"))
 

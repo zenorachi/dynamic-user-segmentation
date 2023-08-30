@@ -366,9 +366,8 @@ func TestUsersRepository_GetActiveSegmentsByUserID(t *testing.T) {
 					AddRow("Segment1").
 					AddRow("Segment2")
 
-				expectedQuery := fmt.Sprintf(
-					"SELECT %s.name FROM %s JOIN %s ON %s.segment_id = %s.id WHERE %s.user_id = $1",
-					collectionSegments, collectionSegments, collectionRelations, collectionRelations, collectionSegments, collectionRelations)
+				expectedQuery :=
+					"SELECT segments.name FROM segments JOIN relations ON relations.segment_id = segments.id WHERE relations.user_id = $1"
 				mock.ExpectQuery(regexp.QuoteMeta(expectedQuery)).WithArgs(args.id).WillReturnRows(rows)
 
 				mock.ExpectCommit()
@@ -383,9 +382,8 @@ func TestUsersRepository_GetActiveSegmentsByUserID(t *testing.T) {
 			mockBehaviour: func(args args) {
 				mock.ExpectBegin()
 
-				expectedQuery := fmt.Sprintf(
-					"SELECT %s.name FROM %s JOIN %s ON %s.segment_id = %s.id WHERE %s.user_id = $1",
-					collectionSegments, collectionSegments, collectionRelations, collectionRelations, collectionSegments, collectionRelations)
+				expectedQuery :=
+					"SELECT segments.name FROM segments JOIN relations ON relations.segment_id = segments.id WHERE relations.user_id = $1"
 				mock.ExpectQuery(regexp.QuoteMeta(expectedQuery)).WithArgs(args.id).WillReturnError(errors.New("test error"))
 
 				mock.ExpectRollback()

@@ -49,6 +49,7 @@ issues:
     - path: (_test\.go)
       linters:
           - dupl
+          - goconst
     - path: (internal/transport/http/v1/operations.go)
       linters:
           - dupl

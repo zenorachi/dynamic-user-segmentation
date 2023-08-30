@@ -3,11 +3,12 @@ package repository
 import (
 	"context"
 	"errors"
+	"regexp"
+	"testing"
+
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
-	"regexp"
-	"testing"
 )
 
 func TestOperationsRepository_CreateRelationsBySegmentIDs(t *testing.T) {
