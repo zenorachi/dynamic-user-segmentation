@@ -35,7 +35,7 @@ git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 1. **Интеграция Google Drive:**
     * Регистрируем приложение в [Google Cloud](https://developers.google.com/workspace/guides/create-project);
     * Создаем сервисный аккаунт и секретный ключ для него;
-    * Добавляем в директорию `secrets` полученный секретный ключ;
+    * Добавляем в директорию `secrets/credentials` полученный секретный ключ;
     * Изменяем переменную окружения `GDRIVE_CREDENTIALS` в .env.
 > **Подсказка:** сервис можно запустить без интеграции с Google Drive. В таком случае необходимо оставить значение переменной `GDRIVE_CREDENTIALS` пустым.
 > При запросе на получение ссылки на csv-файл будет ошибка, говорящая, что сервис Google Drive недоступен.

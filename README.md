@@ -33,7 +33,7 @@ git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 1. **Google Drive integration:**
     * Register the application in [Google Cloud](https://developers.google.com/workspace/guides/create-project);
     * Create a service account and generate a secret key for it;
-    * Add the received secret key to the `secrets` directory.;
+    * Add the received secret key to the `secrets/credentials` directory.;
     * Modify the environment variable `GDRIVE_CREDENTIALS` in the .env file.
 > **Hint:** the service can be launched without integrating with Google Drive. In this case, you need to leave the value of the `GDRIVE_CREDENTIALS` variable empty.
 > In this case, when requesting a link to a CSV file, an error will occur stating that the Google Drive service is unavailable.

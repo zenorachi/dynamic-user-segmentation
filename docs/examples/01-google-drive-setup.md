@@ -18,7 +18,7 @@
 * Select **Service account** and create an account;
 * After successful creation, the created account will be displayed on the Credentials tab.
 Next, you need to create a secret key for the account (click on edit, go to the **KEYS** -> `ADD KEY` -> `CREATE NEW KEY` -> `JSON` -> `CREATE`);
-* After completing all the aforementioned steps, a .json file will be downloaded. You need to move this file to the `secrets` directory.
+* After completing all the aforementioned steps, a .json file will be downloaded. You need to move this file to the `secrets/credentials` directory.
 * Set the value of the environment variable `GDRIVE_CREDENTIALS` in the .env file.
 
 ### 3. Connecting to the Google Drive API
