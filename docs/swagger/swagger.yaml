@@ -566,7 +566,7 @@ paths:
       - Bearer: []
       summary: Get Active Users By ID
       tags:
-      - segment-users
+      - relations
   /api/v1/segments/create:
     post:
       consumes:
@@ -690,7 +690,7 @@ paths:
       - Bearer: []
       summary: Get active segments for a user
       tags:
-      - user-segments
+      - relations
   /api/v1/users/refresh:
     get:
       description: refresh user's access token

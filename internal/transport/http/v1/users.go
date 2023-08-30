@@ -143,7 +143,7 @@ type getActiveSegmentsResponse struct {
 // @Summary Get active segments for a user
 // @Security Bearer
 // @Description get active segments for a specific user by user_id
-// @Tags user-segments
+// @Tags relations
 // @Accept json
 // @Produce json
 // @Param input body getActiveSegmentsInput true "input"

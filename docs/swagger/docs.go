@@ -428,7 +428,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "segment-users"
+                    "relations"
                 ],
                 "summary": "Get Active Users By ID",
                 "parameters": [
@@ -672,7 +672,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user-segments"
+                    "relations"
                 ],
                 "summary": "Get active segments for a user",
                 "parameters": [

@@ -139,7 +139,7 @@ type getActiveUsersResponse struct {
 // @Summary Get Active Users By ID
 // @Security Bearer
 // @Description getting active users by id
-// @Tags segment-users
+// @Tags relations
 // @Accept json
 // @Produce json
 // @Param input body getActiveUsersInput true "input"
