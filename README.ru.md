@@ -15,7 +15,7 @@
 
 ---
 
-### Используемые технологии:
+## Используемые технологии:
 - [Golang](https://go.dev), [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/), [Nginx](https://nginx.org/ru/)
 - [REST](https://ru.wikipedia.org/wiki/REST), [Swagger UI](https://swagger.io/tools/swagger-ui/)
@@ -23,15 +23,15 @@
 
 ---
 
-### Установка
+## Установка
 ```shell
 git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 ```
 
 ---
 
-### Начало работы
-#### [Подробная инструкция по интеграции Google Drive](./docs/examples/01-google-drive-setup.ru.md)
+## Начало работы
+### [Подробная инструкция по интеграции Google Drive](./docs/examples/01-google-drive-setup.ru.md)
 1. **Интеграция Google Drive:**
     * Регистрируем приложение в [Google Cloud](https://developers.google.com/workspace/guides/create-project);
     * Создаем сервисный аккаунт и секретный ключ для него;
@@ -93,7 +93,7 @@ make
 
 ---
 
-### [Примеры запросов](./docs/examples/02-requests.ru.md)
+## [Примеры запросов](./docs/examples/02-requests.ru.md)
 
 **[Пользователи](./docs/examples/02-requests.ru.md#Пользователи)**
 * [Регистрация](./docs/examples/02-requests.ru.md#1-регистрация)
@@ -127,7 +127,7 @@ make
 
 ---
 
-### Дополнительные возможности
+## Дополнительные возможности
 1. **Запуск тестов**
 ```shell
 make test
@@ -156,7 +156,7 @@ make stop
 
 ---
 
-### Принятые решения
+## Принятые решения
 В процессе реализации проекта принял следующие решения, касающиеся некоторых спорных вопросов:
 
 * **Как реализовать связь *many-to-many* между пользователями и сегментами?**
