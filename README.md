@@ -86,6 +86,8 @@ make
 ```
 5. **To test the service's functionality, you can navigate to the address 
 http://localhost:8080/docs/index.html to access the Swagger documentation.**
+> **Hint:** to complete the authorization in Swagger UI after receiving the JWT token, you need 
+to enter `Bearer <your_token>` (without "<" and ">" symbols) in the input field.
 
 ---
 
