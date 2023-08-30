@@ -59,7 +59,7 @@ func (h *Handler) addSegmentsById(c *gin.Context) {
 		return
 	}
 
-	operationIDs, err := h.services.Operations.CreateBySegmentIDs(c, input.UserID, input.SegmentsIDs)
+	operationIDs, err := h.services.Operations.CreateRelationsBySegmentIDs(c, input.UserID, input.SegmentsIDs)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserDoesNotExist) || errors.Is(err, entity.ErrSegmentDoesNotExist) ||
 			errors.Is(err, entity.ErrRelationAlreadyExists) {
@@ -71,7 +71,9 @@ func (h *Handler) addSegmentsById(c *gin.Context) {
 	}
 
 	if input.TTL != "" {
-		go func() { h.services.Operations.DeleteAfterTTLBySegmentIDs(c, input.UserID, input.SegmentsIDs, ttl) }()
+		go func() {
+			h.services.Operations.DeleteRelationsAfterTTLBySegmentIDs(c, input.UserID, input.SegmentsIDs, ttl)
+		}()
 	}
 
 	newResponse(c, http.StatusCreated, operationsResponse{IDs: operationIDs})
@@ -107,7 +109,7 @@ func (h *Handler) addSegmentsByName(c *gin.Context) {
 		return
 	}
 
-	operationIDs, err := h.services.Operations.CreateBySegmentNames(c, input.UserID, input.SegmentsNames)
+	operationIDs, err := h.services.Operations.CreateRelationsBySegmentNames(c, input.UserID, input.SegmentsNames)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserDoesNotExist) || errors.Is(err, entity.ErrSegmentDoesNotExist) ||
 			errors.Is(err, entity.ErrRelationAlreadyExists) {
@@ -119,7 +121,9 @@ func (h *Handler) addSegmentsByName(c *gin.Context) {
 	}
 
 	if input.TTL != "" {
-		go func() { h.services.Operations.DeleteAfterTTLBySegmentNames(c, input.UserID, input.SegmentsNames, ttl) }()
+		go func() {
+			h.services.Operations.DeleteRelationsAfterTTLBySegmentNames(c, input.UserID, input.SegmentsNames, ttl)
+		}()
 	}
 
 	newResponse(c, http.StatusCreated, operationsResponse{IDs: operationIDs})
@@ -149,7 +153,7 @@ func (h *Handler) deleteSegmentsById(c *gin.Context) {
 		return
 	}
 
-	operationIDs, err := h.services.Operations.DeleteBySegmentIDs(c, input.UserID, input.SegmentsIDs)
+	operationIDs, err := h.services.Operations.DeleteRelationsBySegmentIDs(c, input.UserID, input.SegmentsIDs)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserDoesNotExist) || errors.Is(err, entity.ErrSegmentDoesNotExist) ||
 			errors.Is(err, entity.ErrRelationDoesNotExist) {
@@ -186,7 +190,7 @@ func (h *Handler) deleteSegmentsByName(c *gin.Context) {
 		return
 	}
 
-	operationIDs, err := h.services.Operations.DeleteBySegmentNames(c, input.UserID, input.SegmentsNames)
+	operationIDs, err := h.services.Operations.DeleteRelationsBySegmentNames(c, input.UserID, input.SegmentsNames)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserDoesNotExist) || errors.Is(err, entity.ErrSegmentDoesNotExist) ||
 			errors.Is(err, entity.ErrRelationDoesNotExist) {

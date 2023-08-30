@@ -27,12 +27,12 @@ func NewOperations(usersRepo repository.Users, segmentsRepo repository.Segments,
 	}
 }
 
-func (o *OperationsService) CreateBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error) {
+func (o *OperationsService) CreateRelationsBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error) {
 	if !o.isUserExists(ctx, userId) {
 		return nil, entity.ErrUserDoesNotExist
 	}
 
-	operations, err := o.operationsRepo.CreateBySegmentIDs(ctx, userId, segmentIDs)
+	operations, err := o.operationsRepo.CreateRelationsBySegmentIDs(ctx, userId, segmentIDs)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, entity.ErrSegmentDoesNotExist
@@ -46,12 +46,12 @@ func (o *OperationsService) CreateBySegmentIDs(ctx context.Context, userId int, 
 	return operations, nil
 }
 
-func (o *OperationsService) CreateBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+func (o *OperationsService) CreateRelationsBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
 	if !o.isUserExists(ctx, userId) {
 		return nil, entity.ErrUserDoesNotExist
 	}
 
-	operations, err := o.operationsRepo.CreateBySegmentNames(ctx, userId, segmentsNames)
+	operations, err := o.operationsRepo.CreateRelationsBySegmentNames(ctx, userId, segmentsNames)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, entity.ErrSegmentDoesNotExist
@@ -65,12 +65,12 @@ func (o *OperationsService) CreateBySegmentNames(ctx context.Context, userId int
 	return operations, nil
 }
 
-func (o *OperationsService) DeleteBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error) {
+func (o *OperationsService) DeleteRelationsBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error) {
 	if !o.isUserExists(ctx, userId) {
 		return nil, entity.ErrUserDoesNotExist
 	}
 
-	operations, err := o.operationsRepo.DeleteBySegmentIDs(ctx, userId, segmentIDs)
+	operations, err := o.operationsRepo.DeleteRelationsBySegmentIDs(ctx, userId, segmentIDs)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, entity.ErrSegmentDoesNotExist
@@ -81,12 +81,12 @@ func (o *OperationsService) DeleteBySegmentIDs(ctx context.Context, userId int, 
 	return operations, nil
 }
 
-func (o *OperationsService) DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+func (o *OperationsService) DeleteRelationsBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
 	if !o.isUserExists(ctx, userId) {
 		return nil, entity.ErrUserDoesNotExist
 	}
 
-	operations, err := o.operationsRepo.DeleteBySegmentNames(ctx, userId, segmentsNames)
+	operations, err := o.operationsRepo.DeleteRelationsBySegmentNames(ctx, userId, segmentsNames)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, entity.ErrSegmentDoesNotExist
@@ -97,10 +97,10 @@ func (o *OperationsService) DeleteBySegmentNames(ctx context.Context, userId int
 	return operations, nil
 }
 
-func (o *OperationsService) DeleteAfterTTLBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int, ttl time.Duration) {
+func (o *OperationsService) DeleteRelationsAfterTTLBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int, ttl time.Duration) {
 	select {
 	case <-time.After(ttl):
-		_, err := o.DeleteBySegmentIDs(ctx, userId, segmentsIDs)
+		_, err := o.DeleteRelationsBySegmentIDs(ctx, userId, segmentsIDs)
 		if err != nil {
 			logger.Error("scheduler", err)
 		} else {
@@ -111,10 +111,10 @@ func (o *OperationsService) DeleteAfterTTLBySegmentIDs(ctx context.Context, user
 	}
 }
 
-func (o *OperationsService) DeleteAfterTTLBySegmentNames(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration) {
+func (o *OperationsService) DeleteRelationsAfterTTLBySegmentNames(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration) {
 	select {
 	case <-time.After(ttl):
-		_, err := o.DeleteBySegmentNames(ctx, userId, segmentsNames)
+		_, err := o.DeleteRelationsBySegmentNames(ctx, userId, segmentsNames)
 		if err != nil {
 			logger.Error("scheduler", err)
 		} else {

@@ -35,12 +35,12 @@ type (
 	}
 
 	Operations interface {
-		CreateBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error)
-		CreateBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
-		DeleteBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error)
-		DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
-		DeleteAfterTTLBySegmentIDs(ctx context.Context, userId int, segmentIDs []int, ttl time.Duration)
-		DeleteAfterTTLBySegmentNames(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration)
+		CreateRelationsBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error)
+		CreateRelationsBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
+		DeleteRelationsBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error)
+		DeleteRelationsBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
+		DeleteRelationsAfterTTLBySegmentIDs(ctx context.Context, userId int, segmentIDs []int, ttl time.Duration)
+		DeleteRelationsAfterTTLBySegmentNames(ctx context.Context, userId int, segmentsNames []string, ttl time.Duration)
 		GetOperationsHistory(ctx context.Context, year, month int, userIDs ...int) ([]entity.Operation, error)
 	}
 

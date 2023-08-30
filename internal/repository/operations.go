@@ -16,7 +16,7 @@ func NewOperations(db *sql.DB) *OperationsRepository {
 	return &OperationsRepository{db: db}
 }
 
-func (o *OperationsRepository) CreateBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error) {
+func (o *OperationsRepository) CreateRelationsBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
 		ReadOnly:  false,
@@ -58,7 +58,7 @@ func (o *OperationsRepository) CreateBySegmentIDs(ctx context.Context, userId in
 	return operationsIDs, tx.Commit()
 }
 
-func (o *OperationsRepository) CreateBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+func (o *OperationsRepository) CreateRelationsBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
 		ReadOnly:  false,
@@ -100,7 +100,7 @@ func (o *OperationsRepository) CreateBySegmentNames(ctx context.Context, userId 
 	return operationsIDs, tx.Commit()
 }
 
-func (o *OperationsRepository) DeleteBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int) ([]int, error) {
+func (o *OperationsRepository) DeleteRelationsBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int) ([]int, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
 		ReadOnly:  false,
@@ -145,7 +145,7 @@ func (o *OperationsRepository) DeleteBySegmentIDs(ctx context.Context, userId in
 	return operationsIDs, tx.Commit()
 }
 
-func (o *OperationsRepository) DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
+func (o *OperationsRepository) DeleteRelationsBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error) {
 	tx, err := o.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
 		ReadOnly:  false,

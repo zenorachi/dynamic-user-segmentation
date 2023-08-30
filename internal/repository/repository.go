@@ -29,10 +29,10 @@ type (
 	}
 
 	Operations interface {
-		CreateBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error)
-		CreateBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
-		DeleteBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int) ([]int, error)
-		DeleteBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
+		CreateRelationsBySegmentIDs(ctx context.Context, userId int, segmentIDs []int) ([]int, error)
+		CreateRelationsBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
+		DeleteRelationsBySegmentIDs(ctx context.Context, userId int, segmentsIDs []int) ([]int, error)
+		DeleteRelationsBySegmentNames(ctx context.Context, userId int, segmentsNames []string) ([]int, error)
 		GetOperations(ctx context.Context, year, month int, userIDs ...int) ([]entity.Operation, error)
 	}
 )
