@@ -1,0 +1,14 @@
+# Idea
+.idea
+
+# Binaries
+.bin
+
+# Environment variables
+.env
+
+# Secrets
+secrets
+
+# Converage
+cover.out

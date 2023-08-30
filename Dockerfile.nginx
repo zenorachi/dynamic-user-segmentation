@@ -1,0 +1,10 @@
+FROM nginx:latest
+
+WORKDIR /
+
+COPY ./configs/nginx.template.conf /etc/nginx/nginx.template.conf
+COPY ./scripts/nginx/setup.sh /setup.sh
+
+RUN chmod +x /setup.sh
+
+CMD ["./setup.sh"]
