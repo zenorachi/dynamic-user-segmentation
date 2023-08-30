@@ -153,8 +153,8 @@ func (u *UsersRepository) GetActiveSegmentsByUserID(ctx context.Context, id int)
 	var (
 		segments []entity.Segment
 		query    = fmt.Sprintf(
-			"SELECT name FROM %s JOIN %s ON %s.segment_id = id WHERE %s.user_id = $1",
-			collectionSegments, collectionRelations, collectionRelations, collectionRelations)
+			"SELECT %s.name FROM %s JOIN %s ON %s.segment_id = %s.id WHERE %s.user_id = $1",
+			collectionSegments, collectionSegments, collectionRelations, collectionRelations, collectionSegments, collectionRelations)
 	)
 
 	rows, err := tx.QueryContext(ctx, query, id)

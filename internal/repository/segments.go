@@ -52,12 +52,12 @@ func (s *SegmentsRepository) GetByName(ctx context.Context, name string) (entity
 
 	var (
 		segment entity.Segment
-		query   = fmt.Sprintf("SELECT id, name FROM %s WHERE name = $1",
+		query   = fmt.Sprintf("SELECT * FROM %s WHERE name = $1",
 			collectionSegments)
 	)
 
 	err = tx.QueryRowContext(ctx, query, name).
-		Scan(&segment.ID, &segment.Name)
+		Scan(&segment.ID, &segment.Name, &segment.AssignPercent)
 	if err != nil {
 		return entity.Segment{}, err
 	}
@@ -103,8 +103,8 @@ func (s *SegmentsRepository) GetActiveUsersBySegmentID(ctx context.Context, id i
 	var (
 		users []entity.User
 		query = fmt.Sprintf(
-			"SELECT id, login, registered_at FROM %s JOIN %s ON %s.user_id = id WHERE %s.segment_id = $1",
-			collectionUsers, collectionRelations, collectionRelations, collectionRelations)
+			"SELECT %s.id, %s.login, %s.registered_at FROM %s JOIN %s ON %s.user_id = %s.id WHERE %s.segment_id = $1",
+			collectionUsers, collectionUsers, collectionUsers, collectionUsers, collectionRelations, collectionRelations, collectionUsers, collectionRelations)
 	)
 
 	rows, err := tx.QueryContext(ctx, query, id)
@@ -177,7 +177,7 @@ func (s *SegmentsRepository) DeleteByName(ctx context.Context, name string) erro
 	}
 	defer func() { _ = tx.Rollback() }()
 
-	var queryDeleteSegment = fmt.Sprintf("DELETE FROM %s WHERE name = $1 RETURNING id, name", collectionSegments)
+	var queryDeleteSegment = fmt.Sprintf("DELETE FROM %s WHERE name = $1", collectionSegments)
 
 	_, err = tx.ExecContext(ctx, queryDeleteSegment, name)
 	if err != nil {

@@ -46,6 +46,9 @@ golint:
 
 issues:
   exclude-rules:
+    - path: (_test\.go)
+      linters:
+          - dupl
     - path: (internal/transport/http/v1/operations.go)
       linters:
-        - dupl
+          - dupl

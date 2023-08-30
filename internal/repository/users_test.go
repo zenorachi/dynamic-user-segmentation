@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUsers_Create(t *testing.T) {
+func TestUsersRepository_Create(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("error creating database connection: %v\n", err)
@@ -89,7 +89,7 @@ func TestUsers_Create(t *testing.T) {
 	}
 }
 
-func TestUsers_GetByCredentials(t *testing.T) {
+func TestUsersRepository_GetByCredentials(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("error creating database connection: %v\n", err)
@@ -146,9 +146,9 @@ func TestUsers_GetByCredentials(t *testing.T) {
 			mockBehaviour: func(args args) {
 				mock.ExpectBegin()
 
-				rows := sqlmock.NewRows([]string{"id", "login", "email", "password", "registered_at"})
 				expectedQuery := "SELECT id, login, email, password, registered_at FROM users WHERE login = $1 AND password = $2"
-				mock.ExpectQuery(regexp.QuoteMeta(expectedQuery)).WithArgs(args.login, args.password).WillReturnRows(rows)
+				mock.ExpectQuery(regexp.QuoteMeta(expectedQuery)).WithArgs(args.login, args.password).
+					WillReturnError(errors.New("test error"))
 
 				mock.ExpectRollback()
 			},
@@ -176,7 +176,7 @@ func TestUsersRepository_GetActiveSegmentsByUserID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error creating database connection: %v\n", err)
 	}
-	defer func() { _ = db.Close() }()
+	defer db.Close()
 
 	repo := NewUsers(db)
 
@@ -208,7 +208,9 @@ func TestUsersRepository_GetActiveSegmentsByUserID(t *testing.T) {
 					AddRow("Segment1").
 					AddRow("Segment2")
 
-				expectedQuery := "SELECT name FROM segments JOIN relations ON relations.segment_id = id WHERE relations.user_id = $1"
+				expectedQuery := fmt.Sprintf(
+					"SELECT %s.name FROM %s JOIN %s ON %s.segment_id = %s.id WHERE %s.user_id = $1",
+					collectionSegments, collectionSegments, collectionRelations, collectionRelations, collectionSegments, collectionRelations)
 				mock.ExpectQuery(regexp.QuoteMeta(expectedQuery)).WithArgs(args.id).WillReturnRows(rows)
 
 				mock.ExpectCommit()
@@ -223,7 +225,9 @@ func TestUsersRepository_GetActiveSegmentsByUserID(t *testing.T) {
 			mockBehaviour: func(args args) {
 				mock.ExpectBegin()
 
-				expectedQuery := "SELECT name FROM segments JOIN relations ON relations.segment_id = id WHERE relations.user_id = $1"
+				expectedQuery := fmt.Sprintf(
+					"SELECT %s.name FROM %s JOIN %s ON %s.segment_id = %s.id WHERE %s.user_id = $1",
+					collectionSegments, collectionSegments, collectionRelations, collectionRelations, collectionSegments, collectionRelations)
 				mock.ExpectQuery(regexp.QuoteMeta(expectedQuery)).WithArgs(args.id).WillReturnError(errors.New("test error"))
 
 				mock.ExpectRollback()
