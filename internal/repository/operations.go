@@ -24,6 +24,7 @@ func (o *OperationsRepository) CreateBySegmentIDs(ctx context.Context, userId in
 	if err != nil {
 		return nil, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		operationsIDs        []int
@@ -38,19 +39,16 @@ func (o *OperationsRepository) CreateBySegmentIDs(ctx context.Context, userId in
 	for _, segmentId := range segmentIDs {
 		err = tx.QueryRowContext(ctx, queryGetSegmentName, segmentId).Scan(&segmentName)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
 		_, err = tx.ExecContext(ctx, queryCreateRelation, userId, segmentId)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
 		err = tx.QueryRowContext(ctx, queryInsertOperation, userId, segmentName, entity.TypeAdd).Scan(&operationId)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
@@ -68,6 +66,7 @@ func (o *OperationsRepository) CreateBySegmentNames(ctx context.Context, userId 
 	if err != nil {
 		return nil, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		segmentId            int
@@ -82,19 +81,16 @@ func (o *OperationsRepository) CreateBySegmentNames(ctx context.Context, userId 
 	for _, segmentName := range segmentsNames {
 		err = tx.QueryRowContext(ctx, queryGetId, segmentName).Scan(&segmentId)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
 		_, err = tx.ExecContext(ctx, queryCreateRelation, userId, segmentId)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
 		err = tx.QueryRowContext(ctx, queryInsertOperation, userId, segmentName, entity.TypeAdd).Scan(&operationId)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
@@ -112,6 +108,7 @@ func (o *OperationsRepository) DeleteBySegmentIDs(ctx context.Context, userId in
 	if err != nil {
 		return nil, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		operationsIDs        []int
@@ -126,23 +123,19 @@ func (o *OperationsRepository) DeleteBySegmentIDs(ctx context.Context, userId in
 	for _, segmentId := range segmentsIDs {
 		err = tx.QueryRowContext(ctx, queryGetSegmentName, segmentId).Scan(&segmentName)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
 		result, err := tx.ExecContext(ctx, queryDeleteRelation, userId, segmentId)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 		if deletedRows, _ := result.RowsAffected(); deletedRows == 0 {
-			_ = tx.Rollback()
 			return nil, entity.ErrRelationDoesNotExist
 		}
 
 		err = tx.QueryRowContext(ctx, queryInsertOperation, userId, segmentName, entity.TypeDelete).Scan(&operationId)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
@@ -160,6 +153,7 @@ func (o *OperationsRepository) DeleteBySegmentNames(ctx context.Context, userId 
 	if err != nil {
 		return nil, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		segmentId            int
@@ -174,23 +168,19 @@ func (o *OperationsRepository) DeleteBySegmentNames(ctx context.Context, userId 
 	for _, segmentName := range segmentsNames {
 		err = tx.QueryRowContext(ctx, queryGetSegmentId, segmentName).Scan(&segmentId)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
 		result, err := tx.ExecContext(ctx, queryDeleteRelation, userId, segmentId)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 		if deletedRows, _ := result.RowsAffected(); deletedRows == 0 {
-			_ = tx.Rollback()
 			return nil, entity.ErrRelationDoesNotExist
 		}
 
 		err = tx.QueryRowContext(ctx, queryInsertOperation, userId, segmentName, entity.TypeDelete).Scan(&operationId)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
@@ -208,6 +198,7 @@ func (o *OperationsRepository) GetOperations(ctx context.Context, year, month in
 	if err != nil {
 		return nil, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var operations []entity.Operation
 
@@ -215,7 +206,6 @@ func (o *OperationsRepository) GetOperations(ctx context.Context, year, month in
 
 	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
-		_ = tx.Rollback()
 		return nil, err
 	}
 	defer func() { _ = rows.Close() }()
@@ -224,7 +214,6 @@ func (o *OperationsRepository) GetOperations(ctx context.Context, year, month in
 		var operation entity.Operation
 		err = rows.Scan(&operation.UserID, &operation.SegmentName, &operation.Type, &operation.Date)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
@@ -232,7 +221,6 @@ func (o *OperationsRepository) GetOperations(ctx context.Context, year, month in
 	}
 
 	if err = rows.Err(); err != nil {
-		_ = tx.Commit()
 		return nil, err
 	}
 

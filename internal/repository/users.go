@@ -48,6 +48,7 @@ func (u *UsersRepository) GetByID(ctx context.Context, id int) (entity.User, err
 	if err != nil {
 		return entity.User{}, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		user  entity.User
@@ -58,7 +59,6 @@ func (u *UsersRepository) GetByID(ctx context.Context, id int) (entity.User, err
 	err = tx.QueryRowContext(ctx, query, id).
 		Scan(&user.ID, &user.Login, &user.Email, &user.Password, &user.RegisteredAt)
 	if err != nil {
-		_ = tx.Rollback()
 		return entity.User{}, err
 	}
 
@@ -73,6 +73,7 @@ func (u *UsersRepository) GetByLogin(ctx context.Context, login string) (entity.
 	if err != nil {
 		return entity.User{}, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		user  entity.User
@@ -83,7 +84,6 @@ func (u *UsersRepository) GetByLogin(ctx context.Context, login string) (entity.
 	err = tx.QueryRowContext(ctx, query, login).
 		Scan(&user.ID, &user.Login, &user.Email, &user.Password, &user.RegisteredAt)
 	if err != nil {
-		_ = tx.Rollback()
 		return entity.User{}, err
 	}
 
@@ -98,6 +98,7 @@ func (u *UsersRepository) GetByCredentials(ctx context.Context, login, password 
 	if err != nil {
 		return entity.User{}, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		user  entity.User
@@ -108,7 +109,6 @@ func (u *UsersRepository) GetByCredentials(ctx context.Context, login, password 
 	err = tx.QueryRowContext(ctx, query, login, password).
 		Scan(&user.ID, &user.Login, &user.Email, &user.Password, &user.RegisteredAt)
 	if err != nil {
-		_ = tx.Rollback()
 		return entity.User{}, err
 	}
 
@@ -123,6 +123,7 @@ func (u *UsersRepository) GetByRefreshToken(ctx context.Context, refreshToken st
 	if err != nil {
 		return entity.User{}, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		user  entity.User
@@ -133,7 +134,6 @@ func (u *UsersRepository) GetByRefreshToken(ctx context.Context, refreshToken st
 	err = tx.QueryRowContext(ctx, query, refreshToken).
 		Scan(&user.ID, &user.Login, &user.Email, &user.Password, &user.RegisteredAt)
 	if err != nil {
-		_ = tx.Rollback()
 		return entity.User{}, err
 	}
 
@@ -148,6 +148,7 @@ func (u *UsersRepository) GetActiveSegmentsByUserID(ctx context.Context, id int)
 	if err != nil {
 		return nil, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		segments []entity.Segment
@@ -158,7 +159,6 @@ func (u *UsersRepository) GetActiveSegmentsByUserID(ctx context.Context, id int)
 
 	rows, err := tx.QueryContext(ctx, query, id)
 	if err != nil {
-		_ = tx.Rollback()
 		return nil, err
 	}
 	defer func() { _ = rows.Close() }()
@@ -167,7 +167,6 @@ func (u *UsersRepository) GetActiveSegmentsByUserID(ctx context.Context, id int)
 		var segment entity.Segment
 		err = rows.Scan(&segment.Name)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
@@ -175,7 +174,6 @@ func (u *UsersRepository) GetActiveSegmentsByUserID(ctx context.Context, id int)
 	}
 
 	if err = rows.Err(); err != nil {
-		_ = tx.Rollback()
 		return nil, err
 	}
 
@@ -190,13 +188,13 @@ func (u *UsersRepository) SetSession(ctx context.Context, userId int, session en
 	if err != nil {
 		return err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	query := fmt.Sprintf("UPDATE %s SET session = ROW($1, $2) WHERE id = $3",
 		collectionUsers)
 
 	_, err = tx.ExecContext(ctx, query, session.RefreshToken, session.ExpiresAt, userId)
 	if err != nil {
-		_ = tx.Rollback()
 		return err
 	}
 

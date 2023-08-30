@@ -24,6 +24,7 @@ func (s *SegmentsRepository) Create(ctx context.Context, segment entity.Segment)
 	if err != nil {
 		return 0, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		id    int
@@ -33,7 +34,6 @@ func (s *SegmentsRepository) Create(ctx context.Context, segment entity.Segment)
 
 	err = tx.QueryRowContext(ctx, query, segment.Name, segment.AssignPercent).Scan(&id)
 	if err != nil {
-		_ = tx.Rollback()
 		return 0, err
 	}
 
@@ -48,6 +48,7 @@ func (s *SegmentsRepository) GetByName(ctx context.Context, name string) (entity
 	if err != nil {
 		return entity.Segment{}, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		segment entity.Segment
@@ -58,7 +59,6 @@ func (s *SegmentsRepository) GetByName(ctx context.Context, name string) (entity
 	err = tx.QueryRowContext(ctx, query, name).
 		Scan(&segment.ID, &segment.Name)
 	if err != nil {
-		_ = tx.Rollback()
 		return entity.Segment{}, err
 	}
 
@@ -73,6 +73,7 @@ func (s *SegmentsRepository) GetByID(ctx context.Context, id int) (entity.Segmen
 	if err != nil {
 		return entity.Segment{}, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		segment entity.Segment
@@ -83,7 +84,6 @@ func (s *SegmentsRepository) GetByID(ctx context.Context, id int) (entity.Segmen
 	err = tx.QueryRowContext(ctx, query, id).
 		Scan(&segment.ID, &segment.Name, &segment.AssignPercent)
 	if err != nil {
-		_ = tx.Rollback()
 		return entity.Segment{}, err
 	}
 
@@ -98,6 +98,7 @@ func (s *SegmentsRepository) GetActiveUsersBySegmentID(ctx context.Context, id i
 	if err != nil {
 		return nil, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		users []entity.User
@@ -108,7 +109,6 @@ func (s *SegmentsRepository) GetActiveUsersBySegmentID(ctx context.Context, id i
 
 	rows, err := tx.QueryContext(ctx, query, id)
 	if err != nil {
-		_ = tx.Rollback()
 		return nil, err
 	}
 	defer func() { _ = rows.Close() }()
@@ -117,7 +117,6 @@ func (s *SegmentsRepository) GetActiveUsersBySegmentID(ctx context.Context, id i
 		var user entity.User
 		err = rows.Scan(&user.ID, &user.Login, &user.RegisteredAt)
 		if err != nil {
-			_ = tx.Rollback()
 			return nil, err
 		}
 
@@ -125,7 +124,6 @@ func (s *SegmentsRepository) GetActiveUsersBySegmentID(ctx context.Context, id i
 	}
 
 	if err = rows.Err(); err != nil {
-		_ = tx.Commit()
 		return nil, err
 	}
 
@@ -140,6 +138,7 @@ func (s *SegmentsRepository) GetAll(ctx context.Context) ([]entity.Segment, erro
 	if err != nil {
 		return nil, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		segments []entity.Segment
@@ -149,7 +148,6 @@ func (s *SegmentsRepository) GetAll(ctx context.Context) ([]entity.Segment, erro
 
 	rows, err := tx.QueryContext(ctx, query)
 	if err != nil {
-		_ = tx.Rollback()
 		return nil, err
 	}
 	defer func() { _ = rows.Close() }()
@@ -163,7 +161,6 @@ func (s *SegmentsRepository) GetAll(ctx context.Context) ([]entity.Segment, erro
 	}
 
 	if err = rows.Err(); err != nil {
-		_ = tx.Commit()
 		return nil, err
 	}
 
@@ -178,12 +175,12 @@ func (s *SegmentsRepository) DeleteByName(ctx context.Context, name string) erro
 	if err != nil {
 		return err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var queryDeleteSegment = fmt.Sprintf("DELETE FROM %s WHERE name = $1 RETURNING id, name", collectionSegments)
 
 	_, err = tx.ExecContext(ctx, queryDeleteSegment, name)
 	if err != nil {
-		_ = tx.Rollback()
 		return err
 	}
 
@@ -198,12 +195,12 @@ func (s *SegmentsRepository) DeleteByID(ctx context.Context, id int) error {
 	if err != nil {
 		return err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var query = fmt.Sprintf("DELETE FROM %s WHERE id = $1", collectionSegments)
 
 	_, err = tx.ExecContext(ctx, query, id)
 	if err != nil {
-		_ = tx.Rollback()
 		return err
 	}
 
