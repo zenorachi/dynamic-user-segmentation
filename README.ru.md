@@ -9,7 +9,7 @@
 получить сводный отчет по всем операциям (с возможность указать конкретных пользователей) в формате csv-файла или ссылки на csv файл.
     </h5>
     <p>
-        Russian | <a href="README.md">English</a> 
+        <a href="README.md">English</a> | Russian 
     </p>
 </div>
 
