@@ -154,13 +154,23 @@ make stop
 
 ### Decisions
 In the process of project implementation, I made the following decisions regarding certain contentious issues:
+
 * **How to implement a *many-to-many* relationship between users and segments?**
 > **Decision:** it seemed to me that it would be more appropriate to use a linking table called `relations`.
 This approach enables easy scalability of the application in the future without altering the current structure.
 It simplifies the process of adding segments to a user and removing them, as well as streamlines the associated queries.
+
 * **Which request method is better to use when adding segments to a user (*POST* or *PUT*)?**
 > **Decision:** it seemed to me that it would be more appropriate to use the *POST* method since new relations between users and segments are being created.
-* **How to implement automatic removal of users from segments if a TTL is specified in the request?**
+
+* **Why in the connecting table `relations`, are the user ID and segment ID not implemented as references?**
+> **Decision:** Initially, it was set up this way. The advantages are that no action is required 
+to update relations if a segment is deleted. On the downside, if a segment is deleted, all associated relations
+are also removed. While this cleanup is beneficial, it results in the loss of operational history.
+Hence, the decision was made to forego the use of references and implement a TRIGGER function.
+This function responds to segment deletions by erasing all connections to the deleted segment and recording the actions in the `operations` table.
+
+* **How to implement automatic removal of users from segments?**
 > **Decision:** there was a choice between creating a separate service that would periodically check whether
 the relationship between a user and segments has expired (for example, using `time.Ticker` or the `cron` utility),
 or simply launching a separate goroutine if a TTL is specified in the request. This goroutine, using a `select` statement,
@@ -172,12 +182,25 @@ such as potentially launching a large number of goroutines (so many that it coul
 or other unfavorable scenarios that could disrupt the service. Therefore, if the application were not in a "test" mode,
 it would definitely be advisable to use the first approach. But in this case, to expedite the project,
 I decided to go with the second option.
+
+* **How to implement automatic user addition?**
+> **Decision:** couldn't come up with anything better than to write a TRIGGER function that responds to new records being added to the `segments` table. 
+If new segments are added, the function checks the percentage of automatic addition
+(optionally specified in the segment creation request).
+If the percentage is greater than zero, the function randomly selects users from the entire user pool
+(based on the specified percentage) and then adds the created segment to the selected users.
+It also records information about the performed operation in the `operations` table. 
+This solution has its advantages, such as simplicity and implementation speed. 
+However, there are downsides. The issue is that this approach only makes sense if we already have an existing user base.
+If we don't, the entire purpose of the function disappears. It seemed somewhat logical to me to create new segments and test them on an existing user base, which is why I decided to stick with this solution.
+
 * **What service to use to generate a link to a CSV file?**
 > **Decision:** as soon as I read the task, I immediately understood that I would likely use an S3 storage,
 since I already had experience with S3 in the project [**ImageBox**](https://github.com/zenorachi/image-box).
 However, I can't deny that I was quite intrigued by the idea from the 2022 internship candidate of using
 Google Drive as a service. So, I decided to try something new for myself and implemented 
 the generation of a link to the CSV file using the Google Drive API integration.
+
 * **Should an error be returned if a user (segment) has no active segments (users)?**
 > **Decision:** it seemed to me that this would be superfluous and not entirely appropriate, because the request is processed correctly,
 there is simply no active connection between users and segments.
