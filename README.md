@@ -13,7 +13,7 @@
 
 ---
 
-### Technologies used:
+## Technologies used:
 - [Golang](https://go.dev), [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/), [Nginx](https://nginx.org/ru/)
 - [REST](https://ru.wikipedia.org/wiki/REST), [Swagger UI](https://swagger.io/tools/swagger-ui/)
@@ -21,15 +21,15 @@
 
 ---
 
-### Installation
+## Installation
 ```shell
 git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 ```
 
 ---
 
-### Getting started
-#### [Detailed Guide to Google Drive Integration](./docs/examples/01-google-drive-setup.md)
+## Getting started
+### [Detailed Guide to Google Drive Integration](./docs/examples/01-google-drive-setup.md)
 1. **Google Drive integration:**
     * Register the application in [Google Cloud](https://developers.google.com/workspace/guides/create-project);
     * Create a service account and generate a secret key for it;
@@ -91,7 +91,7 @@ to enter `Bearer <your_token>` (without "<" and ">" symbols) in the input field.
 
 ---
 
-### [Examples of requests](./docs/examples/02-requests.md)
+## [Examples of requests](./docs/examples/02-requests.md)
 
 **[Users](./docs/examples/02-requests.md#Users)**
 * [Registration](./docs/examples/02-requests.md#1-registration)
@@ -125,7 +125,7 @@ to enter `Bearer <your_token>` (without "<" and ">" symbols) in the input field.
 
 ---
 
-### Additional features
+## Additional features
 1. **Run tests**
 ```shell
 make test
@@ -154,7 +154,7 @@ make stop
 
 ---
 
-### Decisions
+## Decisions
 In the process of project implementation, I made the following decisions regarding certain contentious issues:
 
 * **How to implement a *many-to-many* relationship between users and segments?**
