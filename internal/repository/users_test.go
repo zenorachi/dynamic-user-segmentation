@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 	"regexp"
 	"testing"
 	"time"
+
+	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -93,7 +94,7 @@ func TestUsers_GetByCredentials(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error creating database connection: %v\n", err)
 	}
-	defer func() { _ = db.Close() }()
+	defer db.Close()
 
 	repo := NewUsers(db)
 

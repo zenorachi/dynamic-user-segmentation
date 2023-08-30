@@ -24,6 +24,7 @@ func (u *UsersRepository) Create(ctx context.Context, user entity.User) (int, er
 	if err != nil {
 		return 0, err
 	}
+	defer func() { _ = tx.Rollback() }()
 
 	var (
 		id    int
@@ -33,7 +34,6 @@ func (u *UsersRepository) Create(ctx context.Context, user entity.User) (int, er
 
 	err = tx.QueryRowContext(ctx, query, user.Login, user.Email, user.Password).Scan(&id)
 	if err != nil {
-		_ = tx.Rollback()
 		return 0, err
 	}
 
@@ -175,7 +175,7 @@ func (u *UsersRepository) GetActiveSegmentsByUserID(ctx context.Context, id int)
 	}
 
 	if err = rows.Err(); err != nil {
-		_ = tx.Commit()
+		_ = tx.Rollback()
 		return nil, err
 	}
 

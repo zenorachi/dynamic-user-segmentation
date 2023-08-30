@@ -1,12 +1,13 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
-	"github.com/spf13/viper"
-	"github.com/zenorachi/dynamic-user-segmentation/pkg/database/postgres"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
+	"github.com/zenorachi/dynamic-user-segmentation/pkg/database/postgres"
 )
 
 const (

@@ -3,9 +3,10 @@ package v1
 import (
 	"errors"
 	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/zenorachi/dynamic-user-segmentation/internal/entity"
-	"net/http"
 )
 
 func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
