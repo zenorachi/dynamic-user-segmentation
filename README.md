@@ -206,3 +206,6 @@ the generation of a link to the CSV file using the Google Drive API integration.
 * **Should an error be returned if a user (segment) has no active segments (users)?**
 > **Decision:** it seemed to me that this would be superfluous and not entirely appropriate, because the request is processed correctly,
 there is simply no active connection between users and segments.
+
+* **Should I use *multistage build*?**
+> **Decision:** I thought it might be unnecessary as it would significantly increase the build time.
