@@ -29,7 +29,7 @@ git clone git@github.com/zenorachi/dynamic-user-segmentation.git
 ---
 
 ## Getting started
-### [Detailed Guide to Google Drive Integration](./docs/examples/01-google-drive-setup.md)
+#### [Detailed Guide to Google Drive Integration](./docs/examples/01-google-drive-setup.md)
 1. **Google Drive integration:**
     * Register the application in [Google Cloud](https://developers.google.com/workspace/guides/create-project);
     * Create a service account and generate a secret key for it;
