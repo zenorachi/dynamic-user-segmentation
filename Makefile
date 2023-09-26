@@ -50,4 +50,4 @@ swag:
 clean:
 	rm -rf ./.bin cover.out
 
-.PHONY: build run rebuild up-postgres stop test test-coverage html-coverage migrate-create migrate-down migrate-up lint swag clean
+.PHONY: build run rebuild up-postgres stop test test-coverage test-coverage migrate-create migrate-down migrate-up lint swag clean
